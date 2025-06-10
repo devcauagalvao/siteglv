@@ -62,7 +62,7 @@ const AIAssistant = () => {
       } else if (lowerInput.includes('planos')) {
         botResponse =
           'Temos 3 planos: Essencial (R$99), Profissional (R$199) e Empresarial (R$399). Veja mais em nossa seção de planos!';
-        navigateTo('/src/components/');
+        navigateTo('/src/components/Plans.tsx');
       } else if (lowerInput.includes('suporte')) {
         botResponse =
           'Nosso suporte está sempre disponível! Te levo agora para a seção de ajuda.';

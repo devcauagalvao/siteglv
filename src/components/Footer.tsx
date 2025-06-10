@@ -224,24 +224,6 @@ const Footer = () => {
             ))}
           </motion.div>
         </div>
-
-        {/* Back to Top Button */}
-        <motion.button
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="fixed bottom-24 right-6 z-40 p-3 rounded-full backdrop-blur-lg bg-blue-600/20 border border-blue-500/30 text-blue-400 hover:bg-blue-600/30 hover:text-white transition-all duration-300 shadow-lg shadow-blue-500/20"
-          whileHover={{ scale: 1.1, y: -2 }}
-          whileTap={{ scale: 0.9 }}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 2 }}
-        >
-          <motion.div
-            animate={{ y: [-2, 2, -2] }}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
-            ↑
-          </motion.div>
-        </motion.button>
       </div>
 
       {/* Glow Effects */}

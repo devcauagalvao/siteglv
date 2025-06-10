@@ -1,9 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ExternalLink, Github, X, Monitor, Smartphone, Server } from 'lucide-react';
 
 const Portfolio = () => {
   const [selectedProject, setSelectedProject] = useState(null);
+
+  useEffect(() => {
+    if (selectedProject) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [selectedProject]);
 
   const projects = [
     {
@@ -71,14 +82,14 @@ const Portfolio = () => {
   const categories = ['Todos', 'Web Development', 'Mobile App', 'Infrastructure'];
   const [activeCategory, setActiveCategory] = useState('Todos');
 
-  const filteredProjects = activeCategory === 'Todos' 
-    ? projects 
+  const filteredProjects = activeCategory === 'Todos'
+    ? projects
     : projects.filter(project => project.category === activeCategory);
 
   return (
     <section id="portfolio" className="py-20 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-900 to-black" />
-      
+
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <motion.div
@@ -164,7 +175,7 @@ const Portfolio = () => {
                     <p className="text-white/70 mb-4 line-clamp-2">
                       {project.description}
                     </p>
-                    
+
                     {/* Tech Stack */}
                     <div className="flex flex-wrap gap-2">
                       {project.tech.slice(0, 3).map((tech, techIndex) => (
@@ -205,20 +216,18 @@ const Portfolio = () => {
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.8, opacity: 0 }}
-                className="relative max-w-4xl w-full backdrop-blur-lg bg-gray-900/90 border border-white/20 rounded-3xl overflow-hidden"
+                className="relative max-w-4xl w-full max-h-[90vh] overflow-y-auto backdrop-blur-lg bg-gray-900/90 border border-white/20 rounded-3xl"
                 onClick={(e) => e.stopPropagation()}
               >
                 {/* Close Button */}
                 <button
                   onClick={() => setSelectedProject(null)}
-                  className="absolute top-4 right-4 z-10 p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors duration-200"
+                  className="fixed md:absolute top-4 right-4 z-50 p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors duration-200"
                 >
                   <X className="h-6 w-6" />
                 </button>
 
-                {/* Modal Content */}
                 <div className="grid md:grid-cols-2 gap-0">
-                  {/* Image Section */}
                   <div className="relative h-80 md:h-full">
                     <img
                       src={selectedProject.image}
@@ -228,13 +237,11 @@ const Portfolio = () => {
                     <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent" />
                   </div>
 
-                  {/* Content Section */}
                   <div className="p-8">
                     <div className="text-sm text-blue-400 mb-2">{selectedProject.category}</div>
                     <h3 className="text-3xl font-bold text-white mb-4">{selectedProject.title}</h3>
                     <p className="text-white/80 mb-6 leading-relaxed">{selectedProject.description}</p>
 
-                    {/* Features */}
                     <div className="mb-6">
                       <h4 className="text-lg font-semibold text-white mb-3">Principais Recursos</h4>
                       <div className="grid grid-cols-2 gap-2">
@@ -247,7 +254,6 @@ const Portfolio = () => {
                       </div>
                     </div>
 
-                    {/* Tech Stack */}
                     <div className="mb-6">
                       <h4 className="text-lg font-semibold text-white mb-3">Tecnologias</h4>
                       <div className="flex flex-wrap gap-2">
@@ -262,7 +268,6 @@ const Portfolio = () => {
                       </div>
                     </div>
 
-                    {/* Action Buttons */}
                     <div className="flex space-x-4">
                       <motion.button
                         className="flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-blue-500 text-white px-6 py-3 rounded-full hover:shadow-lg hover:shadow-blue-500/30 transition-all duration-300"
