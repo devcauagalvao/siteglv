@@ -1,4 +1,4 @@
-  import React from 'react';
+import React from 'react'; 
 import { motion } from 'framer-motion';
 import ParticleBackground from './ParticleBackground';
 
@@ -16,16 +16,18 @@ const Hero = () => {
       {/* Main Content */}
       <div className="relative z-10 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 max-w-5xl w-full">
         
-        {/* Company Name */}
+        {/* Company Logo */}
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.8 }}
-          className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6"
+          className="mb-6"
         >
-          <span className="bg-gradient-to-r from-blue-500 via-white to-blue-400 bg-clip-text text-transparent">
-            GLV Informática
-          </span>
+          <img 
+            src="/img/logoglv.png" 
+            alt="GLV Informática Logo" 
+            className="h-10 md:h-20 lg:h-20 object-contain mx-auto"
+          />
         </motion.h1>
 
         {/* Main Headline */}
@@ -48,14 +50,17 @@ const Hero = () => {
           Software personalizado, infraestrutura e suporte técnico construídos para escalar seu negócio
         </motion.p>
 
-        {/* CTA Button */}
+        {/* CTA Button linking to WhatsApp */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.3, duration: 0.8 }}
         >
-          <motion.button
-            className="bg-gradient-to-r from-blue-600 to-blue-500 text-white px-12 py-4 rounded-full text-lg font-semibold shadow-2xl shadow-blue-500/30 border border-blue-400/30"
+          <motion.a
+            href="https://wa.me/5511919167653"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block bg-gradient-to-r from-blue-600 to-blue-500 text-white px-8 sm:px-12 py-3 sm:py-4 rounded-full text-base sm:text-lg font-semibold shadow-2xl shadow-blue-500/30 border border-blue-400/30 text-center"
             whileHover={{ 
               scale: 1.05, 
               boxShadow: "0 0 40px rgba(59, 130, 246, 0.6)",
@@ -64,7 +69,7 @@ const Hero = () => {
             whileTap={{ scale: 0.95 }}
           >
             Solicitar Orçamento Personalizado
-          </motion.button>
+          </motion.a>
         </motion.div>
       </div>
     </section>

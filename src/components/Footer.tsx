@@ -1,13 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { 
-  Monitor, 
   Mail, 
   Phone, 
   MapPin, 
   Instagram, 
   Facebook, 
-  Linkedin, 
   Github,
   MessageCircle,
   Code,
@@ -108,20 +106,17 @@ const Footer = () => {
             className="lg:col-span-1"
           >
             {/* Logo */}
-            <div className="flex items-center space-x-3 mb-6">
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-400 rounded-xl w-12 h-12 animate-pulse opacity-50" />
-                <div className="relative bg-gradient-to-r from-blue-600 to-blue-500 rounded-xl p-3 shadow-2xl shadow-blue-500/30">
-                  <Monitor className="h-6 w-6 text-white" />
-                </div>
-              </div>
-              <div>
-                <h3 className="text-xl font-bold bg-gradient-to-r from-blue-500 to-white bg-clip-text text-transparent">
-                  GLV Informática
-                </h3>
-                <p className="text-white/60 text-sm">Soluções do Futuro</p>
-              </div>
-            </div>
+       <div className="flex items-center space-x-3 mb-6">
+  <div>
+    <img 
+      src="/img/logoglv.png" 
+      alt="GLV Informática Logo" 
+      className="h-7 object-contain"
+    />
+    <p className="text-white/60 text-sm mt-1">Soluções do Futuro</p>
+  </div>
+</div>
+
 
             {/* Description */}
             <p className="text-white/70 mb-6 leading-relaxed">
