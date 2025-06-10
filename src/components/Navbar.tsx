@@ -33,19 +33,17 @@ const Navbar = () => {
           : 'bg-transparent'
       }`}
     >
-      {/* Container com largura 100% */}
       <div className="flex justify-between items-center h-16 px-4 sm:px-6 lg:px-8">
-        {/* Logo com imagem */}
+        {/* Logo com texto estilizado */}
         <motion.a
           href="#home"
           className="flex items-center space-x-2"
           whileHover={{ scale: 1.05 }}
         >
-          <img
-            src="/public/img/glvfundotransparente.png"
-            alt="Logo da GLV"
-            className="h-16 w-auto object-contain" // Altura ajustada para melhor proporção na navbar
-          />
+          <h1 className="text-xl font-extrabold tracking-wide flex items-center gap-1">
+            <span className="text-[color:#4169E1]">GLV</span>
+  
+          </h1>
         </motion.a>
 
         {/* Navegação desktop */}
