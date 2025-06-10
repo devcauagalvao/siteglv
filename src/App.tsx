@@ -14,52 +14,52 @@ import Plans from './components/Plans';
 
 const GlobalScrollbarStyle = () => (
   <style>{`
-    /* Scrollbar futurista pílula neon azul com fundo transparente */
+    /* Scrollbar combinada: futurista neon azul com toque vermelho */
 
-    /* Webkit browsers */
     ::-webkit-scrollbar {
-      width: 12px;
-      height: 12px;
+      width: 10px; /* largura conforme seu código */
+      height: 10px;
       background: transparent;
     }
 
     ::-webkit-scrollbar-track {
-      background: transparent;
+      background: #1C1C1C; /* fundo escuro como no seu código */
       margin: 6px 0;
+      border-radius: 10px;
     }
 
     ::-webkit-scrollbar-thumb {
-      background: #00bfff;
-      border-radius: 9999px;
+      background: #ff0000; /* vermelho do seu código */
+      border-radius: 10px; /* pílula */
       border: 3px solid transparent;
       background-clip: content-box;
       box-shadow:
-        0 0 10px #00bfff,
-        0 0 20px #00bfff,
-        0 0 30px #00e0ff,
-        0 0 40px #00e0ff;
+        0 0 10px #ff0000,
+        0 0 20px #ff0000,
+        0 0 30px #ff4444,
+        0 0 40px #ff6666;
       transition: box-shadow 0.3s ease, background-color 0.3s ease;
       opacity: 0.8;
       cursor: pointer;
     }
 
     ::-webkit-scrollbar-thumb:hover {
-      background: #33ccff;
+      background: #555; /* hover escuro conforme seu código */
       box-shadow:
-        0 0 15px #33ccff,
-        0 0 30px #33ccff,
-        0 0 40px #66ddff,
-        0 0 50px #66ddff;
+        0 0 15px #555,
+        0 0 30px #777,
+        0 0 40px #999,
+        0 0 50px #bbb;
       opacity: 1;
     }
 
     /* Firefox */
     html {
       scrollbar-width: thin;
-      scrollbar-color: #00bfff transparent;
+      scrollbar-color:rgb(0, 162, 255) #1C1C1C; /* vermelho e fundo escuro */
     }
 
-    /* Aparecer scrollbar só ao hover/scroll no Webkit */
+    /* Scrollbar thumb aparece só ao hover (webkit) */
     ::-webkit-scrollbar-thumb {
       opacity: 0;
       transition: opacity 0.3s ease;
@@ -71,6 +71,7 @@ const GlobalScrollbarStyle = () => (
     }
   `}</style>
 );
+
 
 function App() {
   return (
