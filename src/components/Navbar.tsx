@@ -42,7 +42,7 @@ const Navbar = () => {
             whileHover={{ scale: 1.05 }}
           >
             <img
-              src="/img/logoglv.png" // certifique-se de ter logo.png em /public
+              src="/public/img/logoglv.png" // certifique-se de ter logo.png em /public
               alt="Logo da GLV"
               className="h-7 w-auto object-contain"
             />
