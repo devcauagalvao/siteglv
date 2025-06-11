@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Menu, X } from "lucide-react";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -8,29 +8,29 @@ const Navbar = () => {
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const navItems = [
-    { name: 'Home', href: '#home' },
-    { name: 'Sobre', href: '#about' },
-    { name: 'Serviços', href: '#services' },
-    { name: 'Portfolio', href: '#portfolio' },
-    { name: 'Loja', href: '#store' },
-    { name: 'Clientes', href: '#testimonials' },
-    { name: 'Contato', href: '#contact' },
+    { name: "Home", href: "#home" },
+    { name: "Sobre", href: "#about" },
+    { name: "Serviços", href: "#services" },
+    { name: "Portfolio", href: "#portfolio" },
+    { name: "Loja", href: "#store" },
+    { name: "Clientes", href: "#testimonials" },
+    { name: "Contato", href: "#contact" },
   ];
 
   return (
     <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      transition={{ type: 'spring', stiffness: 100 }}
+      transition={{ type: "spring", stiffness: 100 }}
       className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ${
         isScrolled
-          ? 'backdrop-blur-md bg-black/30 border-b border-white/10 shadow-md'
-          : 'bg-transparent'
+          ? "backdrop-blur-md bg-black/30 border-b border-white/10 shadow-md"
+          : "bg-transparent"
       }`}
     >
       <div className="flex justify-between items-center h-16 px-4 sm:px-6 lg:px-8">
@@ -41,8 +41,7 @@ const Navbar = () => {
           whileHover={{ scale: 1.05 }}
         >
           <h1 className="text-xl font-extrabold tracking-wide flex items-center gap-1">
-            <span className="text-[color:#4169E1]">GLV</span>
-  
+            <span className="text-[color:#0092d9]">GLV</span>
           </h1>
         </motion.a>
 
@@ -70,13 +69,18 @@ const Navbar = () => {
         </div>
 
         {/* Botão mobile */}
-        <button
-          aria-label="Abrir menu"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="md:hidden text-white p-2"
-        >
-          {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </button>
+        <label className="md:hidden flex flex-col gap-2 w-8 cursor-pointer z-50 relative">
+          <input
+            type="checkbox"
+            className="peer hidden"
+            title="Menu"
+            onChange={(e) => setIsMobileMenuOpen(e.target.checked)}
+            checked={isMobileMenuOpen}
+          />
+          <div className="rounded-2xl h-[3px] w-1/2 bg-white duration-500 peer-checked:rotate-[225deg] origin-right peer-checked:-translate-x-[12px] peer-checked:-translate-y-[1px]"></div>
+          <div className="rounded-2xl h-[3px] w-full bg-white duration-500 peer-checked:-rotate-45"></div>
+          <div className="rounded-2xl h-[3px] w-1/2 bg-white duration-500 place-self-end peer-checked:rotate-[225deg] origin-left peer-checked:translate-x-[12px] peer-checked:translate-y-[1px]"></div>
+        </label>
       </div>
 
       {/* Menu mobile */}
