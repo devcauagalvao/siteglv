@@ -41,7 +41,7 @@ const Navbar = () => {
           whileHover={{ scale: 1.05 }}
         >
           <h1 className="text-xl font-extrabold tracking-wide flex items-center gap-1">
-            <span className="text-[color:#0092d9]">GLV</span>
+            <span className="text-[color:#3B82F6]">GLV</span>
           </h1>
         </motion.a>
 

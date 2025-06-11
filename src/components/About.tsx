@@ -53,9 +53,8 @@ const About = () => {
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
             <span className="text-white">Sobre a </span>
-            <span className="text-[#0092d9]">GLV</span>
+            <span className="text-[#3B82F6]">GLV</span>
           </h2>
-
           <p className="text-xl text-white/80 max-w-3xl mx-auto">
             Construindo o futuro digital através de soluções tecnológicas
             inovadoras e suporte especializado
@@ -97,9 +96,9 @@ const About = () => {
           transition={{ duration: 0.8 }}
           className="backdrop-blur-lg bg-white/5 border border-white/10 rounded-3xl p-8 md:p-12"
         >
-          <h3 className="text-3xl font-bold text-center text-white mb-12">
+          <h2 className="text-3xl font-bold text-center text-white mb-12">
             Nossa Jornada
-          </h3>
+          </h2>
           <div className="relative">
             {/* Timeline Line */}
             <div className="absolute left-1/2 transform -translate-x-1/2 w-0.5 h-full bg-gradient-to-b from-blue-500 to-transparent" />
