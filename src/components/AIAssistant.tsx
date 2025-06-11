@@ -1,32 +1,39 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, BrainCircuit, Sparkles, X, Send, Bot } from 'lucide-react';
+import React, { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  MessageCircle,
+  BrainCircuit,
+  Sparkles,
+  X,
+  Send,
+  Bot,
+} from "lucide-react";
 
 const AIAssistant = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
     {
       id: 1,
-      text: 'Olá! Sou o assistente virtual da GLV. Como posso ajudá-lo hoje? 😊',
+      text: "Olá! Sou o assistente virtual Commit. Como posso ajudá-lo hoje? 😊",
       isBot: true,
       timestamp: new Date(),
     },
   ]);
-  const [inputMessage, setInputMessage] = useState('');
+  const [inputMessage, setInputMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const bottomRef = useRef(null);
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   const quickReplies = [
-    'Quero um orçamento',
-    'Sobre os planos',
-    'Suporte técnico',
-    'Ver produtos',
-    'Fale comigo',
-    'Acessar Mercado Livre',
+    "Quero um orçamento",
+    "Sobre os planos",
+    "Suporte técnico",
+    "Ver produtos",
+    "Fale comigo",
+    "Acessar Mercado Livre",
   ];
 
   const handleSendMessage = () => {
@@ -40,7 +47,7 @@ const AIAssistant = () => {
     };
 
     setMessages((prev) => [...prev, newMessage]);
-    setInputMessage('');
+    setInputMessage("");
     simulateBotResponse(inputMessage);
   };
 
@@ -54,29 +61,37 @@ const AIAssistant = () => {
     setTimeout(() => {
       const lowerInput = userInput.toLowerCase();
       let botResponse =
-        'Não entendi exatamente, mas posso te ajudar com orçamento, planos, suporte ou produtos!';
+        "Não entendi exatamente, mas posso te ajudar com orçamento, planos, suporte ou produtos!";
 
-      if (lowerInput.includes('orçamento')) {
-        botResponse = 'Claro! Redirecionando você para a página de contato...';
-        navigateTo('/contato');
-      } else if (lowerInput.includes('planos')) {
+      if (lowerInput.includes("orçamento")) {
+        botResponse = "Claro! Redirecionando você para a página de contato...";
+        navigateTo("/contato");
+      } else if (lowerInput.includes("planos")) {
         botResponse =
-          'Temos 3 planos: Essencial (R$99), Profissional (R$199) e Empresarial (R$399). Veja mais em nossa seção de planos!';
-        navigateTo('/src/components/Plans.tsx');
-      } else if (lowerInput.includes('suporte')) {
+          "Temos 3 planos: Essencial (R$99), Profissional (R$199) e Empresarial (R$399). Veja mais em nossa seção de planos!";
+        navigateTo("/src/components/Plans.tsx");
+      } else if (lowerInput.includes("suporte")) {
         botResponse =
-          'Nosso suporte está sempre disponível! Te levo agora para a seção de ajuda.';
-        navigateTo('/src/components/Contact.tsx');
-      } else if (lowerInput.includes('produtos')) {
+          "Nosso suporte está sempre disponível! Te levo agora para a seção de ajuda.";
+        navigateTo("/src/components/Contact.tsx");
+      } else if (lowerInput.includes("produtos")) {
         botResponse =
-          'Confira nossos produtos incríveis em nossa loja do Mercado Livre!';
-        window.open('https://www.mercadolivre.com.br/perfil/GLVINFORMATICA', '_blank');
-      } else if (lowerInput.includes('mercado livre')) {
-        botResponse = 'Claro! Aqui está o link direto para nossa loja no Mercado Livre.';
-        window.open('https://www.mercadolivre.com.br/perfil/GLVINFORMATICA', '_blank');
-      } else if (lowerInput.includes('fale comigo')) {
-        botResponse = 'Nosso time está disponível para conversar! Vou abrir o WhatsApp para você.';
-        window.open('https://wa.me/5511919167653', '_blank');
+          "Confira nossos produtos incríveis em nossa loja do Mercado Livre!";
+        window.open(
+          "https://www.mercadolivre.com.br/perfil/GLVINFORMATICA",
+          "_blank"
+        );
+      } else if (lowerInput.includes("mercado livre")) {
+        botResponse =
+          "Claro! Aqui está o link direto para nossa loja no Mercado Livre.";
+        window.open(
+          "https://www.mercadolivre.com.br/perfil/GLVINFORMATICA",
+          "_blank"
+        );
+      } else if (lowerInput.includes("fale comigo")) {
+        botResponse =
+          "Nosso time está disponível para conversar! Vou abrir o WhatsApp para você.";
+        window.open("https://wa.me/5511919167653", "_blank");
       }
 
       const response = {
@@ -109,14 +124,14 @@ const AIAssistant = () => {
       <motion.button
         onClick={() => setIsOpen(true)}
         className="fixed bottom-6 right-6 w-16 h-16 rounded-full flex items-center justify-center shadow-lg z-40"
-        style={{ backgroundColor: '#3B82F6' }} // azul mais vibrante
+        style={{ backgroundColor: "#3B82F6" }} // azul mais vibrante
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
         animate={{
           boxShadow: [
-            '0 0 10px rgba(59, 130, 246, 0.7)',
-            '0 0 20px rgba(59, 130, 246, 0.9)',
-            '0 0 10px rgba(59, 130, 246, 0.7)',
+            "0 0 10px rgba(59, 130, 246, 0.7)",
+            "0 0 20px rgba(59, 130, 246, 0.9)",
+            "0 0 10px rgba(59, 130, 246, 0.7)",
           ],
         }}
         transition={{ duration: 2, repeat: Infinity }}
@@ -141,14 +156,24 @@ const AIAssistant = () => {
             {/* Header */}
             <div className="flex items-center justify-between p-5 border-b border-gray-700">
               <div className="flex items-center space-x-3">
-                <div className="w-11 h-11 bg-gradient-to-r from-cyan-400 to-blue-600 rounded-full flex items-center justify-center shadow-lg">
-                  <Bot className="w-6 h-6 text-white" />
+                <div className="w-11 h-11 rounded-full overflow-hidden shadow-lg bg-white">
+                  <img
+                    src="/img/bot.png"
+                    alt="Assistente GLV"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 <div>
-                  <h3 id="chat-title" className="text-white font-semibold text-lg">
-                    Assistente GLV
+                  <h3
+                    id="chat-title"
+                    className="text-white font-semibold text-lg"
+                  >
+                    Assistente Commit
                   </h3>
-                  <p className="text-gray-400 text-sm">Online agora</p>
+                  <div className="flex items-center space-x-2">
+                    <span className="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse" />
+                    <p className="text-green-500 text-sm">Online agora</p>
+                  </div>
                 </div>
               </div>
               <button
@@ -165,7 +190,9 @@ const AIAssistant = () => {
               {messages.map((message) => (
                 <motion.div
                   key={message.id}
-                  className={`flex ${message.isBot ? 'justify-start' : 'justify-end'}`}
+                  className={`flex ${
+                    message.isBot ? "justify-start" : "justify-end"
+                  }`}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.25 }}
@@ -173,8 +200,8 @@ const AIAssistant = () => {
                   <div
                     className={`max-w-[75%] p-4 rounded-2xl ${
                       message.isBot
-                        ? 'bg-gradient-to-r from-gray-800 via-gray-900 to-black text-gray-200 shadow-md'
-                        : 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg'
+                        ? "bg-gradient-to-r from-gray-800 via-gray-900 to-black text-gray-200 shadow-md"
+                        : "bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg"
                     }`}
                   >
                     <p className="text-sm break-words">{message.text}</p>
@@ -221,7 +248,7 @@ const AIAssistant = () => {
                   type="text"
                   value={inputMessage}
                   onChange={(e) => setInputMessage(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
+                  onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
                   placeholder="Digite sua mensagem..."
                   className="flex-1 bg-gray-800 border border-gray-700 rounded-full px-4 py-2 text-white text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent"
                   aria-label="Campo de mensagem"
@@ -229,7 +256,7 @@ const AIAssistant = () => {
                 />
                 <motion.button
                   onClick={handleSendMessage}
-                  className="w-12 h-12 bg-gradient-to-r from-cyan-400 to-blue-600 rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-shadow"
+                  className="w-12 h-12 bg-[#3B82F6] rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-shadow"
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
                   aria-label="Enviar mensagem"
