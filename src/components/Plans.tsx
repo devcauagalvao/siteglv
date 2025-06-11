@@ -1,16 +1,16 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
-import { Check, Star, Zap } from 'lucide-react';
-import { plans } from '../data/plans';
+import React from "react";
+import { motion } from "framer-motion";
+import { useInView } from "react-intersection-observer";
+import { Check, Star, Zap } from "lucide-react";
+import { plans } from "../data/plans";
 
 const Plans = () => {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.15 });
 
   const handlePlanSelect = (planId: string) => {
-    const contactSection = document.querySelector('#contact');
+    const contactSection = document.querySelector("#contact");
     if (contactSection) {
-      contactSection.scrollIntoView({ behavior: 'smooth' });
+      contactSection.scrollIntoView({ behavior: "smooth" });
     }
   };
 
@@ -26,21 +26,23 @@ const Plans = () => {
         <motion.h2
           className="text-white text-5xl md:text-6xl font-extrabold mb-4"
           initial={{ y: 50, opacity: 0 }}
-          animate={inView ? { y: 0, opacity: 1 } : {}}
+          animate={inView ? { y: 0, opacity: 1 } : undefined}
           transition={{ duration: 0.8 }}
         >
-          Planos de{' '}
+          Planos de{" "}
           <span className="bg-gradient-to-r from-cyan-400 to-blue-600 bg-clip-text text-transparent">
             Suporte
           </span>
         </motion.h2>
+
         <motion.p
           className="max-w-3xl mx-auto text-gray-300 text-lg mb-16"
           initial={{ y: 40, opacity: 0 }}
-          animate={inView ? { y: 0, opacity: 1 } : {}}
+          animate={inView ? { y: 0, opacity: 1 } : undefined}
           transition={{ delay: 0.2, duration: 0.8 }}
         >
-          Escolha o plano ideal para sua empresa e tenha o suporte técnico que seu negócio merece
+          Escolha o plano ideal para sua empresa e tenha o suporte técnico que
+          seu negócio merece
         </motion.p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
@@ -52,11 +54,11 @@ const Plans = () => {
                 key={plan.id}
                 className={`relative rounded-3xl p-8 bg-white/10 backdrop-blur-md border border-white/20 flex flex-col justify-between shadow-lg transition-transform duration-300 ${
                   isHighlighted
-                    ? 'scale-105 border-cyan-500 shadow-cyan-600/50 z-20'
-                    : 'hover:scale-105 hover:border-white/40'
+                    ? "scale-105 border-cyan-500 shadow-cyan-600/50 z-20"
+                    : "hover:scale-105 hover:border-white/40"
                 }`}
                 initial={{ y: 50, opacity: 0 }}
-                animate={inView ? { y: 0, opacity: 1 } : {}}
+                animate={inView ? { y: 0, opacity: 1 } : undefined}
                 transition={{ delay: i * 0.2, duration: 0.7 }}
               >
                 {plan.popular && (
@@ -67,12 +69,20 @@ const Plans = () => {
                 )}
 
                 <div>
-                  <h3 className="text-white text-3xl font-bold mb-2">{plan.name}</h3>
-                  <p className="text-gray-300 text-sm mb-6">{plan.description}</p>
+                  <h3 className="text-white text-3xl font-bold mb-2">
+                    {plan.name}
+                  </h3>
+                  <p className="text-gray-300 text-sm mb-6">
+                    {plan.description}
+                  </p>
 
                   <div className="flex items-baseline justify-center gap-1 mb-8">
-                    <span className="text-white text-5xl font-extrabold">R${plan.price}</span>
-                    <span className="text-gray-400 text-lg">/{plan.period}</span>
+                    <span className="text-white text-5xl font-extrabold">
+                      R${plan.price}
+                    </span>
+                    <span className="text-gray-400 text-lg">
+                      /{plan.period}
+                    </span>
                   </div>
 
                   <ul className="space-y-4 text-left">
@@ -81,8 +91,11 @@ const Plans = () => {
                         key={idx}
                         className="flex items-center space-x-3 text-gray-300"
                         initial={{ x: -20, opacity: 0 }}
-                        animate={inView ? { x: 0, opacity: 1 } : {}}
-                        transition={{ delay: i * 0.15 + idx * 0.1, duration: 0.4 }}
+                        animate={inView ? { x: 0, opacity: 1 } : undefined}
+                        transition={{
+                          delay: i * 0.15 + idx * 0.1,
+                          duration: 0.4,
+                        }}
                       >
                         <Check className="w-5 h-5 text-cyan-400 flex-shrink-0" />
                         <span className="text-sm">{feature}</span>
@@ -95,8 +108,8 @@ const Plans = () => {
                   onClick={() => handlePlanSelect(plan.id)}
                   className={`mt-10 w-full py-4 rounded-full font-semibold text-lg transition-all duration-300 ${
                     isHighlighted
-                      ? 'bg-gradient-to-r from-cyan-400 to-blue-600 text-white shadow-lg shadow-cyan-600/50 hover:shadow-cyan-700/70'
-                      : 'bg-white/20 text-white hover:bg-white/30'
+                      ? "bg-gradient-to-r from-cyan-400 to-blue-600 text-white shadow-lg shadow-cyan-600/50 hover:shadow-cyan-700/70"
+                      : "bg-white/20 text-white hover:bg-white/30"
                   }`}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -112,22 +125,28 @@ const Plans = () => {
         <motion.div
           className="mt-20 max-w-3xl mx-auto bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-8"
           initial={{ y: 40, opacity: 0 }}
-          animate={inView ? { y: 0, opacity: 1 } : {}}
+          animate={inView ? { y: 0, opacity: 1 } : undefined}
           transition={{ delay: 0.9, duration: 0.8 }}
         >
           <div className="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-6">
             <Zap className="w-10 h-10 text-cyan-400 flex-shrink-0" />
             <div className="text-center md:text-left">
-              <h3 className="text-white text-2xl font-bold mb-2">Precisa de Algo Personalizado?</h3>
+              <h3 className="text-white text-2xl font-bold mb-2">
+                Precisa de Algo Personalizado?
+              </h3>
               <p className="text-gray-300 max-w-md mx-auto md:mx-0">
-                Oferecemos soluções customizadas para empresas com necessidades específicas. Entre
-                em contato para discutir um plano sob medida.
+                Oferecemos soluções customizadas para empresas com necessidades
+                específicas. Entre em contato para discutir um plano sob medida.
               </p>
             </div>
           </div>
 
           <motion.button
-            onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })}
+            onClick={() =>
+              document
+                .querySelector("#contact")
+                ?.scrollIntoView({ behavior: "smooth" })
+            }
             className="mt-8 w-full md:w-auto px-10 py-3 rounded-full bg-gradient-to-r from-cyan-400 to-blue-600 text-white font-semibold shadow-lg shadow-cyan-600/50 hover:shadow-cyan-700/70 transition-transform duration-300"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -140,10 +159,11 @@ const Plans = () => {
         <motion.p
           className="text-gray-400 text-sm mt-12 max-w-3xl mx-auto"
           initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
+          animate={inView ? { opacity: 1 } : undefined}
           transition={{ delay: 1.2, duration: 0.6 }}
         >
-          * Todos os planos incluem setup gratuito e podem ser cancelados a qualquer momento.
+          * Todos os planos incluem setup gratuito e podem ser cancelados a
+          qualquer momento.
           <br />
           Entre em contato para conhecer nossos descontos anuais.
         </motion.p>
