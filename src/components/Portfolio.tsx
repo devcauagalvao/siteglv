@@ -1,90 +1,145 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ExternalLink, Github, X, Monitor, Smartphone, Server } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  ExternalLink,
+  Github,
+  X,
+  Monitor,
+  Smartphone,
+  Server,
+} from "lucide-react";
 
 const Portfolio = () => {
   const [selectedProject, setSelectedProject] = useState(null);
 
   useEffect(() => {
     if (selectedProject) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = "auto";
     }
     return () => {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = "auto";
     };
   }, [selectedProject]);
 
   const projects = [
     {
       id: 1,
-      title: 'Sistema ERP Completo',
-      category: 'Web Development',
-      image: 'https://images.pexels.com/photos/265087/pexels-photo-265087.jpeg?auto=compress&cs=tinysrgb&w=800',
-      description: 'Sistema completo de gestão empresarial com módulos de vendas, estoque, financeiro e relatórios avançados.',
-      tech: ['React', 'Node.js', 'PostgreSQL', 'Docker'],
-      features: ['Dashboard em tempo real', 'Relatórios personalizados', 'API REST', 'Controle de acesso'],
-      icon: Monitor
+      title: "Sistema ERP Completo",
+      category: "Web Development",
+      image:
+        "https://images.pexels.com/photos/265087/pexels-photo-265087.jpeg?auto=compress&cs=tinysrgb&w=800",
+      description:
+        "Sistema completo de gestão empresarial com módulos de vendas, estoque, financeiro e relatórios avançados.",
+      tech: ["React", "Node.js", "PostgreSQL", "Docker"],
+      features: [
+        "Dashboard em tempo real",
+        "Relatórios personalizados",
+        "API REST",
+        "Controle de acesso",
+      ],
+      icon: Monitor,
     },
     {
       id: 2,
-      title: 'App de Delivery',
-      category: 'Mobile App',
-      image: 'https://images.pexels.com/photos/4393021/pexels-photo-4393021.jpeg?auto=compress&cs=tinysrgb&w=800',
-      description: 'Aplicativo móbil para delivery com geolocalização, pagamentos integrados e sistema de avaliações.',
-      tech: ['React Native', 'Firebase', 'Stripe', 'Google Maps'],
-      features: ['Tracking em tempo real', 'Pagamentos seguros', 'Push notifications', 'Avaliações'],
-      icon: Smartphone
+      title: "App de Delivery",
+      category: "Mobile App",
+      image:
+        "https://images.pexels.com/photos/4393021/pexels-photo-4393021.jpeg?auto=compress&cs=tinysrgb&w=800",
+      description:
+        "Aplicativo móbil para delivery com geolocalização, pagamentos integrados e sistema de avaliações.",
+      tech: ["React Native", "Firebase", "Stripe", "Google Maps"],
+      features: [
+        "Tracking em tempo real",
+        "Pagamentos seguros",
+        "Push notifications",
+        "Avaliações",
+      ],
+      icon: Smartphone,
     },
     {
       id: 3,
-      title: 'Infraestrutura Cloud AWS',
-      category: 'Infrastructure',
-      image: 'https://images.pexels.com/photos/325229/pexels-photo-325229.jpeg?auto=compress&cs=tinysrgb&w=800',
-      description: 'Migração completa para AWS com alta disponibilidade, backup automatizado e monitoramento 24/7.',
-      tech: ['AWS', 'Docker', 'Kubernetes', 'Terraform'],
-      features: ['Auto scaling', 'Load balancing', 'Backup automático', 'Monitoramento'],
-      icon: Server
+      title: "Infraestrutura Cloud AWS",
+      category: "Infrastructure",
+      image:
+        "https://images.pexels.com/photos/325229/pexels-photo-325229.jpeg?auto=compress&cs=tinysrgb&w=800",
+      description:
+        "Migração completa para AWS com alta disponibilidade, backup automatizado e monitoramento 24/7.",
+      tech: ["AWS", "Docker", "Kubernetes", "Terraform"],
+      features: [
+        "Auto scaling",
+        "Load balancing",
+        "Backup automático",
+        "Monitoramento",
+      ],
+      icon: Server,
     },
     {
       id: 4,
-      title: 'E-commerce B2B',
-      category: 'Web Development',
-      image: 'https://images.pexels.com/photos/230544/pexels-photo-230544.jpeg?auto=compress&cs=tinysrgb&w=800',
-      description: 'Plataforma de e-commerce B2B com catálogo avançado, pedidos em lote e integração com ERPs.',
-      tech: ['Next.js', 'Shopify Plus', 'GraphQL', 'Stripe'],
-      features: ['Catálogo dinâmico', 'Pedidos em lote', 'Integração ERP', 'Analytics'],
-      icon: Monitor
+      title: "E-commerce B2B",
+      category: "Web Development",
+      image:
+        "https://images.pexels.com/photos/230544/pexels-photo-230544.jpeg?auto=compress&cs=tinysrgb&w=800",
+      description:
+        "Plataforma de e-commerce B2B com catálogo avançado, pedidos em lote e integração com ERPs.",
+      tech: ["Next.js", "Shopify Plus", "GraphQL", "Stripe"],
+      features: [
+        "Catálogo dinâmico",
+        "Pedidos em lote",
+        "Integração ERP",
+        "Analytics",
+      ],
+      icon: Monitor,
     },
     {
       id: 5,
-      title: 'App Financeiro',
-      category: 'Mobile App',
-      image: 'https://images.pexels.com/photos/186461/pexels-photo-186461.jpeg?auto=compress&cs=tinysrgb&w=800',
-      description: 'Aplicativo de controle financeiro pessoal com IA para categorização automática de gastos.',
-      tech: ['Flutter', 'Python', 'TensorFlow', 'Firebase'],
-      features: ['IA para categorização', 'Gráficos interativos', 'Metas financeiras', 'Sincronização'],
-      icon: Smartphone
+      title: "App Financeiro",
+      category: "Mobile App",
+      image:
+        "https://images.pexels.com/photos/186461/pexels-photo-186461.jpeg?auto=compress&cs=tinysrgb&w=800",
+      description:
+        "Aplicativo de controle financeiro pessoal com IA para categorização automática de gastos.",
+      tech: ["Flutter", "Python", "TensorFlow", "Firebase"],
+      features: [
+        "IA para categorização",
+        "Gráficos interativos",
+        "Metas financeiras",
+        "Sincronização",
+      ],
+      icon: Smartphone,
     },
     {
       id: 6,
-      title: 'Servidor de Jogos',
-      category: 'Infrastructure',
-      image: 'https://images.pexels.com/photos/442576/pexels-photo-442576.jpeg?auto=compress&cs=tinysrgb&w=800',
-      description: 'Infraestrutura de servidores para jogos online com baixa latência e alta disponibilidade.',
-      tech: ['Linux', 'Docker', 'Redis', 'Nginx'],
-      features: ['Baixa latência', 'Auto scaling', 'DDoS protection', 'Backup em tempo real'],
-      icon: Server
-    }
+      title: "Servidor de Jogos",
+      category: "Infrastructure",
+      image:
+        "https://images.pexels.com/photos/442576/pexels-photo-442576.jpeg?auto=compress&cs=tinysrgb&w=800",
+      description:
+        "Infraestrutura de servidores para jogos online com baixa latência e alta disponibilidade.",
+      tech: ["Linux", "Docker", "Redis", "Nginx"],
+      features: [
+        "Baixa latência",
+        "Auto scaling",
+        "DDoS protection",
+        "Backup em tempo real",
+      ],
+      icon: Server,
+    },
   ];
 
-  const categories = ['Todos', 'Web Development', 'Mobile App', 'Infrastructure'];
-  const [activeCategory, setActiveCategory] = useState('Todos');
+  const categories = [
+    "Todos",
+    "Web Development",
+    "Mobile App",
+    "Infrastructure",
+  ];
+  const [activeCategory, setActiveCategory] = useState("Todos");
 
-  const filteredProjects = activeCategory === 'Todos'
-    ? projects
-    : projects.filter(project => project.category === activeCategory);
+  const filteredProjects =
+    activeCategory === "Todos"
+      ? projects
+      : projects.filter((project) => project.category === activeCategory);
 
   return (
     <section id="portfolio" className="py-20 relative overflow-hidden">
@@ -99,8 +154,11 @@ const Portfolio = () => {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-500 to-white bg-clip-text text-transparent mb-6">
-            Nosso Portfolio
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+            Nosso{" "}
+            <span className="bg-blue-600 bg-clip-text text-transparent">
+              Portfólio
+            </span>
           </h2>
           <p className="text-xl text-white/80 max-w-3xl mx-auto">
             Projetos que transformaram negócios e superaram expectativas
@@ -121,8 +179,8 @@ const Portfolio = () => {
               onClick={() => setActiveCategory(category)}
               className={`px-6 py-3 rounded-full font-medium transition-all duration-300 ${
                 activeCategory === category
-                  ? 'bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-lg shadow-blue-500/30'
-                  : 'backdrop-blur-sm bg-white/10 text-white/80 border border-white/20 hover:border-blue-500/50'
+                  ? "bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-lg shadow-blue-500/30"
+                  : "backdrop-blur-sm bg-white/10 text-white/80 border border-white/20 hover:border-blue-500/50"
               }`}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -168,7 +226,9 @@ const Portfolio = () => {
 
                   {/* Project Info */}
                   <div className="p-6">
-                    <div className="text-sm text-blue-400 mb-2">{project.category}</div>
+                    <div className="text-sm text-blue-400 mb-2">
+                      {project.category}
+                    </div>
                     <h3 className="text-xl font-bold text-white mb-3 group-hover:text-blue-300 transition-colors duration-300">
                       {project.title}
                     </h3>
@@ -238,24 +298,39 @@ const Portfolio = () => {
                   </div>
 
                   <div className="p-8">
-                    <div className="text-sm text-blue-400 mb-2">{selectedProject.category}</div>
-                    <h3 className="text-3xl font-bold text-white mb-4">{selectedProject.title}</h3>
-                    <p className="text-white/80 mb-6 leading-relaxed">{selectedProject.description}</p>
+                    <div className="text-sm text-blue-400 mb-2">
+                      {selectedProject.category}
+                    </div>
+                    <h3 className="text-3xl font-bold text-white mb-4">
+                      {selectedProject.title}
+                    </h3>
+                    <p className="text-white/80 mb-6 leading-relaxed">
+                      {selectedProject.description}
+                    </p>
 
                     <div className="mb-6">
-                      <h4 className="text-lg font-semibold text-white mb-3">Principais Recursos</h4>
+                      <h4 className="text-lg font-semibold text-white mb-3">
+                        Principais Recursos
+                      </h4>
                       <div className="grid grid-cols-2 gap-2">
                         {selectedProject.features.map((feature, index) => (
-                          <div key={index} className="flex items-center space-x-2">
+                          <div
+                            key={index}
+                            className="flex items-center space-x-2"
+                          >
                             <div className="w-2 h-2 bg-blue-400 rounded-full" />
-                            <span className="text-white/70 text-sm">{feature}</span>
+                            <span className="text-white/70 text-sm">
+                              {feature}
+                            </span>
                           </div>
                         ))}
                       </div>
                     </div>
 
                     <div className="mb-6">
-                      <h4 className="text-lg font-semibold text-white mb-3">Tecnologias</h4>
+                      <h4 className="text-lg font-semibold text-white mb-3">
+                        Tecnologias
+                      </h4>
                       <div className="flex flex-wrap gap-2">
                         {selectedProject.tech.map((tech, index) => (
                           <span
