@@ -26,7 +26,7 @@ const Plans = () => {
         <motion.h2
           className="text-white text-5xl md:text-6xl font-extrabold mb-4"
           initial={{ y: 50, opacity: 0 }}
-          animate={inView ? { y: 0, opacity: 1 } : undefined}
+          animate={inView ? { y: 0, opacity: 1 } : { y: 50, opacity: 0 }}
           transition={{ duration: 0.8 }}
         >
           Planos de{" "}
@@ -38,7 +38,7 @@ const Plans = () => {
         <motion.p
           className="max-w-3xl mx-auto text-gray-300 text-lg mb-16"
           initial={{ y: 40, opacity: 0 }}
-          animate={inView ? { y: 0, opacity: 1 } : undefined}
+          animate={inView ? { y: 0, opacity: 1 } : { y: 40, opacity: 0 }}
           transition={{ delay: 0.2, duration: 0.8 }}
         >
           Escolha o plano ideal para sua empresa e tenha o suporte técnico que
@@ -52,13 +52,12 @@ const Plans = () => {
             return (
               <motion.div
                 key={plan.id}
-                className={`relative rounded-3xl p-8 bg-white/10 backdrop-blur-md border border-white/20 flex flex-col justify-between shadow-lg transition-transform duration-300 ${
-                  isHighlighted
-                    ? "scale-105 border-cyan-500 shadow-cyan-600/50 z-20"
-                    : "hover:scale-105 hover:border-white/40"
-                }`}
+                className={`relative rounded-3xl p-8 bg-white/10 backdrop-blur-md border border-white/20 flex flex-col justify-between shadow-lg transition-transform duration-300 ${isHighlighted
+                  ? "scale-105 border-cyan-500 shadow-cyan-600/50 z-20"
+                  : "hover:scale-105 hover:border-white/40"
+                  }`}
                 initial={{ y: 50, opacity: 0 }}
-                animate={inView ? { y: 0, opacity: 1 } : undefined}
+                animate={inView ? { y: 0, opacity: 1 } : { y: 50, opacity: 0 }}
                 transition={{ delay: i * 0.2, duration: 0.7 }}
               >
                 {plan.popular && (
@@ -91,7 +90,7 @@ const Plans = () => {
                         key={idx}
                         className="flex items-center space-x-3 text-gray-300"
                         initial={{ x: -20, opacity: 0 }}
-                        animate={inView ? { x: 0, opacity: 1 } : undefined}
+                        animate={inView ? { x: 0, opacity: 1 } : { x: -20, opacity: 0 }}
                         transition={{
                           delay: i * 0.15 + idx * 0.1,
                           duration: 0.4,
@@ -106,11 +105,10 @@ const Plans = () => {
 
                 <motion.button
                   onClick={() => handlePlanSelect(plan.id)}
-                  className={`mt-10 w-full py-4 rounded-full font-semibold text-lg transition-all duration-300 ${
-                    isHighlighted
-                      ? "bg-gradient-to-r from-cyan-400 to-blue-600 text-white shadow-lg shadow-cyan-600/50 hover:shadow-cyan-700/70"
-                      : "bg-white/20 text-white hover:bg-white/30"
-                  }`}
+                  className={`mt-10 w-full py-4 rounded-full font-semibold text-lg transition-all duration-300 ${isHighlighted
+                    ? "bg-gradient-to-r from-cyan-400 to-blue-600 text-white shadow-lg shadow-cyan-600/50 hover:shadow-cyan-700/70"
+                    : "bg-white/20 text-white hover:bg-white/30"
+                    }`}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   aria-label={`Selecionar plano ${plan.name}`}
@@ -125,7 +123,7 @@ const Plans = () => {
         <motion.div
           className="mt-20 max-w-3xl mx-auto bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-8"
           initial={{ y: 40, opacity: 0 }}
-          animate={inView ? { y: 0, opacity: 1 } : undefined}
+          animate={inView ? { y: 0, opacity: 1 } : { y: 40, opacity: 0 }}
           transition={{ delay: 0.9, duration: 0.8 }}
         >
           <div className="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-6">
@@ -159,7 +157,7 @@ const Plans = () => {
         <motion.p
           className="text-gray-400 text-sm mt-12 max-w-3xl mx-auto"
           initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : undefined}
+          animate={inView ? { opacity: 1 } : { opacity: 0 }}
           transition={{ delay: 1.2, duration: 0.6 }}
         >
           * Todos os planos incluem setup gratuito e podem ser cancelados a

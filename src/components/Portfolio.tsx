@@ -12,6 +12,9 @@ import {
 const Portfolio = () => {
   const [selectedProject, setSelectedProject] = useState(null);
 
+  // Estado para rotação 3D do modal
+  const [rotation, setRotation] = useState({ rotateX: 0, rotateY: 0 });
+
   useEffect(() => {
     if (selectedProject) {
       document.body.style.overflow = "hidden";
@@ -22,6 +25,24 @@ const Portfolio = () => {
       document.body.style.overflow = "auto";
     };
   }, [selectedProject]);
+
+  // Manipula o movimento do mouse para efeito 3D
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const deltaX = e.clientX - centerX;
+    const deltaY = e.clientY - centerY;
+    // Limita a rotação máxima a 15 graus
+    const rotateY = (deltaX / (rect.width / 2)) * 15;
+    const rotateX = -(deltaY / (rect.height / 2)) * 15;
+    setRotation({ rotateX, rotateY });
+  };
+
+  // Reseta a rotação ao sair do modal
+  const handleMouseLeave = () => {
+    setRotation({ rotateX: 0, rotateY: 0 });
+  };
 
   const projects = [
     {
@@ -177,11 +198,10 @@ const Portfolio = () => {
             <motion.button
               key={category}
               onClick={() => setActiveCategory(category)}
-              className={`px-6 py-3 rounded-full font-medium transition-all duration-300 ${
-                activeCategory === category
-                  ? "bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-lg shadow-blue-500/30"
-                  : "backdrop-blur-sm bg-white/10 text-white/80 border border-white/20 hover:border-blue-500/50"
-              }`}
+              className={`px-6 py-3 rounded-full font-medium transition-all duration-300 ${activeCategory === category
+                ? "bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-lg shadow-blue-500/30"
+                : "backdrop-blur-sm bg-white/10 text-white/80 border border-white/20 hover:border-blue-500/50"
+                }`}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -266,23 +286,39 @@ const Portfolio = () => {
         <AnimatePresence>
           {selectedProject && (
             <motion.div
+              key="backdrop"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
               className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
               onClick={() => setSelectedProject(null)}
             >
               <motion.div
-                initial={{ scale: 0.8, opacity: 0 }}
+                key="modal"
+                initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.8, opacity: 0 }}
-                className="relative max-w-4xl w-full max-h-[90vh] overflow-y-auto backdrop-blur-lg bg-gray-900/90 border border-white/20 rounded-3xl"
+                exit={{ scale: 0.9, opacity: 0 }}
+                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                className="relative max-w-4xl w-full max-h-[90vh] overflow-y-auto backdrop-blur-lg bg-gray-900/90 border border-white/20 rounded-3xl shadow-xl"
                 onClick={(e) => e.stopPropagation()}
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseLeave}
+                style={{
+                  transformStyle: "preserve-3d",
+                  perspective: 1000,
+                  transform: `rotateX(${rotation.rotateX}deg) rotateY(${rotation.rotateY}deg)`,
+                  transition:
+                    rotation.rotateX === 0 && rotation.rotateY === 0
+                      ? "transform 0.5s cubic-bezier(0.22,1,0.36,1)"
+                      : "none",
+                }}
               >
                 {/* Close Button */}
                 <button
                   onClick={() => setSelectedProject(null)}
                   className="fixed md:absolute top-4 right-4 z-50 p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors duration-200"
+                  aria-label="Fechar modal"
                 >
                   <X className="h-6 w-6" />
                 </button>
@@ -292,9 +328,9 @@ const Portfolio = () => {
                     <img
                       src={selectedProject.image}
                       alt={selectedProject.title}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover rounded-l-3xl md:rounded-r-none"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent rounded-l-3xl md:rounded-r-none" />
                   </div>
 
                   <div className="p-8">
@@ -314,14 +350,9 @@ const Portfolio = () => {
                       </h4>
                       <div className="grid grid-cols-2 gap-2">
                         {selectedProject.features.map((feature, index) => (
-                          <div
-                            key={index}
-                            className="flex items-center space-x-2"
-                          >
+                          <div key={index} className="flex items-center space-x-2">
                             <div className="w-2 h-2 bg-blue-400 rounded-full" />
-                            <span className="text-white/70 text-sm">
-                              {feature}
-                            </span>
+                            <span className="text-white/70 text-sm">{feature}</span>
                           </div>
                         ))}
                       </div>

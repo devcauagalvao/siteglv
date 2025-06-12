@@ -88,8 +88,8 @@ const Store = () => {
     }
   ];
 
-  const filteredProducts = selectedCategory === 'Todos' 
-    ? products 
+  const filteredProducts = selectedCategory === 'Todos'
+    ? products
     : products.filter(product => product.category === selectedCategory);
 
   const getBadgeColor = (badge) => {
@@ -107,7 +107,7 @@ const Store = () => {
   return (
     <section id="store" className="py-20 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-900 to-black" />
-      
+
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <motion.div
@@ -117,13 +117,15 @@ const Store = () => {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-500 to-white bg-clip-text text-transparent mb-6">
-            Nossa Loja
+          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            <span className="text-white">Nossa </span>
+            <span className="text-[#3B82F6]">Loja</span>
           </h2>
+
           <p className="text-xl text-white/80 max-w-3xl mx-auto mb-8">
             Produtos selecionados com qualidade garantida e os melhores preços do mercado
           </p>
-          
+
           {/* Mercado Livre Link */}
           <motion.a
             href="#"
@@ -148,11 +150,10 @@ const Store = () => {
             <motion.button
               key={category}
               onClick={() => setSelectedCategory(category)}
-              className={`px-6 py-3 rounded-full font-medium transition-all duration-300 ${
-                selectedCategory === category
+              className={`px-6 py-3 rounded-full font-medium transition-all duration-300 ${selectedCategory === category
                   ? 'bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-lg shadow-blue-500/30'
                   : 'backdrop-blur-sm bg-white/10 text-white/80 border border-white/20 hover:border-blue-500/50'
-              }`}
+                }`}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -192,7 +193,7 @@ const Store = () => {
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
-                  
+
                   {/* Icon Overlay */}
                   <div className="absolute top-4 right-4">
                     <div className="p-2 rounded-full bg-gradient-to-r from-blue-600 to-blue-500">
@@ -206,18 +207,17 @@ const Store = () => {
                   <h3 className="text-xl font-bold text-white mb-2 group-hover:text-blue-300 transition-colors duration-300">
                     {product.name}
                   </h3>
-                  
+
                   {/* Rating */}
                   <div className="flex items-center space-x-2 mb-3">
                     <div className="flex space-x-1">
                       {[...Array(5)].map((_, i) => (
                         <Star
                           key={i}
-                          className={`h-4 w-4 ${
-                            i < Math.floor(product.rating)
+                          className={`h-4 w-4 ${i < Math.floor(product.rating)
                               ? 'text-yellow-400 fill-current'
                               : 'text-gray-400'
-                          }`}
+                            }`}
                         />
                       ))}
                     </div>
@@ -243,9 +243,9 @@ const Store = () => {
                       <div className="text-sm text-white/60 line-through">{product.originalPrice}</div>
                     </div>
                     <div className="text-green-400 font-semibold">
-                      {Math.round(((parseFloat(product.originalPrice.replace('R$ ', '').replace('.', '').replace(',', '.')) - 
-                                   parseFloat(product.price.replace('R$ ', '').replace('.', '').replace(',', '.'))) / 
-                                   parseFloat(product.originalPrice.replace('R$ ', '').replace('.', '').replace(',', '.'))) * 100)}% OFF
+                      {Math.round(((parseFloat(product.originalPrice.replace('R$ ', '').replace('.', '').replace(',', '.')) -
+                        parseFloat(product.price.replace('R$ ', '').replace('.', '').replace(',', '.'))) /
+                        parseFloat(product.originalPrice.replace('R$ ', '').replace('.', '').replace(',', '.'))) * 100)}% OFF
                     </div>
                   </div>
 

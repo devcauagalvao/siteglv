@@ -76,7 +76,7 @@ const Contact = () => {
   return (
     <section id="contact" className="py-20 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-900 to-black" />
-      
+
       {/* Background Elements */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500 rounded-full blur-3xl" />
@@ -92,8 +92,9 @@ const Contact = () => {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-500 to-white bg-clip-text text-transparent mb-6">
-            Fale Conosco Hoje
+          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            <span className="text-white">Fale Conosco </span>
+            <span className="text-[#3B82F6]">Hoje</span>
           </h2>
           <p className="text-xl text-white/80 max-w-3xl mx-auto">
             Transforme sua ideia em realidade. Entre em contato e receba um orçamento personalizado
@@ -110,7 +111,7 @@ const Contact = () => {
           >
             <div className="backdrop-blur-lg bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-3xl p-8">
               <h3 className="text-2xl font-bold text-white mb-6">Solicitar Orçamento</h3>
-              
+
               <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Name Field */}
                 <div>
@@ -229,7 +230,7 @@ const Contact = () => {
           >
             <div className="backdrop-blur-lg bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-3xl p-8">
               <h3 className="text-2xl font-bold text-white mb-6">Informações de Contato</h3>
-              
+
               <div className="space-y-6">
                 {contactInfo.map((item, index) => (
                   <motion.div
@@ -278,11 +279,11 @@ const Contact = () => {
               </motion.a>
             </motion.div>
 
-          
+
           </motion.div>
         </div>
       </div>
-     
+
     </section>
   );
 };

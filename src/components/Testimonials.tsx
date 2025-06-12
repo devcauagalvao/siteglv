@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Star, Quote, ChevronLeft, ChevronRight, Building, User } from 'lucide-react';
+import { Star, Quote, ChevronLeft, ChevronRight, Building } from 'lucide-react';
 
 const Testimonials = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -80,17 +80,8 @@ const Testimonials = () => {
 
   return (
     <section id="testimonials" className="py-20 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-gray-900 via-black to-gray-900" />
-      
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-transparent" />
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
-      </div>
-      
+
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -98,80 +89,74 @@ const Testimonials = () => {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-500 to-white bg-clip-text text-transparent mb-6">
-            O Que Nossos Clientes Dizem
+          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            <span className="text-white">O Que Nossos </span>
+            <span className="text-[#3B82F6]">Clientes Dizem</span>
           </h2>
           <p className="text-xl text-white/80 max-w-3xl mx-auto">
             Casos de sucesso que demonstram o impacto das nossas soluções
           </p>
         </motion.div>
 
-        {/* Main Testimonial */}
         <div className="relative max-w-5xl mx-auto">
           <AnimatePresence mode="wait">
             <motion.div
-              key={activeIndex}
+              key={currentTestimonial.id}
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -50 }}
               transition={{ duration: 0.5 }}
               className="backdrop-blur-lg bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-3xl p-8 md:p-12"
             >
-              {/* Quote Icon */}
-              <div className="flex justify-center mb-8">
-                <div className="p-4 rounded-full bg-gradient-to-r from-blue-600 to-blue-500 shadow-lg shadow-blue-500/30">
-                  <Quote className="h-8 w-8 text-white" />
-                </div>
-              </div>
 
-              {/* Rating */}
-              <div className="flex justify-center space-x-1 mb-6">
-                {[...Array(currentTestimonial.rating)].map((_, i) => (
-                  <Star key={i} className="h-6 w-6 text-yellow-400 fill-current" />
-                ))}
-              </div>
-
-              {/* Testimonial Content */}
-              <blockquote className="text-xl md:text-2xl text-white text-center leading-relaxed mb-8 font-light">
-                "{currentTestimonial.content}"
-              </blockquote>
-
-              {/* Client Info */}
-              <div className="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-8">
-                {/* Avatar */}
-                <div className="relative">
-                  <img
-                    src={currentTestimonial.avatar}
-                    alt={currentTestimonial.name}
-                    className="w-16 h-16 rounded-full border-4 border-blue-500/30 shadow-lg"
-                  />
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500/20 to-transparent" />
-                </div>
-
-                {/* Details */}
-                <div className="text-center md:text-left">
-                  <h4 className="text-lg font-semibold text-white">{currentTestimonial.name}</h4>
-                  <p className="text-blue-400">{currentTestimonial.position}</p>
-                  <p className="text-white/60">{currentTestimonial.company}</p>
-                </div>
-
-                {/* Separator */}
-                <div className="hidden md:block w-px h-12 bg-white/20" />
-
-                {/* Project Info */}
-                <div className="text-center md:text-left">
-                  <div className="flex items-center space-x-2 text-white/80 mb-1">
-                    <Building className="h-4 w-4" />
-                    <span className="text-sm">{currentTestimonial.industry}</span>
+              <div className="relative z-10">
+                <div className="flex justify-center mb-8">
+                  <div className="p-4 rounded-full bg-gradient-to-r from-blue-600 to-blue-500 shadow-lg shadow-blue-500/30">
+                    <Quote className="h-8 w-8 text-white" />
                   </div>
-                  <div className="text-sm text-white/60 mb-2">{currentTestimonial.project}</div>
-                  <div className="text-green-400 font-semibold">{currentTestimonial.result}</div>
+                </div>
+
+                <div className="flex justify-center space-x-1 mb-6">
+                  {[...Array(currentTestimonial.rating)].map((_, i) => (
+                    <Star key={`star-${currentTestimonial.id}-${i}`} className="h-6 w-6 text-yellow-400 fill-current" />
+                  ))}
+                </div>
+
+                <blockquote className="text-xl md:text-2xl text-white text-center leading-relaxed mb-8 font-light">
+                  "{currentTestimonial.content}"
+                </blockquote>
+
+                <div className="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-8">
+                  <div className="relative">
+                    <img
+                      src={currentTestimonial.avatar}
+                      alt={currentTestimonial.name}
+                      className="w-16 h-16 rounded-full border-4 border-blue-500/30 shadow-lg"
+                    />
+                    <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500/20 to-transparent" />
+                  </div>
+
+                  <div className="text-center md:text-left">
+                    <h4 className="text-lg font-semibold text-white">{currentTestimonial.name}</h4>
+                    <p className="text-blue-400">{currentTestimonial.position}</p>
+                    <p className="text-white/60">{currentTestimonial.company}</p>
+                  </div>
+
+                  <div className="hidden md:block w-px h-12 bg-white/20" />
+
+                  <div className="text-center md:text-left">
+                    <div className="flex items-center space-x-2 text-white/80 mb-1">
+                      <Building className="h-4 w-4" />
+                      <span className="text-sm">{currentTestimonial.industry}</span>
+                    </div>
+                    <div className="text-sm text-white/60 mb-2">{currentTestimonial.project}</div>
+                    <div className="text-green-400 font-semibold">{currentTestimonial.result}</div>
+                  </div>
                 </div>
               </div>
             </motion.div>
           </AnimatePresence>
 
-          {/* Navigation Buttons */}
           <div className="flex justify-center items-center space-x-4 mt-8">
             <motion.button
               onClick={prevTestimonial}
@@ -182,17 +167,15 @@ const Testimonials = () => {
               <ChevronLeft className="h-6 w-6" />
             </motion.button>
 
-            {/* Indicators */}
             <div className="flex space-x-2">
-              {testimonials.map((_, index) => (
+              {testimonials.map((testimonial, index) => (
                 <button
-                  key={index}
+                  key={`indicator-${testimonial.id}`}
                   onClick={() => setActiveIndex(index)}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                    index === activeIndex
-                      ? 'bg-blue-500 shadow-lg shadow-blue-500/50'
-                      : 'bg-white/30 hover:bg-white/50'
-                  }`}
+                  className={`w-3 h-3 rounded-full transition-all duration-300 ${index === activeIndex
+                    ? 'bg-blue-500 shadow-lg shadow-blue-500/50'
+                    : 'bg-white/30 hover:bg-white/50'
+                    }`}
                 />
               ))}
             </div>
@@ -208,7 +191,6 @@ const Testimonials = () => {
           </div>
         </div>
 
-        {/* Stats Section */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -223,7 +205,7 @@ const Testimonials = () => {
             { number: '15+', label: 'Anos de Experiência' }
           ].map((stat, index) => (
             <motion.div
-              key={index}
+              key={`stat-${index}`}
               initial={{ opacity: 0, scale: 0.8 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
