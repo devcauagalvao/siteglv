@@ -1,12 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  MessageCircle,
-  BrainCircuit,
   Sparkles,
   X,
   Send,
-  Bot,
 } from "lucide-react";
 
 const AIAssistant = () => {
@@ -36,19 +33,25 @@ const AIAssistant = () => {
     "Acessar Mercado Livre",
   ];
 
-  const handleSendMessage = () => {
-    if (!inputMessage.trim()) return;
+  const handleQuickReply = (text) => {
+    setInputMessage(text);
+    handleSendMessage(text);
+  };
+
+  const handleSendMessage = (msg = null) => {
+    const finalMsg = msg || inputMessage.trim();
+    if (!finalMsg) return;
 
     const newMessage = {
       id: messages.length + 1,
-      text: inputMessage,
+      text: finalMsg,
       isBot: false,
       timestamp: new Date(),
     };
 
     setMessages((prev) => [...prev, newMessage]);
     setInputMessage("");
-    simulateBotResponse(inputMessage);
+    simulateBotResponse(finalMsg);
   };
 
   const navigateTo = (path) => {
@@ -60,38 +63,30 @@ const AIAssistant = () => {
 
     setTimeout(() => {
       const lowerInput = userInput.toLowerCase();
-      let botResponse =
-        "Não entendi exatamente, mas posso te ajudar com orçamento, planos, suporte ou produtos!";
+      let botResponse = "Posso te ajudar com planos, orçamento ou suporte. Qual desses você gostaria de saber mais?";
 
       if (lowerInput.includes("orçamento")) {
-        botResponse = "Claro! Redirecionando você para a página de contato...";
-        navigateTo("/contato");
-      } else if (lowerInput.includes("planos")) {
-        botResponse =
-          "Temos 3 planos: Essencial (R$99), Profissional (R$199) e Empresarial (R$399). Veja mais em nossa seção de planos!";
-        navigateTo("/src/components/Plans.tsx");
+        botResponse = "🔍 Perfeito! Para um orçamento sob medida, preciso de algumas informações rápidas. Você quer um serviço **personalizado** ou um dos nossos planos prontos?";
+      } else if (lowerInput.includes("plano") || lowerInput.includes("planos")) {
+        botResponse = "💡 Temos 3 planos incríveis que cabem no seu bolso:\n\n• **Essencial (R$99)** – ideal para começar com o pé direito.\n• **Profissional (R$199)** – nosso mais vendido.\n• **Empresarial (R$399)** – completo para escalar sua operação.\n\n👉 Veja todos os detalhes clicando aqui!";
+        setTimeout(() => navigateTo("/planos"), 3000);
       } else if (lowerInput.includes("suporte")) {
-        botResponse =
-          "Nosso suporte está sempre disponível! Te levo agora para a seção de ajuda.";
-        navigateTo("/src/components/Contact.tsx");
-      } else if (lowerInput.includes("produtos")) {
-        botResponse =
-          "Confira nossos produtos incríveis em nossa loja do Mercado Livre!";
-        window.open(
-          "https://www.mercadolivre.com.br/perfil/GLVINFORMATICA",
-          "_blank"
-        );
+        botResponse = "📞 Nosso time de especialistas está a postos para resolver qualquer dúvida. Clique aqui e fale direto com o suporte técnico.";
+        setTimeout(() => navigateTo("/contato"), 3000);
+      } else if (lowerInput.includes("produto")) {
+        botResponse = "🛒 Estamos com **ofertas exclusivas** no Mercado Livre! Acesse agora antes que acabem!";
+        window.open("https://www.mercadolivre.com.br/perfil/GLVINFORMATICA", "_blank");
       } else if (lowerInput.includes("mercado livre")) {
-        botResponse =
-          "Claro! Aqui está o link direto para nossa loja no Mercado Livre.";
-        window.open(
-          "https://www.mercadolivre.com.br/perfil/GLVINFORMATICA",
-          "_blank"
-        );
+        botResponse = "🔗 Aqui está o link direto para nossa loja no Mercado Livre. Temos entrega rápida e ótimos preços!";
+        window.open("https://www.mercadolivre.com.br/perfil/GLVINFORMATICA", "_blank");
       } else if (lowerInput.includes("fale comigo")) {
-        botResponse =
-          "Nosso time está disponível para conversar! Vou abrir o WhatsApp para você.";
+        botResponse = "📲 Ótimo! Estou te levando direto para o WhatsApp agora mesmo. Vamos conversar?";
         window.open("https://wa.me/5511919167653", "_blank");
+      } else if (lowerInput.includes("personalizado")) {
+        botResponse = "🎯 Perfeito! Um atendimento personalizado garante que você invista certo. Vou te redirecionar para nosso time comercial.";
+        window.open("https://wa.me/5511919167653", "_blank");
+      } else {
+        botResponse = "🤔 Não entendi exatamente... Mas posso te mostrar nossos planos, produtos, ou colocar você em contato com um especialista. O que prefere?";
       }
 
       const response = {
@@ -103,28 +98,16 @@ const AIAssistant = () => {
 
       setIsTyping(false);
       setMessages((prev) => [...prev, response]);
-    }, 1200);
-  };
-
-  const handleQuickReply = (reply) => {
-    const newMessage = {
-      id: messages.length + 1,
-      text: reply,
-      isBot: false,
-      timestamp: new Date(),
-    };
-
-    setMessages((prev) => [...prev, newMessage]);
-    simulateBotResponse(reply);
+    }, 1000);
   };
 
   return (
     <>
-      {/* Botão flutuante para abrir o chat */}
+      {/* Botão flutuante */}
       <motion.button
         onClick={() => setIsOpen(true)}
         className="fixed bottom-6 right-6 w-16 h-16 rounded-full flex items-center justify-center shadow-lg z-40"
-        style={{ backgroundColor: "#3B82F6" }} // azul mais vibrante
+        style={{ backgroundColor: "#3B82F6" }}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
         animate={{
@@ -140,11 +123,11 @@ const AIAssistant = () => {
         <Sparkles className="w-8 h-8 text-white" />
       </motion.button>
 
-      {/* Janela do chat */}
+      {/* Modal */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="fixed bottom-24 right-6 w-96 h-[520px] bg-gradient-to-tr from-gray-900/90 via-black/80 to-gray-900/90 backdrop-blur-md border border-gray-700 rounded-3xl shadow-xl z-50 flex flex-col"
+            className="fixed bottom-24 right-4 left-4 sm:left-auto sm:right-6 w-auto sm:max-w-sm h-[85vh] sm:h-[440px] bg-gradient-to-tr from-gray-900/90 via-black/80 to-gray-900/90 backdrop-blur-md border border-gray-700 rounded-3xl shadow-2xl z-50 flex flex-col"
             initial={{ opacity: 0, scale: 0.85, y: 30 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.85, y: 30 }}
@@ -153,10 +136,10 @@ const AIAssistant = () => {
             aria-modal="true"
             aria-labelledby="chat-title"
           >
-            {/* Header */}
-            <div className="flex items-center justify-between p-5 border-b border-gray-700">
+            {/* Cabeçalho */}
+            <div className="flex items-center justify-between p-4 border-b border-gray-700">
               <div className="flex items-center space-x-3">
-                <div className="w-11 h-11 rounded-full overflow-hidden shadow-lg bg-white">
+                <div className="w-10 h-10 rounded-full overflow-hidden shadow-lg bg-white">
                   <img
                     src="/img/bot.png"
                     alt="Assistente GLV"
@@ -164,15 +147,12 @@ const AIAssistant = () => {
                   />
                 </div>
                 <div>
-                  <h3
-                    id="chat-title"
-                    className="text-white font-semibold text-lg"
-                  >
+                  <h3 id="chat-title" className="text-white font-semibold text-base">
                     Assistente Commit
                   </h3>
                   <div className="flex items-center space-x-2">
                     <span className="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse" />
-                    <p className="text-green-500 text-sm">Online agora</p>
+                    <p className="text-green-500 text-xs">Online agora</p>
                   </div>
                 </div>
               </div>
@@ -181,30 +161,28 @@ const AIAssistant = () => {
                 className="text-gray-400 hover:text-white transition-colors"
                 aria-label="Fechar assistente virtual"
               >
-                <X className="w-6 h-6" />
+                <X className="w-5 h-5" />
               </button>
             </div>
 
-            {/* Corpo do chat */}
-            <div className="flex-1 p-5 overflow-y-auto space-y-4 scrollbar-thin scrollbar-thumb-cyan-500 scrollbar-track-gray-900">
+            {/* Mensagens */}
+            <div className="flex-1 p-4 overflow-y-auto space-y-3 scrollbar-thin scrollbar-thumb-cyan-500 scrollbar-track-gray-900">
               {messages.map((message) => (
                 <motion.div
                   key={message.id}
-                  className={`flex ${
-                    message.isBot ? "justify-start" : "justify-end"
-                  }`}
+                  className={`flex ${message.isBot ? "justify-start" : "justify-end"}`}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.25 }}
                 >
                   <div
-                    className={`max-w-[75%] p-4 rounded-2xl ${
+                    className={`max-w-[75%] p-3 rounded-2xl ${
                       message.isBot
                         ? "bg-gradient-to-r from-gray-800 via-gray-900 to-black text-gray-200 shadow-md"
                         : "bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg"
                     }`}
                   >
-                    <p className="text-sm break-words">{message.text}</p>
+                    <p className="text-sm break-words whitespace-pre-line">{message.text}</p>
                   </div>
                 </motion.div>
               ))}
@@ -212,10 +190,12 @@ const AIAssistant = () => {
               {isTyping && (
                 <div className="text-gray-400 text-xs italic">Digitando...</div>
               )}
+
               <div ref={bottomRef} />
+
               {messages.length === 1 && (
                 <motion.div
-                  className="space-y-3"
+                  className="space-y-2"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5, duration: 0.3 }}
@@ -223,7 +203,7 @@ const AIAssistant = () => {
                   <p className="text-gray-400 text-xs text-center font-medium">
                     Respostas rápidas:
                   </p>
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-2 gap-2">
                     {quickReplies.map((reply) => (
                       <motion.button
                         key={reply}
@@ -242,8 +222,8 @@ const AIAssistant = () => {
             </div>
 
             {/* Input */}
-            <div className="p-4 border-t border-gray-700">
-              <div className="flex space-x-3">
+            <div className="p-3 border-t border-gray-700">
+              <div className="flex space-x-2">
                 <input
                   type="text"
                   value={inputMessage}
@@ -253,10 +233,11 @@ const AIAssistant = () => {
                   className="flex-1 bg-gray-800 border border-gray-700 rounded-full px-4 py-2 text-white text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent"
                   aria-label="Campo de mensagem"
                   autoComplete="off"
+                  autoFocus
                 />
                 <motion.button
-                  onClick={handleSendMessage}
-                  className="w-12 h-12 bg-[#3B82F6] rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-shadow"
+                  onClick={() => handleSendMessage()}
+                  className="w-10 h-10 bg-[#3B82F6] rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-shadow"
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
                   aria-label="Enviar mensagem"
