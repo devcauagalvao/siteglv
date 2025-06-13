@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { Check, Star, Zap } from "lucide-react";
 import { plans } from "../data/plans";
 
 const Plans = () => {
-  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.15 });
+  const [ref, inView] = useInView({ threshold: 0.15 });
+  const [hasAnimated, setHasAnimated] = useState(false);
+
+  useEffect(() => {
+    if (inView && !hasAnimated) {
+      setHasAnimated(true);
+    }
+  }, [inView, hasAnimated]);
 
   const handlePlanSelect = (planId: string) => {
     const contactSection = document.querySelector("#contact");
@@ -19,14 +26,13 @@ const Plans = () => {
       id="plans"
       className="relative py-28 px-4 sm:px-6 lg:px-8 overflow-hidden"
     >
-      {/* Fundo igual ao do Services: gradiente escuro */}
       <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-900 to-black" />
 
-      <div ref={ref} className="max-w-7xl mx-auto text-center">
+      <div ref={ref} className="max-w-7xl mx-auto text-center relative z-10">
         <motion.h2
           className="text-white text-5xl md:text-6xl font-extrabold mb-4"
           initial={{ y: 50, opacity: 0 }}
-          animate={inView ? { y: 0, opacity: 1 } : { y: 50, opacity: 0 }}
+          animate={hasAnimated ? { y: 0, opacity: 1 } : undefined}
           transition={{ duration: 0.8 }}
         >
           Planos de{" "}
@@ -38,7 +44,7 @@ const Plans = () => {
         <motion.p
           className="max-w-3xl mx-auto text-gray-300 text-lg mb-16"
           initial={{ y: 40, opacity: 0 }}
-          animate={inView ? { y: 0, opacity: 1 } : { y: 40, opacity: 0 }}
+          animate={hasAnimated ? { y: 0, opacity: 1 } : undefined}
           transition={{ delay: 0.2, duration: 0.8 }}
         >
           Escolha o plano ideal para sua empresa e tenha o suporte técnico que
@@ -57,7 +63,7 @@ const Plans = () => {
                   : "hover:scale-105 hover:border-white/40"
                   }`}
                 initial={{ y: 50, opacity: 0 }}
-                animate={inView ? { y: 0, opacity: 1 } : { y: 50, opacity: 0 }}
+                animate={hasAnimated ? { y: 0, opacity: 1 } : undefined}
                 transition={{ delay: i * 0.2, duration: 0.7 }}
               >
                 {plan.popular && (
@@ -90,7 +96,7 @@ const Plans = () => {
                         key={idx}
                         className="flex items-center space-x-3 text-gray-300"
                         initial={{ x: -20, opacity: 0 }}
-                        animate={inView ? { x: 0, opacity: 1 } : { x: -20, opacity: 0 }}
+                        animate={hasAnimated ? { x: 0, opacity: 1 } : undefined}
                         transition={{
                           delay: i * 0.15 + idx * 0.1,
                           duration: 0.4,
@@ -123,7 +129,7 @@ const Plans = () => {
         <motion.div
           className="mt-20 max-w-3xl mx-auto bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-8"
           initial={{ y: 40, opacity: 0 }}
-          animate={inView ? { y: 0, opacity: 1 } : { y: 40, opacity: 0 }}
+          animate={hasAnimated ? { y: 0, opacity: 1 } : undefined}
           transition={{ delay: 0.9, duration: 0.8 }}
         >
           <div className="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-6">
@@ -157,7 +163,7 @@ const Plans = () => {
         <motion.p
           className="text-gray-400 text-sm mt-12 max-w-3xl mx-auto"
           initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : { opacity: 0 }}
+          animate={hasAnimated ? { opacity: 1 } : undefined}
           transition={{ delay: 1.2, duration: 0.6 }}
         >
           * Todos os planos incluem setup gratuito e podem ser cancelados a
