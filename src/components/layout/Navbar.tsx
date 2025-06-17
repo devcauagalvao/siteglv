@@ -57,7 +57,10 @@ const Navbar = () => {
           {isScrolled ? (
             <div className="relative w-10 h-10">
               {/* Círculo de progresso */}
-              <svg className="absolute top-0 left-0 w-full h-full">
+              <svg
+                className="absolute top-0 left-0 w-full h-full"
+                viewBox="0 0 40 40"
+              >
                 <circle
                   cx="20"
                   cy="20"
@@ -65,9 +68,12 @@ const Navbar = () => {
                   stroke="#3B82F6"
                   strokeWidth="3"
                   fill="transparent"
+                  strokeLinecap="round"
                   strokeDasharray={2 * Math.PI * 18}
                   strokeDashoffset={(1 - scrollProgress) * 2 * Math.PI * 18}
-                  style={{ transition: "stroke-dashoffset 0.2s ease" }}
+                  style={{
+                    transition: "stroke-dashoffset 0.2s ease, stroke 0.2s ease",
+                  }}
                 />
               </svg>
 
