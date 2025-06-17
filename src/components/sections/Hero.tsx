@@ -80,7 +80,7 @@ const Hero = () => {
           className="mb-6"
         >
           <img
-            src="/img/logoglv.png"
+            src="/img/branding/logoglv.png"
             alt="GLV Informática Logo"
             className="h-10 md:h-20 lg:h-20 object-contain mx-auto"
           />

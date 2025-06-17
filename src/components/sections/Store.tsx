@@ -1,106 +1,136 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { ExternalLink, Star, ShoppingCart, Monitor, Cpu, HardDrive, Gamepad2, Laptop, Smartphone } from 'lucide-react';
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import {
+  ExternalLink,
+  Star,
+  ShoppingCart,
+  Monitor,
+  Cpu,
+  HardDrive,
+  Gamepad2,
+  Laptop,
+  Smartphone,
+} from "lucide-react";
 
 const Store = () => {
-  const [selectedCategory, setSelectedCategory] = useState('Todos');
+  const [selectedCategory, setSelectedCategory] = useState("Todos");
 
-  const categories = ['Todos', 'PCs Gamer', 'Notebooks', 'Componentes', 'Periféricos'];
+  const categories = [
+    "Todos",
+    "PCs Gamer",
+    "Notebooks",
+    "Componentes",
+    "Periféricos",
+  ];
 
   const products = [
     {
       id: 1,
-      name: 'PC Gamer RGB Elite',
-      category: 'PCs Gamer',
-      price: 'R$ 4.999,00',
-      originalPrice: 'R$ 5.499,00',
-      image: 'https://images.pexels.com/photos/2582937/pexels-photo-2582937.jpeg?auto=compress&cs=tinysrgb&w=800',
+      name: "PC Gamer RGB Elite",
+      category: "PCs Gamer",
+      price: "R$ 4.999,00",
+      originalPrice: "R$ 5.499,00",
+      image:
+        "https://images.pexels.com/photos/2582937/pexels-photo-2582937.jpeg?auto=compress&cs=tinysrgb&w=800",
       rating: 4.8,
       reviews: 124,
-      features: ['RTX 4060 Ti', 'Ryzen 7 5700X', '16GB DDR4', 'SSD 1TB'],
+      features: ["RTX 4060 Ti", "Ryzen 7 5700X", "16GB DDR4", "SSD 1TB"],
       icon: Gamepad2,
-      badge: 'Mais Vendido'
+      badge: "Mais Vendido",
     },
     {
       id: 2,
-      name: 'Notebook Business Pro',
-      category: 'Notebooks',
-      price: 'R$ 3.299,00',
-      originalPrice: 'R$ 3.799,00',
-      image: 'https://images.pexels.com/photos/18105/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=800',
+      name: "Notebook Business Pro",
+      category: "Notebooks",
+      price: "R$ 3.299,00",
+      originalPrice: "R$ 3.799,00",
+      image:
+        "https://images.pexels.com/photos/18105/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=800",
       rating: 4.6,
       reviews: 89,
-      features: ['Intel i7 11ª Gen', '16GB RAM', 'SSD 512GB', 'Tela 15.6"'],
+      features: ["Intel i7 11ª Gen", "16GB RAM", "SSD 512GB", 'Tela 15.6"'],
       icon: Laptop,
-      badge: 'Oferta'
+      badge: "Oferta",
     },
     {
       id: 3,
-      name: 'Monitor 4K UltraWide',
-      category: 'Periféricos',
-      price: 'R$ 1.899,00',
-      originalPrice: 'R$ 2.199,00',
-      image: 'https://images.pexels.com/photos/777001/pexels-photo-777001.jpeg?auto=compress&cs=tinysrgb&w=800',
+      name: "Monitor 4K UltraWide",
+      category: "Periféricos",
+      price: "R$ 1.899,00",
+      originalPrice: "R$ 2.199,00",
+      image:
+        "https://images.pexels.com/photos/777001/pexels-photo-777001.jpeg?auto=compress&cs=tinysrgb&w=800",
       rating: 4.9,
       reviews: 67,
-      features: ['34" UltraWide', '4K Resolution', '144Hz', 'HDR10'],
+      features: ['34" UltraWide', "4K Resolution", "144Hz", "HDR10"],
       icon: Monitor,
-      badge: 'Premium'
+      badge: "Premium",
     },
     {
       id: 4,
-      name: 'SSD NVMe 2TB',
-      category: 'Componentes',
-      price: 'R$ 849,00',
-      originalPrice: 'R$ 999,00',
-      image: 'https://images.pexels.com/photos/163140/circuit-circuit-board-resistor-computer-163140.jpeg?auto=compress&cs=tinysrgb&w=800',
+      name: "SSD NVMe 2TB",
+      category: "Componentes",
+      price: "R$ 849,00",
+      originalPrice: "R$ 999,00",
+      image:
+        "https://images.pexels.com/photos/163140/circuit-circuit-board-resistor-computer-163140.jpeg?auto=compress&cs=tinysrgb&w=800",
       rating: 4.7,
       reviews: 156,
-      features: ['PCIe 4.0', '7000MB/s', '2TB Capacity', '5 Anos Garantia'],
+      features: ["PCIe 4.0", "7000MB/s", "2TB Capacity", "5 Anos Garantia"],
       icon: HardDrive,
-      badge: 'Velocidade'
+      badge: "Velocidade",
     },
     {
       id: 5,
-      name: 'Processador Ryzen 9',
-      category: 'Componentes',
-      price: 'R$ 2.199,00',
-      originalPrice: 'R$ 2.499,00',
-      image: 'https://images.pexels.com/photos/2582937/pexels-photo-2582937.jpeg?auto=compress&cs=tinysrgb&w=800',
+      name: "Processador Ryzen 9",
+      category: "Componentes",
+      price: "R$ 2.199,00",
+      originalPrice: "R$ 2.499,00",
+      image:
+        "https://images.pexels.com/photos/2582937/pexels-photo-2582937.jpeg?auto=compress&cs=tinysrgb&w=800",
       rating: 4.9,
       reviews: 203,
-      features: ['12 Cores', '24 Threads', '5.7GHz Boost', 'AM5 Socket'],
+      features: ["12 Cores", "24 Threads", "5.7GHz Boost", "AM5 Socket"],
       icon: Cpu,
-      badge: 'Performance'
+      badge: "Performance",
     },
     {
       id: 6,
-      name: 'Smartphone Pro Max',
-      category: 'Periféricos',
-      price: 'R$ 2.899,00',
-      originalPrice: 'R$ 3.299,00',
-      image: 'https://images.pexels.com/photos/341523/pexels-photo-341523.jpeg?auto=compress&cs=tinysrgb&w=800',
+      name: "Smartphone Pro Max",
+      category: "Periféricos",
+      price: "R$ 2.899,00",
+      originalPrice: "R$ 3.299,00",
+      image:
+        "https://images.pexels.com/photos/341523/pexels-photo-341523.jpeg?auto=compress&cs=tinysrgb&w=800",
       rating: 4.8,
       reviews: 312,
-      features: ['256GB Storage', 'Triple Camera', '5G Ready', 'Fast Charge'],
+      features: ["256GB Storage", "Triple Camera", "5G Ready", "Fast Charge"],
       icon: Smartphone,
-      badge: 'Novo'
-    }
+      badge: "Novo",
+    },
   ];
 
-  const filteredProducts = selectedCategory === 'Todos'
-    ? products
-    : products.filter(product => product.category === selectedCategory);
+  const filteredProducts =
+    selectedCategory === "Todos"
+      ? products
+      : products.filter((product) => product.category === selectedCategory);
 
   const getBadgeColor = (badge) => {
     switch (badge) {
-      case 'Mais Vendido': return 'from-green-500 to-green-400';
-      case 'Oferta': return 'from-red-500 to-red-400';
-      case 'Premium': return 'from-purple-500 to-purple-400';
-      case 'Velocidade': return 'from-yellow-500 to-yellow-400';
-      case 'Performance': return 'from-orange-500 to-orange-400';
-      case 'Novo': return 'from-blue-500 to-blue-400';
-      default: return 'from-gray-500 to-gray-400';
+      case "Mais Vendido":
+        return "from-green-500 to-green-400";
+      case "Oferta":
+        return "from-red-500 to-red-400";
+      case "Premium":
+        return "from-purple-500 to-purple-400";
+      case "Velocidade":
+        return "from-yellow-500 to-yellow-400";
+      case "Performance":
+        return "from-orange-500 to-orange-400";
+      case "Novo":
+        return "from-blue-500 to-blue-400";
+      default:
+        return "from-gray-500 to-gray-400";
     }
   };
 
@@ -123,7 +153,8 @@ const Store = () => {
           </h2>
 
           <p className="text-xl text-white/80 max-w-3xl mx-auto mb-8">
-            Produtos selecionados com qualidade garantida e os melhores preços do mercado
+            Produtos selecionados com qualidade garantida e os melhores preços
+            do mercado
           </p>
 
           {/* Mercado Livre Link */}
@@ -150,10 +181,11 @@ const Store = () => {
             <motion.button
               key={category}
               onClick={() => setSelectedCategory(category)}
-              className={`px-6 py-3 rounded-full font-medium transition-all duration-300 ${selectedCategory === category
-                  ? 'bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-lg shadow-blue-500/30'
-                  : 'backdrop-blur-sm bg-white/10 text-white/80 border border-white/20 hover:border-blue-500/50'
-                }`}
+              className={`px-6 py-3 rounded-full font-medium transition-all duration-300 ${
+                selectedCategory === category
+                  ? "bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-lg shadow-blue-500/30"
+                  : "backdrop-blur-sm bg-white/10 text-white/80 border border-white/20 hover:border-blue-500/50"
+              }`}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -180,7 +212,11 @@ const Store = () => {
               <div className="relative backdrop-blur-lg bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-blue-500/50 hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-500">
                 {/* Product Badge */}
                 <div className="absolute top-4 left-4 z-10">
-                  <span className={`px-3 py-1 text-xs font-semibold text-white rounded-full bg-gradient-to-r ${getBadgeColor(product.badge)}`}>
+                  <span
+                    className={`px-3 py-1 text-xs font-semibold text-white rounded-full bg-gradient-to-r ${getBadgeColor(
+                      product.badge
+                    )}`}
+                  >
                     {product.badge}
                   </span>
                 </div>
@@ -214,10 +250,11 @@ const Store = () => {
                       {[...Array(5)].map((_, i) => (
                         <Star
                           key={i}
-                          className={`h-4 w-4 ${i < Math.floor(product.rating)
-                              ? 'text-yellow-400 fill-current'
-                              : 'text-gray-400'
-                            }`}
+                          className={`h-4 w-4 ${
+                            i < Math.floor(product.rating)
+                              ? "text-yellow-400 fill-current"
+                              : "text-gray-400"
+                          }`}
                         />
                       ))}
                     </div>
@@ -229,7 +266,10 @@ const Store = () => {
                   {/* Features */}
                   <div className="grid grid-cols-2 gap-2 mb-4">
                     {product.features.map((feature, featureIndex) => (
-                      <div key={featureIndex} className="flex items-center space-x-1">
+                      <div
+                        key={featureIndex}
+                        className="flex items-center space-x-1"
+                      >
                         <div className="w-1.5 h-1.5 bg-blue-400 rounded-full" />
                         <span className="text-xs text-white/60">{feature}</span>
                       </div>
@@ -239,13 +279,36 @@ const Store = () => {
                   {/* Price */}
                   <div className="flex items-center justify-between mb-4">
                     <div>
-                      <div className="text-2xl font-bold text-white">{product.price}</div>
-                      <div className="text-sm text-white/60 line-through">{product.originalPrice}</div>
+                      <div className="text-2xl font-bold text-white">
+                        {product.price}
+                      </div>
+                      <div className="text-sm text-white/60 line-through">
+                        {product.originalPrice}
+                      </div>
                     </div>
                     <div className="text-green-400 font-semibold">
-                      {Math.round(((parseFloat(product.originalPrice.replace('R$ ', '').replace('.', '').replace(',', '.')) -
-                        parseFloat(product.price.replace('R$ ', '').replace('.', '').replace(',', '.'))) /
-                        parseFloat(product.originalPrice.replace('R$ ', '').replace('.', '').replace(',', '.'))) * 100)}% OFF
+                      {Math.round(
+                        ((parseFloat(
+                          product.originalPrice
+                            .replace("R$ ", "")
+                            .replace(".", "")
+                            .replace(",", ".")
+                        ) -
+                          parseFloat(
+                            product.price
+                              .replace("R$ ", "")
+                              .replace(".", "")
+                              .replace(",", ".")
+                          )) /
+                          parseFloat(
+                            product.originalPrice
+                              .replace("R$ ", "")
+                              .replace(".", "")
+                              .replace(",", ".")
+                          )) *
+                          100
+                      )}
+                      % OFF
                     </div>
                   </div>
 
@@ -289,7 +352,8 @@ const Store = () => {
               Encontre o produto perfeito para você
             </h3>
             <p className="text-white/80 mb-6">
-              Visite nossa loja completa no Mercado Livre e encontre centenas de produtos com entrega rápida
+              Visite nossa loja completa no Mercado Livre e encontre centenas de
+              produtos com entrega rápida
             </p>
             <motion.button
               className="bg-gradient-to-r from-yellow-500 to-yellow-400 text-black px-8 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-yellow-500/30 transition-all duration-300"

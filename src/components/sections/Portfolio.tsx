@@ -11,8 +11,6 @@ import {
 
 const Portfolio = () => {
   const [selectedProject, setSelectedProject] = useState(null);
-
-  // Estado para rotação 3D do modal
   const [rotation, setRotation] = useState({ rotateX: 0, rotateY: 0 });
 
   useEffect(() => {
@@ -26,20 +24,17 @@ const Portfolio = () => {
     };
   }, [selectedProject]);
 
-  // Manipula o movimento do mouse para efeito 3D
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
     const deltaX = e.clientX - centerX;
     const deltaY = e.clientY - centerY;
-    // Limita a rotação máxima a 15 graus
     const rotateY = (deltaX / (rect.width / 2)) * 15;
     const rotateX = -(deltaY / (rect.height / 2)) * 15;
     setRotation({ rotateX, rotateY });
   };
 
-  // Reseta a rotação ao sair do modal
   const handleMouseLeave = () => {
     setRotation({ rotateX: 0, rotateY: 0 });
   };
@@ -61,23 +56,29 @@ const Portfolio = () => {
         "Controle de acesso",
       ],
       icon: Monitor,
+      projectUrl: "https://erp-demo.glv.com.br",
+      githubUrl: "https://github.com/seuusuario/erp-demo",
     },
     {
       id: 2,
-      title: "App de Delivery",
-      category: "Mobile App",
-      image:
-        "https://images.pexels.com/photos/4393021/pexels-photo-4393021.jpeg?auto=compress&cs=tinysrgb&w=800",
+      title: "Fit Fusion",
+      category: "App Mobile",
+      image: "/img/portfolio/fitfusion.png",
       description:
-        "Aplicativo móbil para delivery com geolocalização, pagamentos integrados e sistema de avaliações.",
-      tech: ["React Native", "Firebase", "Stripe", "Google Maps"],
+        "Aplicativo mobile para gerenciamento e acompanhamento de treinos e atividades físicas, com foco em personal trainers e academias.",
+      tech: ["React Native", "TypeScript", "Firebase"],
       features: [
-        "Tracking em tempo real",
-        "Pagamentos seguros",
-        "Push notifications",
-        "Avaliações",
+        "Cadastro de Usuários",
+        "Treinos Personalizados",
+        "Histórico de Atividades",
+        "Dietas Personalizadas",
+        "Notificações e Lembretes",
       ],
       icon: Smartphone,
+      githubUrl: "https://github.com/devcauagalvao/AppFitfusion.git",
+      hoverColor:
+        "hover:shadow-green-500/20 hover:border-green-500/50 hover:bg-green-600",
+      buttonColor: "bg-green-600 hover:bg-green-700",
     },
     {
       id: 3,
@@ -95,6 +96,11 @@ const Portfolio = () => {
         "Monitoramento",
       ],
       icon: Server,
+      githubUrl: "https://github.com/seuusuario/aws-infra-demo",
+      color: "from-yellow-600 to-yellow-400",
+      hoverColor:
+        "hover:shadow-yellow-500/20 hover:border-yellow-500/50 hover:bg-yellow-600",
+      buttonColor: "bg-yellow-600 hover:bg-yellow-700",
     },
     {
       id: 4,
@@ -112,23 +118,33 @@ const Portfolio = () => {
         "Analytics",
       ],
       icon: Monitor,
+      projectUrl: "https://b2bshop.com.br",
+      githubUrl: "https://github.com/seuusuario/b2b-ecommerce",
+      color: "from-blue-600 to-blue-500",
+      hoverColor:
+        "hover:shadow-blue-500/20 hover:border-blue-500/50 hover:bg-blue-600",
+      buttonColor: "bg-blue-600 hover:bg-blue-700",
     },
     {
       id: 5,
-      title: "App Financeiro",
-      category: "Mobile App",
-      image:
-        "https://images.pexels.com/photos/186461/pexels-photo-186461.jpeg?auto=compress&cs=tinysrgb&w=800",
+      title: "DevFlow – Rede Social para Devs",
+      category: "App Mobile",
+      image: "/img/portfolio/devflow.png",
       description:
-        "Aplicativo de controle financeiro pessoal com IA para categorização automática de gastos.",
-      tech: ["Flutter", "Python", "TensorFlow", "Firebase"],
+        "Uma rede social focada em desenvolvedores, com posts, mensagens privadas, editor de código e integração com GitHub.",
+      tech: ["React Native", "Firebase", "Supabase", "TypeScript"],
       features: [
-        "IA para categorização",
-        "Gráficos interativos",
-        "Metas financeiras",
-        "Sincronização",
+        "Feed de posts",
+        "Discussões técnicas",
+        "Mensagens privadas",
+        "Vídeo-aulas exclusivas",
+        "Login com GitHub",
       ],
       icon: Smartphone,
+      color: "from-purple-600 to-purple-400",
+      hoverColor:
+        "hover:shadow-purple-500/20 hover:border-purple-500/50 hover:bg-purple-600",
+      buttonColor: "bg-purple-600 hover:bg-purple-700",
     },
     {
       id: 6,
@@ -146,13 +162,18 @@ const Portfolio = () => {
         "Backup em tempo real",
       ],
       icon: Server,
+      projectUrl: "https://gameserver.glv.com.br",
+      color: "from-orange-600 to-orange-400",
+      hoverColor:
+        "hover:shadow-orange-500/20 hover:border-orange-500/50 hover:bg-orange-600",
+      buttonColor: "bg-orange-600 hover:bg-orange-700",
     },
   ];
 
   const categories = [
     "Todos",
     "Web Development",
-    "Mobile App",
+    "App Mobile",
     "Infrastructure",
   ];
   const [activeCategory, setActiveCategory] = useState("Todos");
@@ -198,10 +219,11 @@ const Portfolio = () => {
             <motion.button
               key={category}
               onClick={() => setActiveCategory(category)}
-              className={`px-6 py-3 rounded-full font-medium transition-all duration-300 ${activeCategory === category
-                ? "bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-lg shadow-blue-500/30"
-                : "backdrop-blur-sm bg-white/10 text-white/80 border border-white/20 hover:border-blue-500/50"
-                }`}
+              className={`px-6 py-3 rounded-full font-medium transition-all duration-300 ${
+                activeCategory === category
+                  ? "bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-lg shadow-blue-500/30"
+                  : "backdrop-blur-sm bg-white/10 text-white/80 border border-white/20 hover:border-blue-500/50"
+              }`}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -216,69 +238,78 @@ const Portfolio = () => {
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
           <AnimatePresence>
-            {filteredProjects.map((project, index) => (
-              <motion.div
-                key={project.id}
-                layout
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.8 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                whileHover={{ y: -10, scale: 1.02 }}
-                className="group cursor-pointer"
-                onClick={() => setSelectedProject(project)}
-              >
-                <div className="relative backdrop-blur-lg bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-blue-500/50 hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-500">
-                  {/* Project Image */}
-                  <div className="relative h-48 overflow-hidden">
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
-                    <div className="absolute top-4 right-4">
-                      <div className="p-2 rounded-full bg-gradient-to-r from-blue-600 to-blue-500">
-                        <project.icon className="h-4 w-4 text-white" />
+            {filteredProjects.map((project, index) => {
+              const gradient = project.color || "from-blue-600 to-blue-500";
+              const hoverColor =
+                project.hoverColor ||
+                "hover:shadow-blue-500/20 hover:border-blue-500/50 hover:bg-blue-600";
+              return (
+                <motion.div
+                  key={project.id}
+                  layout
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  whileHover={{ y: -10, scale: 1.02 }}
+                  className={`group cursor-pointer`}
+                  onClick={() => setSelectedProject(project)}
+                >
+                  <div
+                    className={`relative backdrop-blur-lg bg-white/5 border border-white/10 rounded-2xl overflow-hidden transition-all duration-500 ${hoverColor}`}
+                  >
+                    {/* Project Image */}
+                    <div className="relative h-48 overflow-hidden">
+                      <img
+                        src={project.image}
+                        alt={project.title}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+                      <div className="absolute top-4 right-4">
+                        <div
+                          className={`p-2 rounded-full bg-gradient-to-r ${gradient}`}
+                        >
+                          <project.icon className="h-4 w-4 text-white" />
+                        </div>
                       </div>
                     </div>
-                  </div>
-
-                  {/* Project Info */}
-                  <div className="p-6">
-                    <div className="text-sm text-blue-400 mb-2">
-                      {project.category}
+                    {/* Project Info */}
+                    <div className="p-6">
+                      <div
+                        className={`text-sm mb-2 bg-clip-text text-transparent bg-gradient-to-r ${gradient}`}
+                      >
+                        {project.category}
+                      </div>
+                      <h3 className="text-xl font-bold text-white mb-3 group-hover:text-blue-300 transition-colors duration-300">
+                        {project.title}
+                      </h3>
+                      <p className="text-white/70 mb-4 line-clamp-2">
+                        {project.description}
+                      </p>
+                      {/* Tech Stack */}
+                      <div className="flex flex-wrap gap-2">
+                        {project.tech.slice(0, 3).map((tech, techIndex) => (
+                          <span
+                            key={techIndex}
+                            className="px-2 py-1 text-xs bg-white/10 text-white/60 rounded-full"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                        {project.tech.length > 3 && (
+                          <span className="px-2 py-1 text-xs text-blue-400">
+                            +{project.tech.length - 3} mais
+                          </span>
+                        )}
+                      </div>
                     </div>
-                    <h3 className="text-xl font-bold text-white mb-3 group-hover:text-blue-300 transition-colors duration-300">
-                      {project.title}
-                    </h3>
-                    <p className="text-white/70 mb-4 line-clamp-2">
-                      {project.description}
-                    </p>
-
-                    {/* Tech Stack */}
-                    <div className="flex flex-wrap gap-2">
-                      {project.tech.slice(0, 3).map((tech, techIndex) => (
-                        <span
-                          key={techIndex}
-                          className="px-2 py-1 text-xs bg-white/10 text-white/60 rounded-full"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                      {project.tech.length > 3 && (
-                        <span className="px-2 py-1 text-xs text-blue-400">
-                          +{project.tech.length - 3} mais
-                        </span>
-                      )}
-                    </div>
+                    {/* Hover Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-blue-600/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
                   </div>
-
-                  {/* Hover Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-blue-600/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              );
+            })}
           </AnimatePresence>
         </motion.div>
 
@@ -291,7 +322,7 @@ const Portfolio = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+              className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
               onClick={() => setSelectedProject(null)}
             >
               <motion.div
@@ -300,7 +331,7 @@ const Portfolio = () => {
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.9, opacity: 0 }}
                 transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                className="relative max-w-4xl w-full max-h-[90vh] overflow-y-auto backdrop-blur-lg bg-gray-900/90 border border-white/20 rounded-3xl shadow-xl"
+                className="relative max-w-4xl w-full max-h-[90vh] overflow-y-auto backdrop-blur-lg bg-gray-900/90 border border-white/20 rounded-3xl shadow-xl z-[110]"
                 onClick={(e) => e.stopPropagation()}
                 onMouseMove={handleMouseMove}
                 onMouseLeave={handleMouseLeave}
@@ -330,11 +361,19 @@ const Portfolio = () => {
                       alt={selectedProject.title}
                       className="w-full h-full object-cover rounded-l-3xl md:rounded-r-none"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent rounded-l-3xl md:rounded-r-none" />
+                    <div
+                      className={`absolute inset-0 bg-gradient-to-r ${
+                        selectedProject.color ||
+                        "from-blue-600/30 to-blue-500/10"
+                      } rounded-l-3xl md:rounded-r-none`}
+                    />
                   </div>
-
                   <div className="p-8">
-                    <div className="text-sm text-blue-400 mb-2">
+                    <div
+                      className={`text-sm mb-2 bg-clip-text text-transparent bg-gradient-to-r ${
+                        selectedProject.color || "from-blue-600 to-blue-500"
+                      }`}
+                    >
                       {selectedProject.category}
                     </div>
                     <h3 className="text-3xl font-bold text-white mb-4">
@@ -343,21 +382,24 @@ const Portfolio = () => {
                     <p className="text-white/80 mb-6 leading-relaxed">
                       {selectedProject.description}
                     </p>
-
                     <div className="mb-6">
                       <h4 className="text-lg font-semibold text-white mb-3">
                         Principais Recursos
                       </h4>
                       <div className="grid grid-cols-2 gap-2">
                         {selectedProject.features.map((feature, index) => (
-                          <div key={index} className="flex items-center space-x-2">
+                          <div
+                            key={index}
+                            className="flex items-center space-x-2"
+                          >
                             <div className="w-2 h-2 bg-blue-400 rounded-full" />
-                            <span className="text-white/70 text-sm">{feature}</span>
+                            <span className="text-white/70 text-sm">
+                              {feature}
+                            </span>
                           </div>
                         ))}
                       </div>
                     </div>
-
                     <div className="mb-6">
                       <h4 className="text-lg font-semibold text-white mb-3">
                         Tecnologias
@@ -373,24 +415,36 @@ const Portfolio = () => {
                         ))}
                       </div>
                     </div>
-
                     <div className="flex space-x-4">
-                      <motion.button
-                        className="flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-blue-500 text-white px-6 py-3 rounded-full hover:shadow-lg hover:shadow-blue-500/30 transition-all duration-300"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        <ExternalLink className="h-4 w-4" />
-                        <span>Ver Projeto</span>
-                      </motion.button>
-                      <motion.button
-                        className="flex items-center space-x-2 backdrop-blur-sm bg-white/10 border border-white/20 text-white px-6 py-3 rounded-full hover:border-blue-500/50 transition-all duration-300"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        <Github className="h-4 w-4" />
-                        <span>Código</span>
-                      </motion.button>
+                      {selectedProject.projectUrl && (
+                        <motion.button
+                          className={`flex items-center space-x-2 ${
+                            selectedProject.buttonColor ||
+                            "bg-blue-600 hover:bg-blue-700"
+                          } text-white px-6 py-3 rounded-full hover:shadow-lg transition-all duration-300`}
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          onClick={() =>
+                            window.open(selectedProject.projectUrl, "_blank")
+                          }
+                        >
+                          <ExternalLink className="h-4 w-4" />
+                          <span>Ver Projeto</span>
+                        </motion.button>
+                      )}
+                      {selectedProject.githubUrl && (
+                        <motion.button
+                          className="flex items-center space-x-2 backdrop-blur-sm bg-white/10 border border-white/20 text-white px-6 py-3 rounded-full hover:border-blue-500/50 transition-all duration-300"
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          onClick={() =>
+                            window.open(selectedProject.githubUrl, "_blank")
+                          }
+                        >
+                          <Github className="h-4 w-4" />
+                          <span>Código</span>
+                        </motion.button>
+                      )}
                     </div>
                   </div>
                 </div>

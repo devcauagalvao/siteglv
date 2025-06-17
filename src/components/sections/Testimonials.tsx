@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Star, Quote, ChevronLeft, ChevronRight, Building } from 'lucide-react';
+import React, { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Star, Quote, ChevronLeft, ChevronRight, Building } from "lucide-react";
 
 const Testimonials = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -9,39 +9,42 @@ const Testimonials = () => {
   const testimonials = [
     {
       id: 1,
-      name: 'Carlos Oliveira',
-      position: 'CEO',
-      company: 'TechSolutions',
-      avatar: 'https://randomuser.me/api/portraits/men/32.jpg',
-      industry: 'Tecnologia',
-      project: 'Sistema de Gestão Empresarial',
-      result: 'Aumento de 40% na produtividade',
+      name: "Carlos Oliveira",
+      position: "CEO",
+      company: "TechSolutions",
+      avatar: "https://randomuser.me/api/portraits/men/32.jpg",
+      industry: "Tecnologia",
+      project: "Sistema de Gestão Empresarial",
+      result: "Aumento de 40% na produtividade",
       rating: 5,
-      content: 'A GLV transformou nossa operação com uma solução ágil e robusta. Atendimento excelente e entrega pontual!',
+      content:
+        "A GLV transformou nossa operação com uma solução ágil e robusta. Atendimento excelente e entrega pontual!",
     },
     {
       id: 2,
-      name: 'Ana Souza',
-      position: 'Fundadora',
-      company: 'Loja BellaModa',
-      avatar: 'https://randomuser.me/api/portraits/women/65.jpg',
-      industry: 'E-commerce',
-      project: 'Plataforma de vendas online',
-      result: 'Dobrou as vendas em 3 meses',
+      name: "Ana Souza",
+      position: "Fundadora",
+      company: "Loja BellaModa",
+      avatar: "https://randomuser.me/api/portraits/women/65.jpg",
+      industry: "E-commerce",
+      project: "Plataforma de vendas online",
+      result: "Dobrou as vendas em 3 meses",
       rating: 5,
-      content: 'Equipe incrível! Desenvolveram nossa loja virtual com todos os recursos que precisávamos. Recomendo de olhos fechados!',
+      content:
+        "Equipe incrível! Desenvolveram nossa loja virtual com todos os recursos que precisávamos. Recomendo de olhos fechados!",
     },
     {
       id: 3,
-      name: 'João Lima',
-      position: 'Diretor de TI',
-      company: 'Hospital Vida',
-      avatar: 'https://randomuser.me/api/portraits/men/55.jpg',
-      industry: 'Saúde',
-      project: 'Sistema de prontuário eletrônico',
-      result: 'Melhoria de 70% na gestão de pacientes',
+      name: "João Lima",
+      position: "Diretor de TI",
+      company: "Hospital Vida",
+      avatar: "https://randomuser.me/api/portraits/men/55.jpg",
+      industry: "Saúde",
+      project: "Sistema de prontuário eletrônico",
+      result: "Melhoria de 70% na gestão de pacientes",
       rating: 4,
-      content: 'Um trabalho técnico impecável e com foco real em resultados. A GLV entregou valor do início ao fim.',
+      content:
+        "Um trabalho técnico impecável e com foco real em resultados. A GLV entregou valor do início ao fim.",
     },
   ];
 
@@ -50,7 +53,9 @@ const Testimonials = () => {
   };
 
   const prevTestimonial = () => {
-    setActiveIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+    setActiveIndex(
+      (prev) => (prev - 1 + testimonials.length) % testimonials.length
+    );
   };
 
   // Auto carrossel com pausa ao interagir
@@ -81,7 +86,8 @@ const Testimonials = () => {
             <span className="text-blue-500">Clientes Dizem</span>
           </h2>
           <p className="text-lg md:text-xl text-white/70 max-w-2xl mx-auto">
-            Casos de sucesso que mostram como nossas soluções transformam negócios.
+            Casos de sucesso que mostram como nossas soluções transformam
+            negócios.
           </p>
         </motion.div>
 
@@ -89,7 +95,9 @@ const Testimonials = () => {
         <div
           className="relative max-w-5xl mx-auto"
           onMouseEnter={() => clearTimeout(timeoutRef.current!)}
-          onMouseLeave={() => timeoutRef.current = setTimeout(nextTestimonial, 6000)}
+          onMouseLeave={() =>
+            (timeoutRef.current = setTimeout(nextTestimonial, 6000))
+          }
         >
           <AnimatePresence mode="wait">
             <motion.div
@@ -108,7 +116,10 @@ const Testimonials = () => {
 
               <div className="flex justify-center mb-6">
                 {[...Array(currentTestimonial.rating)].map((_, i) => (
-                  <Star key={i} className="h-5 w-5 text-yellow-400 fill-current mx-0.5" />
+                  <Star
+                    key={i}
+                    className="h-5 w-5 text-yellow-400 fill-current mx-0.5"
+                  />
                 ))}
               </div>
 
@@ -124,9 +135,15 @@ const Testimonials = () => {
                     className="w-16 h-16 rounded-full border-4 border-blue-500/30 shadow-md"
                   />
                   <div>
-                    <h4 className="text-lg font-semibold">{currentTestimonial.name}</h4>
-                    <p className="text-blue-400 text-sm">{currentTestimonial.position}</p>
-                    <p className="text-white/60 text-sm">{currentTestimonial.company}</p>
+                    <h4 className="text-lg font-semibold">
+                      {currentTestimonial.name}
+                    </h4>
+                    <p className="text-blue-400 text-sm">
+                      {currentTestimonial.position}
+                    </p>
+                    <p className="text-white/60 text-sm">
+                      {currentTestimonial.company}
+                    </p>
                   </div>
                 </div>
                 <div className="hidden md:block w-px h-12 bg-white/20" />
@@ -135,8 +152,12 @@ const Testimonials = () => {
                     <Building className="h-4 w-4" />
                     <span>{currentTestimonial.industry}</span>
                   </div>
-                  <div className="text-sm text-white/60 mb-1">{currentTestimonial.project}</div>
-                  <div className="text-green-400 font-semibold">{currentTestimonial.result}</div>
+                  <div className="text-sm text-white/60 mb-1">
+                    {currentTestimonial.project}
+                  </div>
+                  <div className="text-green-400 font-semibold">
+                    {currentTestimonial.result}
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -158,10 +179,11 @@ const Testimonials = () => {
                 <motion.button
                   key={index}
                   onClick={() => setActiveIndex(index)}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 ${index === activeIndex
-                    ? 'bg-blue-500 scale-125 shadow shadow-blue-500/50'
-                    : 'bg-white/30 hover:bg-white/50'
-                    }`}
+                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                    index === activeIndex
+                      ? "bg-blue-500 scale-125 shadow shadow-blue-500/50"
+                      : "bg-white/30 hover:bg-white/50"
+                  }`}
                   whileHover={{ scale: 1.2 }}
                 />
               ))}

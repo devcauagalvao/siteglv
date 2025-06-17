@@ -141,7 +141,7 @@ const AIAssistant = () => {
               <div className="flex items-center space-x-3">
                 <div className="w-10 h-10 rounded-full overflow-hidden shadow-lg bg-white">
                   <img
-                    src="/img/bot.png"
+                    src="/img/assistant/bot.png"
                     alt="Assistente GLV"
                     className="w-full h-full object-cover"
                   />
