@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { Check, Star, Zap } from "lucide-react";
-import { plans } from "../data/plans";
+import { plans } from "../../data/plans";
 
 const Plans = () => {
   const [ref, inView] = useInView({ threshold: 0.15 });
@@ -26,7 +26,7 @@ const Plans = () => {
       id="plans"
       className="relative py-28 px-4 sm:px-6 lg:px-8 overflow-hidden"
     >
-      <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-900 to-black" />
+      <div className="absolute inset-0 bg-black" />
 
       <div ref={ref} className="max-w-7xl mx-auto text-center relative z-10">
         <motion.h2
@@ -36,7 +36,7 @@ const Plans = () => {
           transition={{ duration: 0.8 }}
         >
           Planos de{" "}
-          <span className="bg-gradient-to-r from-cyan-400 to-blue-600 bg-clip-text text-transparent">
+          <span className="text-blue-500">
             Suporte
           </span>
         </motion.h2>
@@ -59,7 +59,7 @@ const Plans = () => {
               <motion.div
                 key={plan.id}
                 className={`relative rounded-3xl p-8 bg-white/10 backdrop-blur-md border border-white/20 flex flex-col justify-between shadow-lg transition-transform duration-300 ${isHighlighted
-                  ? "scale-105 border-cyan-500 shadow-cyan-600/50 z-20"
+                  ? "scale-105 border-blue-500 shadow-blue-600/50 z-20"
                   : "hover:scale-105 hover:border-white/40"
                   }`}
                 initial={{ y: 50, opacity: 0 }}
@@ -67,7 +67,7 @@ const Plans = () => {
                 transition={{ delay: i * 0.2, duration: 0.7 }}
               >
                 {plan.popular && (
-                  <div className="absolute -top-5 left-1/2 transform -translate-x-1/2 px-4 py-1 rounded-full bg-cyan-500 text-white font-semibold text-sm flex items-center space-x-1 shadow-lg shadow-cyan-600/50 z-30">
+                  <div className="absolute -top-5 left-1/2 transform -translate-x-1/2 px-4 py-1 rounded-full bg-blue-500 text-white font-semibold text-sm flex items-center space-x-1 shadow-lg shadow-blue-600/50 z-30">
                     <Star className="w-4 h-4" />
                     <span>Mais Popular</span>
                   </div>
@@ -102,7 +102,7 @@ const Plans = () => {
                           duration: 0.4,
                         }}
                       >
-                        <Check className="w-5 h-5 text-cyan-400 flex-shrink-0" />
+                        <Check className="w-5 h-5 text-blue-500 flex-shrink-0" />
                         <span className="text-sm">{feature}</span>
                       </motion.li>
                     ))}
@@ -112,7 +112,7 @@ const Plans = () => {
                 <motion.button
                   onClick={() => handlePlanSelect(plan.id)}
                   className={`mt-10 w-full py-4 rounded-full font-semibold text-lg transition-all duration-300 ${isHighlighted
-                    ? "bg-gradient-to-r from-cyan-400 to-blue-600 text-white shadow-lg shadow-cyan-600/50 hover:shadow-cyan-700/70"
+                    ? "bg-blue-500 text-white shadow-lg shadow-blue-600/50 hover:shadow-blue-700/70"
                     : "bg-white/20 text-white hover:bg-white/30"
                     }`}
                   whileHover={{ scale: 1.05 }}
@@ -133,7 +133,7 @@ const Plans = () => {
           transition={{ delay: 0.9, duration: 0.8 }}
         >
           <div className="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-6">
-            <Zap className="w-10 h-10 text-cyan-400 flex-shrink-0" />
+            <Zap className="w-10 h-10 text-blue-500 flex-shrink-0" />
             <div className="text-center md:text-left">
               <h3 className="text-white text-2xl font-bold mb-2">
                 Precisa de Algo Personalizado?
@@ -151,7 +151,7 @@ const Plans = () => {
                 .querySelector("#contact")
                 ?.scrollIntoView({ behavior: "smooth" })
             }
-            className="mt-8 w-full md:w-auto px-10 py-3 rounded-full bg-gradient-to-r from-cyan-400 to-blue-600 text-white font-semibold shadow-lg shadow-cyan-600/50 hover:shadow-cyan-700/70 transition-transform duration-300"
+            className="mt-8 w-full md:w-auto px-10 py-3 rounded-full bg-blue-500 text-white font-semibold shadow-lg shadow-blue-600/50 hover:shadow-blue-700/70 transition-transform duration-300"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             aria-label="Solicitar orçamento personalizado"

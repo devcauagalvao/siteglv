@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import ParticleBackground from "./ParticleBackground";
+import ParticleBackground from "../ui/ParticleBackground";
 import * as animejs from "animejs";
 
 const animate = (animejs as any).animate;
