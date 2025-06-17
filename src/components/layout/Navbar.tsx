@@ -25,14 +25,29 @@ const Navbar = () => {
   const navItems = [
     { name: "Home", href: "#home" },
     { name: "Sobre", href: "#about" },
-    { name: "Serviços", href: "#services" },
     { name: "Portfolio", href: "#portfolio" },
+    { name: "Serviços", href: "#services" },
+    { name: "Planos", href: "#plans" },
     { name: "Loja", href: "#store" },
     { name: "Clientes", href: "#testimonials" },
     { name: "Contato", href: "#contact" },
   ];
 
   const scrollToTop = () => {
+    const totalSteps = 30;
+    let currentStep = 0;
+    const startProgress = scrollProgress;
+
+    const interval = setInterval(() => {
+      currentStep++;
+      const newProgress = startProgress * (1 - currentStep / totalSteps);
+      setScrollProgress(newProgress);
+
+      if (currentStep >= totalSteps) {
+        clearInterval(interval);
+      }
+    }, 10);
+
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
