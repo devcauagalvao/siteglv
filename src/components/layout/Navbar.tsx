@@ -1,13 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { ArrowUp } from "lucide-react";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      const docHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
+      const progress = docHeight > 0 ? scrollTop / docHeight : 0;
+
+      setIsScrolled(scrollTop > 50);
+      setScrollProgress(progress);
+    };
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -22,6 +32,10 @@ const Navbar = () => {
     { name: "Contato", href: "#contact" },
   ];
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <motion.nav
       initial={{ y: -100 }}
@@ -34,16 +48,38 @@ const Navbar = () => {
       }`}
     >
       <div className="flex justify-between items-center h-16 px-4 sm:px-6 lg:px-8">
-        {/* Logo com texto estilizado */}
-        <motion.a
-          href="#home"
-          className="flex items-center space-x-2"
+        {/* Logo com transformação */}
+        <motion.div
+          className="relative cursor-pointer"
           whileHover={{ scale: 1.05 }}
+          onClick={isScrolled ? scrollToTop : undefined}
         >
-          <h1 className="text-xl font-extrabold tracking-wide flex items-center gap-1">
-            <span className="text-[color:#3B82F6]">GLV</span>
-          </h1>
-        </motion.a>
+          {isScrolled ? (
+            <div className="relative w-10 h-10">
+              {/* Círculo de progresso */}
+              <svg className="absolute top-0 left-0 w-full h-full">
+                <circle
+                  cx="20"
+                  cy="20"
+                  r="18"
+                  stroke="#3B82F6"
+                  strokeWidth="3"
+                  fill="transparent"
+                  strokeDasharray={2 * Math.PI * 18}
+                  strokeDashoffset={(1 - scrollProgress) * 2 * Math.PI * 18}
+                  style={{ transition: "stroke-dashoffset 0.2s ease" }}
+                />
+              </svg>
+
+              {/* Ícone da seta */}
+              <ArrowUp className="text-blue-500 absolute inset-0 m-auto w-5 h-5" />
+            </div>
+          ) : (
+            <h1 className="text-xl font-extrabold tracking-wide flex items-center gap-1">
+              <span className="text-blue-500">GLV</span>
+            </h1>
+          )}
+        </motion.div>
 
         {/* Navegação desktop */}
         <div className="hidden md:flex items-center space-x-8">
