@@ -13,17 +13,6 @@ const Portfolio = () => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [rotation, setRotation] = useState({ rotateX: 0, rotateY: 0 });
 
-  useEffect(() => {
-    if (selectedProject) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, [selectedProject]);
-
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
@@ -39,28 +28,20 @@ const Portfolio = () => {
     setRotation({ rotateX: 0, rotateY: 0 });
   };
 
+  useEffect(() => {
+    if (selectedProject) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [selectedProject]);
+
   const projects = [
     {
       id: 1,
-      title: "Sistema ERP Completo",
-      category: "Web Development",
-      image:
-        "https://images.pexels.com/photos/265087/pexels-photo-265087.jpeg?auto=compress&cs=tinysrgb&w=800",
-      description:
-        "Sistema completo de gestão empresarial com módulos de vendas, estoque, financeiro e relatórios avançados.",
-      tech: ["React", "Node.js", "PostgreSQL", "Docker"],
-      features: [
-        "Dashboard em tempo real",
-        "Relatórios personalizados",
-        "API REST",
-        "Controle de acesso",
-      ],
-      icon: Monitor,
-      projectUrl: "https://erp-demo.glv.com.br",
-      githubUrl: "https://github.com/seuusuario/erp-demo",
-    },
-    {
-      id: 2,
       title: "Fit Fusion",
       category: "App Mobile",
       image: "/img/portfolio/fitfusion.png",
@@ -76,58 +57,11 @@ const Portfolio = () => {
       ],
       icon: Smartphone,
       githubUrl: "https://github.com/devcauagalvao/AppFitfusion.git",
-      hoverColor:
-        "hover:shadow-green-500/20 hover:border-green-500/50 hover:bg-green-600",
-      buttonColor: "bg-green-600 hover:bg-green-700",
+      hoverBg: "hover:bg-[#00bc81]",
     },
     {
-      id: 3,
-      title: "Infraestrutura Cloud AWS",
-      category: "Infrastructure",
-      image:
-        "https://images.pexels.com/photos/325229/pexels-photo-325229.jpeg?auto=compress&cs=tinysrgb&w=800",
-      description:
-        "Migração completa para AWS com alta disponibilidade, backup automatizado e monitoramento 24/7.",
-      tech: ["AWS", "Docker", "Kubernetes", "Terraform"],
-      features: [
-        "Auto scaling",
-        "Load balancing",
-        "Backup automático",
-        "Monitoramento",
-      ],
-      icon: Server,
-      githubUrl: "https://github.com/seuusuario/aws-infra-demo",
-      color: "from-yellow-600 to-yellow-400",
-      hoverColor:
-        "hover:shadow-yellow-500/20 hover:border-yellow-500/50 hover:bg-yellow-600",
-      buttonColor: "bg-yellow-600 hover:bg-yellow-700",
-    },
-    {
-      id: 4,
-      title: "E-commerce B2B",
-      category: "Web Development",
-      image:
-        "https://images.pexels.com/photos/230544/pexels-photo-230544.jpeg?auto=compress&cs=tinysrgb&w=800",
-      description:
-        "Plataforma de e-commerce B2B com catálogo avançado, pedidos em lote e integração com ERPs.",
-      tech: ["Next.js", "Shopify Plus", "GraphQL", "Stripe"],
-      features: [
-        "Catálogo dinâmico",
-        "Pedidos em lote",
-        "Integração ERP",
-        "Analytics",
-      ],
-      icon: Monitor,
-      projectUrl: "https://b2bshop.com.br",
-      githubUrl: "https://github.com/seuusuario/b2b-ecommerce",
-      color: "from-blue-600 to-blue-500",
-      hoverColor:
-        "hover:shadow-blue-500/20 hover:border-blue-500/50 hover:bg-blue-600",
-      buttonColor: "bg-blue-600 hover:bg-blue-700",
-    },
-    {
-      id: 5,
-      title: "DevFlow – Rede Social para Devs",
+      id: 2,
+      title: "DevFlow",
       category: "App Mobile",
       image: "/img/portfolio/devflow.png",
       description:
@@ -141,32 +75,8 @@ const Portfolio = () => {
         "Login com GitHub",
       ],
       icon: Smartphone,
-      color: "from-purple-600 to-purple-400",
-      hoverColor:
-        "hover:shadow-purple-500/20 hover:border-purple-500/50 hover:bg-purple-600",
-      buttonColor: "bg-purple-600 hover:bg-purple-700",
-    },
-    {
-      id: 6,
-      title: "Servidor de Jogos",
-      category: "Infrastructure",
-      image:
-        "https://images.pexels.com/photos/442576/pexels-photo-442576.jpeg?auto=compress&cs=tinysrgb&w=800",
-      description:
-        "Infraestrutura de servidores para jogos online com baixa latência e alta disponibilidade.",
-      tech: ["Linux", "Docker", "Redis", "Nginx"],
-      features: [
-        "Baixa latência",
-        "Auto scaling",
-        "DDoS protection",
-        "Backup em tempo real",
-      ],
-      icon: Server,
-      projectUrl: "https://gameserver.glv.com.br",
-      color: "from-orange-600 to-orange-400",
-      hoverColor:
-        "hover:shadow-orange-500/20 hover:border-orange-500/50 hover:bg-orange-600",
-      buttonColor: "bg-orange-600 hover:bg-orange-700",
+      hoverBg: "hover:bg-[#008fce]",
+      color: "from-[#008fce] to-[#008fce]",
     },
   ];
 
@@ -240,9 +150,9 @@ const Portfolio = () => {
           <AnimatePresence>
             {filteredProjects.map((project, index) => {
               const gradient = project.color || "from-blue-600 to-blue-500";
-              const hoverColor =
-                project.hoverColor ||
-                "hover:shadow-blue-500/20 hover:border-blue-500/50 hover:bg-blue-600";
+              const hoverBg = project.hoverBg || "hover:bg-blue-600/80";
+              // Sempre deixa as fontes brancas no hover
+              const hoverText = "group-hover:text-white";
               return (
                 <motion.div
                   key={project.id}
@@ -252,11 +162,11 @@ const Portfolio = () => {
                   exit={{ opacity: 0, scale: 0.8 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   whileHover={{ y: -10, scale: 1.02 }}
-                  className={`group cursor-pointer`}
+                  className="group cursor-pointer"
                   onClick={() => setSelectedProject(project)}
                 >
                   <div
-                    className={`relative backdrop-blur-lg bg-white/5 border border-white/10 rounded-2xl overflow-hidden transition-all duration-500 ${hoverColor}`}
+                    className={`relative backdrop-blur-lg bg-white/5 border border-white/10 rounded-2xl overflow-hidden transition-all duration-500 ${hoverBg}`}
                   >
                     {/* Project Image */}
                     <div className="relative h-48 overflow-hidden">
@@ -281,10 +191,14 @@ const Portfolio = () => {
                       >
                         {project.category}
                       </div>
-                      <h3 className="text-xl font-bold text-white mb-3 group-hover:text-blue-300 transition-colors duration-300">
+                      <h3
+                        className={`text-xl font-bold text-white mb-3 transition-colors duration-300 ${hoverText}`}
+                      >
                         {project.title}
                       </h3>
-                      <p className="text-white/70 mb-4 line-clamp-2">
+                      <p
+                        className={`text-white/70 mb-4 line-clamp-2 transition-colors duration-300 ${hoverText}`}
+                      >
                         {project.description}
                       </p>
                       {/* Tech Stack */}
@@ -292,13 +206,15 @@ const Portfolio = () => {
                         {project.tech.slice(0, 3).map((tech, techIndex) => (
                           <span
                             key={techIndex}
-                            className="px-2 py-1 text-xs bg-white/10 text-white/60 rounded-full"
+                            className={`px-2 py-1 text-xs bg-white/10 text-white/60 rounded-full transition-colors duration-300 ${hoverText}`}
                           >
                             {tech}
                           </span>
                         ))}
                         {project.tech.length > 3 && (
-                          <span className="px-2 py-1 text-xs text-blue-400">
+                          <span
+                            className={`px-2 py-1 text-xs text-blue-400 transition-colors duration-300 ${hoverText}`}
+                          >
                             +{project.tech.length - 3} mais
                           </span>
                         )}
@@ -360,12 +276,6 @@ const Portfolio = () => {
                       src={selectedProject.image}
                       alt={selectedProject.title}
                       className="w-full h-full object-cover rounded-l-3xl md:rounded-r-none"
-                    />
-                    <div
-                      className={`absolute inset-0 bg-gradient-to-r ${
-                        selectedProject.color ||
-                        "from-blue-600/30 to-blue-500/10"
-                      } rounded-l-3xl md:rounded-r-none`}
                     />
                   </div>
                   <div className="p-8">
