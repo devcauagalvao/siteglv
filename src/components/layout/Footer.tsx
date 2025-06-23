@@ -1,17 +1,18 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { 
-  Mail, 
-  Phone, 
-  MapPin, 
-  Instagram, 
-  Facebook, 
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Instagram,
+  Facebook,
   Github,
   MessageCircle,
   Code,
   Server,
   Smartphone,
-  Shield
+  Shield,
+  Youtube,
 } from 'lucide-react';
 
 const Footer = () => {
@@ -24,8 +25,8 @@ const Footer = () => {
         { name: 'Desenvolvimento Web', href: '#services', icon: Code },
         { name: 'Apps Mobile', href: '#services', icon: Smartphone },
         { name: 'Infraestrutura', href: '#services', icon: Server },
-        { name: 'Segurança Digital', href: '#services', icon: Shield }
-      ]
+        { name: 'Segurança Digital', href: '#services', icon: Shield },
+      ],
     },
     {
       title: 'Empresa',
@@ -33,8 +34,8 @@ const Footer = () => {
         { name: 'Sobre Nós', href: '#about' },
         { name: 'Portfolio', href: '#portfolio' },
         { name: 'Depoimentos', href: '#testimonials' },
-        { name: 'Loja', href: '#store' }
-      ]
+        { name: 'Loja', href: '#store' },
+      ],
     },
     {
       title: 'Suporte',
@@ -42,187 +43,106 @@ const Footer = () => {
         { name: 'Contato', href: '#contact' },
         { name: 'WhatsApp', href: 'https://wa.me/5511919167653', external: true },
         { name: 'Política de Privacidade', href: '#privacy' },
-        { name: 'Termos de Uso', href: '#terms' }
-      ]
-    }
+        { name: 'Termos de Uso', href: '#terms' },
+      ],
+    },
   ];
 
   const socialLinks = [
     { icon: Instagram, href: 'https://www.instagram.com/glv_informatica/', color: 'hover:text-pink-400' },
     { icon: Facebook, href: 'https://www.facebook.com/GLVinformatica/', color: 'hover:text-blue-400' },
     { icon: Github, href: 'https://github.com/GLV-informatica', color: 'hover:text-gray-300' },
-    { icon: MessageCircle, href: 'https://wa.me/5511919167653', color: 'hover:text-green-400' }
+    { icon: MessageCircle, href: 'https://wa.me/5511919167653', color: 'hover:text-green-400' },
+    { icon: Youtube, href: 'https://www.youtube.com/@GLVinformatica', color: 'hover:text-red-500' },
   ];
 
   const contactInfo = [
-    { icon: Mail, text: 'glvinformatica2024@gmail.com'},
+    { icon: Mail, text: 'glvinformatica2024@gmail.com' },
     { icon: Phone, text: '+55 (11) 91916-7653' },
-    { icon: MapPin, text: 'Itu  , SP - Brasil' }
+    { icon: MapPin, text: 'Itu, SP - Brasil' },
   ];
 
   return (
-    <footer className="relative overflow-hidden">
-      {/* Background with Matrix Effect */}
+    <footer className="relative overflow-hidden text-white">
+      {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-gray-900 via-black to-gray-900" />
-      
-      {/* Animated Background Elements */}
+
+      {/* Glow effect */}
       <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-600 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+        <div className="absolute top-0 left-1/4 w-80 h-80 bg-blue-500 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-blue-600 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
       </div>
 
-      {/* Floating Dots Pattern */}
-      <div className="absolute inset-0 opacity-20">
-        {[...Array(50)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 bg-blue-400 rounded-full"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
-            animate={{
-              y: [-10, 10, -10],
-              opacity: [0.2, 0.8, 0.2],
-            }}
-            transition={{
-              duration: 3 + Math.random() * 2,
-              repeat: Infinity,
-              delay: Math.random() * 2,
-            }}
-          />
-        ))}
-      </div>
-
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        {/* Main Footer Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-12 mb-12">
-          {/* Company Info */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="lg:col-span-1"
-          >
-            {/* Logo */}
-       <div className="flex items-center space-x-3 mb-6">
-  <div>
-    <img 
-      src="/img/logoglv.png" 
-      alt="GLV Informática Logo" 
-      className="h-7 object-contain"
-    />
-    <p className="text-white/60 text-sm mt-1">Soluções do Futuro</p>
-  </div>
-</div>
-
-
-            {/* Description */}
-            <p className="text-white/70 mb-6 leading-relaxed">
-              Transformando ideias em soluções tecnológicas inovadoras. 
-              Software personalizado, infraestrutura cloud e suporte técnico especializado.
+      {/* Content */}
+      <div className="relative z-10 max-w-7xl mx-auto px-6 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+          {/* Sobre + Contato */}
+          <div>
+            <h4 className="text-xl font-semibold mb-4">GLV Informática</h4>
+            <p className="text-white/70 text-sm mb-6 leading-relaxed">
+              Soluções tecnológicas sob medida para transformar o seu negócio.
+              Inovação, performance e suporte de verdade.
             </p>
-
-            {/* Contact Info */}
             <div className="space-y-3">
               {contactInfo.map((item, index) => (
-                <motion.div
-                  key={index}
-                  className="flex items-center space-x-3 text-white/70"
-                  whileHover={{ x: 5, color: '#60A5FA' }}
-                  transition={{ duration: 0.2 }}
-                >
+                <div key={index} className="flex items-center gap-3 text-white/70 text-sm">
                   <item.icon className="h-4 w-4 text-blue-400" />
-                  <span className="text-sm">{item.text}</span>
-                </motion.div>
+                  <span>{item.text}</span>
+                </div>
               ))}
             </div>
-          </motion.div>
+          </div>
 
-          {/* Footer Links */}
-          {footerSections.map((section, sectionIndex) => (
-            <motion.div
-              key={section.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: (sectionIndex + 1) * 0.1 }}
-            >
-              <h4 className="text-lg font-semibold text-white mb-6">{section.title}</h4>
-              <ul className="space-y-4">
-                {section.links.map((link, linkIndex) => (
-                  <li key={linkIndex}>
-                    <motion.a
+          {/* Demais seções */}
+          {footerSections.map((section, i) => (
+            <div key={i}>
+              <h4 className="text-lg font-semibold mb-4">{section.title}</h4>
+              <ul className="space-y-3 text-sm">
+                {section.links.map((link, j) => (
+                  <li key={j}>
+                    <a
                       href={link.href}
                       target={link.external ? '_blank' : '_self'}
                       rel={link.external ? 'noopener noreferrer' : ''}
-                      className="flex items-center space-x-2 text-white/70 hover:text-blue-400 transition-colors duration-200 group"
-                      whileHover={{ x: 5 }}
+                      className="flex items-center gap-2 text-white/70 hover:text-blue-400 transition-all duration-200"
                     >
                       {link.icon && (
-                        <link.icon className="h-4 w-4 text-blue-400/60 group-hover:text-blue-400 transition-colors duration-200" />
+                        <link.icon className="h-4 w-4 text-blue-400/60" />
                       )}
-                      <span>{link.name}</span>
-                    </motion.a>
+                      {link.name}
+                    </a>
                   </li>
                 ))}
               </ul>
-            </motion.div>
+            </div>
           ))}
         </div>
 
         {/* Divider */}
-        <motion.div
-          initial={{ scaleX: 0 }}
-          whileInView={{ scaleX: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1 }}
-          className="h-px bg-gradient-to-r from-transparent via-blue-500/50 to-transparent mb-8"
-        />
+        <div className="h-px bg-gradient-to-r from-transparent via-blue-500/40 to-transparent mb-6" />
 
-        {/* Bottom Footer */}
-        <div className="flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0">
-          {/* Copyright */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="text-white/60 text-sm"
-          >
-            <p>© {currentYear} GLV Informática e Desenvolvimento. Todos os direitos reservados.</p>
-            <p className="mt-1">CNPJ: 00.000.000/0001-00 - Empresa registrada no Brasil</p>
-          </motion.div>
-
-          {/* Social Links */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="flex items-center space-x-4"
-          >
-            <span className="text-white/60 text-sm mr-4">Siga-nos:</span>
-            {socialLinks.map((social, index) => (
-              <motion.a
-                key={index}
+        {/* Bottom Row */}
+        <div className="flex flex-col md:flex-row items-center justify-between text-sm text-white/60 gap-6">
+          <div className="text-center md:text-left space-y-1">
+            <p>© {currentYear} GLV Informática e Desenvolvimento.</p>
+            <p>CNPJ: 00.000.000/0001-00 - Empresa registrada no Brasil</p>
+          </div>
+          <div className="flex items-center space-x-3">
+            <span className="mr-2">Siga-nos:</span>
+            {socialLinks.map((social, i) => (
+              <a
+                key={i}
                 href={social.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`p-3 rounded-full backdrop-blur-sm bg-white/10 border border-white/20 text-white/70 transition-all duration-300 ${social.color} hover:border-current hover:scale-110 hover:shadow-lg hover:shadow-current/30`}
-                whileHover={{ y: -2 }}
-                whileTap={{ scale: 0.9 }}
+                className={`p-2 rounded-full bg-white/10 border border-white/10 hover:border-blue-500 transition-all duration-300 ${social.color}`}
               >
                 <social.icon className="h-5 w-5" />
-              </motion.a>
+              </a>
             ))}
-          </motion.div>
+          </div>
         </div>
       </div>
-
-      {/* Glow Effects */}
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500 to-transparent" />
     </footer>
   );
 };

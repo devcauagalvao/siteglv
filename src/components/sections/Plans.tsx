@@ -9,7 +9,7 @@ const plans = [
     name: "Site Profissional",
     description:
       "Site institucional completo, ideal para apresentar sua empresa na internet.",
-    price: "300",
+    price: "299,99",
     period: "único",
     features: [
       "Design moderno e responsivo",
@@ -45,7 +45,7 @@ const plans = [
     name: "Suporte Total",
     description:
       "Manutenção contínua e suporte técnico completo para sua empresa.",
-    price: "149",
+    price: "149,99",
     period: "mês",
     features: [
       "Atendimento prioritário",

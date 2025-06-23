@@ -12,7 +12,6 @@ import {
 } from "lucide-react";
 
 const Services = () => {
-  // Serviços com categorias e um serviço destacado (highlighted: true)
   const services = [
     {
       icon: Code,
@@ -105,60 +104,46 @@ const Services = () => {
     },
   ];
 
-  // Categorias dinâmicas extraídas dos serviços + "Todos"
   const categories = ["Todos", ...new Set(services.map((s) => s.category))];
-
-  // Estado da categoria selecionada
   const [selectedCategory, setSelectedCategory] = useState("Todos");
 
-  // Filtra serviços conforme categoria selecionada
   const filteredServices =
     selectedCategory === "Todos"
       ? services
       : services.filter((s) => s.category === selectedCategory);
 
   return (
-    <section id="services" className="py-20 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-900 to-black" />
-
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="services" className="py-24 bg-black text-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-6"
+          className="text-center mb-12"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            <span className="text-white">Nossos </span>
-            <span className="text-[#3B82F6]">Serviços</span>
+          <h2 className="text-4xl md:text-5xl font-bold">
+            Nossos <span className="text-blue-500">Serviços</span>
           </h2>
-          <p className="text-xl text-white/80 max-w-3xl mx-auto">
-            Soluções completas em tecnologia para impulsionar seu negócio ao
-            próximo nível
+          <p className="text-lg text-gray-400 mt-4 max-w-2xl mx-auto">
+            Soluções completas para transformar e escalar seu negócio com tecnologia de ponta.
           </p>
         </motion.div>
 
-        {/* Filtro por categoria */}
-        <div className="flex justify-center mb-12 flex-wrap gap-3">
+        <div className="flex flex-wrap justify-center gap-3 mb-12">
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`px-4 py-2 rounded-full font-semibold text-sm transition-colors
-                ${
-                  selectedCategory === cat
-                    ? "bg-blue-600 text-white shadow-lg"
-                    : "bg-white/20 text-white hover:bg-blue-500/80"
-                }`}
+              className={`px-5 py-2 rounded-full text-sm font-semibold border transition-colors duration-300
+                ${selectedCategory === cat ? "bg-blue-600 text-white border-blue-600" : "bg-white/10 text-white border-white/10 hover:bg-blue-600/30"}`}
             >
               {cat}
             </button>
           ))}
         </div>
 
-        {/* Grid com animação suave no filtro */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <AnimatePresence>
             {filteredServices.map((service, index) => (
               <motion.div
@@ -167,71 +152,51 @@ const Services = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.4, delay: index * 0.05 }}
-                whileHover={{ y: -10, scale: 1.02 }}
-                className={`group h-full relative border rounded-2xl p-6
-                  ${
-                    service.highlighted
-                      ? "border-blue-500 shadow-2xl shadow-blue-500/40"
-                      : "border-white/10"
-                  }
-                  backdrop-blur-lg bg-gradient-to-br from-white/10 to-white/5
-                  hover:border-blue-500/50 hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-500
-                `}
+                whileHover={{ scale: 1.03 }}
+                className={`p-6 rounded-2xl border shadow-sm transition-all
+                  ${service.highlighted ? "border-blue-500 shadow-blue-500/20" : "border-white/10 hover:border-blue-500/40"} 
+                  bg-gradient-to-br from-gray-800 via-gray-900 to-black backdrop-blur-sm`}
               >
-                {service.highlighted && (
-                  <span className="absolute top-3 right-3 bg-blue-500 text-white text-xs px-2 py-1 rounded-full shadow">
-                    Destaque
-                  </span>
-                )}
-
-                <div className="flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-r from-blue-600 to-blue-500 mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <service.icon className="h-8 w-8 text-white" />
+                <div className="flex items-center justify-center w-14 h-14 mb-5 rounded-xl bg-gradient-to-tr from-blue-600 to-blue-400">
+                  <service.icon className="w-7 h-7 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-3 group-hover:text-blue-300 transition-colors duration-300">
+                <h3 className="text-xl font-bold mb-2 text-white">
                   {service.title}
                 </h3>
-                <p className="text-white/70 mb-4 leading-relaxed">
+                <p className="text-sm text-gray-400 mb-4">
                   {service.description}
                 </p>
-                <div className="space-y-2">
-                  {service.features.map((feature, featureIndex) => (
-                    <div
-                      key={featureIndex}
-                      className="flex items-center space-x-2"
-                    >
-                      <div className="w-1.5 h-1.5 bg-blue-400 rounded-full" />
-                      <span className="text-sm text-white/60">{feature}</span>
-                    </div>
+                <ul className="text-sm text-gray-300 space-y-2">
+                  {service.features.map((f, i) => (
+                    <li key={i} className="flex items-center gap-2">
+                      <div className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+                      {f}
+                    </li>
                   ))}
-                </div>
+                </ul>
               </motion.div>
             ))}
           </AnimatePresence>
         </div>
 
-        {/* CTA Section */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.5 }}
-          className="text-center mt-16"
+          className="text-center mt-20"
         >
-          <div className="backdrop-blur-lg bg-gradient-to-r from-blue-600/20 to-blue-500/20 border border-blue-500/30 rounded-3xl p-8 md:p-12">
-            <h3 className="text-3xl font-bold text-white mb-4">
-              Precisa de uma solução personalizada?
+          <div className="bg-gradient-to-br from-blue-600/20 via-blue-500/10 to-blue-600/20 border border-blue-500/30 rounded-2xl p-8 md:p-12 shadow-xl shadow-blue-500/10">
+            <h3 className="text-3xl font-bold text-white mb-3">
+              Tem um projeto especial em mente?
             </h3>
-            <p className="text-white/80 mb-8 text-lg">
-              Nossa equipe está pronta para desenvolver a solução perfeita para
-              seu negócio
+            <p className="text-gray-300 text-lg mb-6 max-w-xl mx-auto">
+              Desenvolvemos soluções sob medida com foco em resultado. Fale com nosso especialista agora mesmo.
             </p>
             <motion.button
-              className="bg-gradient-to-r from-blue-600 to-blue-500 text-white px-10 py-4 rounded-full text-lg font-semibold shadow-2xl shadow-blue-500/30 border border-blue-400/30"
-              whileHover={{
-                scale: 1.05,
-                boxShadow: "0 0 40px rgba(59, 130, 246, 0.6)",
-              }}
+              whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full font-semibold text-base shadow-lg"
             >
               Falar com Especialista
             </motion.button>
