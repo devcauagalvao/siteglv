@@ -1,193 +1,372 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { useInView } from "react-intersection-observer";
-import { Check, Star, Zap } from "lucide-react";
+import {
+  ExternalLink,
+  Star,
+  ShoppingCart,
+  Monitor,
+  Cpu,
+  HardDrive,
+  Gamepad2,
+  Laptop,
+  Smartphone,
+} from "lucide-react";
 
-const plans = [
-  {
-    id: "basic-site",
-    name: "Site Profissional",
-    description:
-      "Site institucional completo, ideal para apresentar sua empresa na internet.",
-    price: "300",
-    period: "único",
-    features: [
-      "Design moderno e responsivo",
-      "Até 5 seções (Home, Sobre, Serviços, Contato, etc.)",
-      "Formulário de contato com envio para o e-mail",
-      "Integração com redes sociais",
-    ],
-    highlighted: false,
-    popular: false,
-    buttonText: "Contratar Site",
-    whatsappMsg: "Olá, tenho interesse no plano Site Profissional."
-  },
-  {
-    id: "custom-system",
-    name: "Sistema Sob Medida",
-    description:
-      "Desenvolvimento de sistemas personalizados para otimizar seus processos.",
-    price: "Sob Consulta",
-    period: "",
-    features: [
-      "Funcionalidades exclusivas conforme sua necessidade",
-      "Integração com APIs e bancos de dados",
-      "Painel administrativo personalizado",
-      "Acompanhamento e suporte durante o projeto",
-    ],
-    highlighted: true,
-    popular: true,
-    buttonText: "Solicitar Sistema",
-    whatsappMsg: "Olá, gostaria de desenvolver um sistema personalizado."
-  },
-  {
-    id: "full-support",
-    name: "Suporte Total",
-    description:
-      "Manutenção contínua e suporte técnico completo para sua empresa.",
-    price: "149",
-    period: "mês",
-    features: [
-      "Atendimento prioritário",
-      "Manutenção preventiva e corretiva",
-      "Atualizações e melhorias contínuas",
-      "Suporte remoto e presencial (conforme disponibilidade)",
-    ],
-    highlighted: false,
-    popular: false,
-    buttonText: "Assinar Suporte",
-    whatsappMsg: "Olá, quero contratar o plano Suporte Total."
-  }
-];
+const Store = () => {
+  const [selectedCategory, setSelectedCategory] = useState("Todos");
 
-const Plans = () => {
-  const [ref, inView] = useInView({ threshold: 0.15 });
-  const [hasAnimated, setHasAnimated] = useState(false);
+  const categories = [
+    "Todos",
+    "PCs Gamer",
+    "Notebooks",
+    "Componentes",
+    "Periféricos",
+  ];
 
-  useEffect(() => {
-    if (inView && !hasAnimated) setHasAnimated(true);
-  }, [inView, hasAnimated]);
+  const products = [
+    {
+      id: 1,
+      name: "PC Gamer RGB Elite",
+      category: "PCs Gamer",
+      price: "R$ 4.999,00",
+      originalPrice: "R$ 5.499,00",
+      image:
+        "https://images.pexels.com/photos/2582937/pexels-photo-2582937.jpeg?auto=compress&cs=tinysrgb&w=800",
+      rating: 4.8,
+      reviews: 124,
+      features: ["RTX 4060 Ti", "Ryzen 7 5700X", "16GB DDR4", "SSD 1TB"],
+      icon: Gamepad2,
+      badge: "Mais Vendido",
+    },
+    {
+      id: 2,
+      name: "Notebook Business Pro",
+      category: "Notebooks",
+      price: "R$ 3.299,00",
+      originalPrice: "R$ 3.799,00",
+      image:
+        "https://images.pexels.com/photos/18105/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=800",
+      rating: 4.6,
+      reviews: 89,
+      features: ["Intel i7 11ª Gen", "16GB RAM", "SSD 512GB", 'Tela 15.6"'],
+      icon: Laptop,
+      badge: "Oferta",
+    },
+    {
+      id: 3,
+      name: "Monitor 4K UltraWide",
+      category: "Periféricos",
+      price: "R$ 1.899,00",
+      originalPrice: "R$ 2.199,00",
+      image:
+        "https://images.pexels.com/photos/777001/pexels-photo-777001.jpeg?auto=compress&cs=tinysrgb&w=800",
+      rating: 4.9,
+      reviews: 67,
+      features: ['34" UltraWide', "4K Resolution", "144Hz", "HDR10"],
+      icon: Monitor,
+      badge: "Premium",
+    },
+    {
+      id: 4,
+      name: "SSD NVMe 2TB",
+      category: "Componentes",
+      price: "R$ 849,00",
+      originalPrice: "R$ 999,00",
+      image:
+        "https://images.pexels.com/photos/163140/circuit-circuit-board-resistor-computer-163140.jpeg?auto=compress&cs=tinysrgb&w=800",
+      rating: 4.7,
+      reviews: 156,
+      features: ["PCIe 4.0", "7000MB/s", "2TB Capacity", "5 Anos Garantia"],
+      icon: HardDrive,
+      badge: "Velocidade",
+    },
+    {
+      id: 5,
+      name: "Processador Ryzen 9",
+      category: "Componentes",
+      price: "R$ 2.199,00",
+      originalPrice: "R$ 2.499,00",
+      image:
+        "https://images.pexels.com/photos/2582937/pexels-photo-2582937.jpeg?auto=compress&cs=tinysrgb&w=800",
+      rating: 4.9,
+      reviews: 203,
+      features: ["12 Cores", "24 Threads", "5.7GHz Boost", "AM5 Socket"],
+      icon: Cpu,
+      badge: "Performance",
+    },
+    {
+      id: 6,
+      name: "Smartphone Pro Max",
+      category: "Periféricos",
+      price: "R$ 2.899,00",
+      originalPrice: "R$ 3.299,00",
+      image:
+        "https://images.pexels.com/photos/341523/pexels-photo-341523.jpeg?auto=compress&cs=tinysrgb&w=800",
+      rating: 4.8,
+      reviews: 312,
+      features: ["256GB Storage", "Triple Camera", "5G Ready", "Fast Charge"],
+      icon: Smartphone,
+      badge: "Novo",
+    },
+  ];
 
-  const openWhatsApp = (message: string) => {
-    const phone = "5511919167653";
-    const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-    window.open(url, "_blank");
+  const filteredProducts =
+    selectedCategory === "Todos"
+      ? products
+      : products.filter((product) => product.category === selectedCategory);
+
+  const getBadgeColor = (badge) => {
+    switch (badge) {
+      case "Mais Vendido":
+        return "from-green-500 to-green-400";
+      case "Oferta":
+        return "from-red-500 to-red-400";
+      case "Premium":
+        return "from-purple-500 to-purple-400";
+      case "Velocidade":
+        return "from-yellow-500 to-yellow-400";
+      case "Performance":
+        return "from-orange-500 to-orange-400";
+      case "Novo":
+        return "from-blue-500 to-blue-400";
+      default:
+        return "from-gray-500 to-gray-400";
+    }
   };
 
   return (
-    <section id="plans" className="relative py-24 bg-gradient-to-b from-black via-gray-900 to-black text-white px-4 sm:px-6 lg:px-8">
-      <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-900 to-black z-0" />
-      <div ref={ref} className="relative z-10 max-w-7xl mx-auto text-center">
-        <motion.h2
-          className="text-4xl md:text-5xl font-extrabold mb-4"
-          initial={{ y: 50, opacity: 0 }}
-          animate={hasAnimated ? { y: 0, opacity: 1 } : undefined}
-          transition={{ duration: 0.8 }}
-        >
-          Nossos <span className="text-blue-500">Planos</span>
-        </motion.h2>
+    <section id="store" className="py-20 relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-900 to-black" />
 
-        <motion.p
-          className="text-gray-400 text-base md:text-lg mb-12 max-w-2xl mx-auto"
-          initial={{ y: 40, opacity: 0 }}
-          animate={hasAnimated ? { y: 0, opacity: 1 } : undefined}
-          transition={{ delay: 0.2, duration: 0.8 }}
-        >
-          Soluções completas para sua empresa crescer com tecnologia de ponta.
-        </motion.p>
-
-        <div className="grid gap-10 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          {plans.map((plan, i) => (
-            <motion.div
-              key={plan.id}
-              className={`relative rounded-2xl p-8 bg-white/5 backdrop-blur-md border border-white/20 shadow-md flex flex-col justify-between transition-transform duration-300 hover:scale-[1.03] hover:border-blue-500/40 ${
-                plan.highlighted ? "ring-2 ring-blue-500" : ""
-              }`}
-              initial={{ y: 50, opacity: 0 }}
-              animate={hasAnimated ? { y: 0, opacity: 1 } : undefined}
-              transition={{ delay: i * 0.2, duration: 0.7 }}
-            >
-              {plan.popular && (
-                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 px-4 py-1 rounded-full bg-blue-600 text-white font-semibold text-sm flex items-center space-x-1 z-30">
-                  <Star className="w-4 h-4" />
-                  <span>Mais Popular</span>
-                </div>
-              )}
-
-              <div>
-                <h3 className="text-2xl font-bold mb-2 text-white">{plan.name}</h3>
-                <p className="text-gray-400 text-sm mb-6">{plan.description}</p>
-
-                <div className="flex items-baseline justify-center gap-1 mb-6">
-                  <span className="text-3xl font-extrabold">
-                    {plan.price !== "Sob Consulta" ? `R$${plan.price}` : plan.price}
-                  </span>
-                  {plan.period && <span className="text-gray-400 text-sm">/{plan.period}</span>}
-                </div>
-
-                <ul className="space-y-3 text-left">
-                  {plan.features.map((feature, idx) => (
-                    <li key={idx} className="flex items-center text-sm text-gray-300">
-                      <Check className="w-4 h-4 text-blue-500 mr-2" />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <motion.button
-                onClick={() => openWhatsApp(plan.whatsappMsg)}
-                className={`mt-8 w-full py-3 rounded-full font-semibold text-base transition-all ${
-                  plan.highlighted
-                    ? "bg-blue-600 text-white hover:bg-blue-700"
-                    : "bg-white/10 text-white hover:bg-white/20"
-                }`}
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-              >
-                {plan.buttonText}
-              </motion.button>
-            </motion.div>
-          ))}
-        </div>
-
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
         <motion.div
-          className="mt-16 max-w-3xl mx-auto bg-white/5 backdrop-blur-md border border-white/20 rounded-2xl p-6"
-          initial={{ y: 40, opacity: 0 }}
-          animate={hasAnimated ? { y: 0, opacity: 1 } : undefined}
-          transition={{ delay: 0.9, duration: 0.8 }}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-16"
         >
-          <div className="flex flex-col md:flex-row items-center justify-center gap-4">
-            <Zap className="w-8 h-8 text-blue-500" />
-            <div className="text-center md:text-left">
-              <h3 className="text-xl font-bold mb-1">Quer algo mais personalizado?</h3>
-              <p className="text-gray-400 text-sm">
-                Desenvolvemos soluções sob medida para sua necessidade específica. Fale conosco.
-              </p>
-            </div>
-          </div>
+          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            <span className="text-white">Nossa </span>
+            <span className="text-[#3B82F6]">Loja</span>
+          </h2>
 
-          <motion.button
-            onClick={() => openWhatsApp("Olá, gostaria de um orçamento personalizado da GLV.")}
-            className="mt-6 w-full md:w-auto px-6 py-2 rounded-full bg-blue-600 text-white font-semibold hover:bg-blue-700 transition"
+          <p className="text-xl text-white/80 max-w-3xl mx-auto mb-8">
+            Produtos selecionados com qualidade garantida e os melhores preços
+            do mercado
+          </p>
+
+          {/* Mercado Livre Link */}
+          <motion.a
+            href="#"
+            className="inline-flex items-center space-x-2 bg-gradient-to-r from-yellow-500 to-yellow-400 text-black px-6 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-yellow-500/30 transition-all duration-300"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            Solicitar Orçamento
-          </motion.button>
+            <ExternalLink className="h-5 w-5" />
+            <span>Ver Loja Completa no Mercado Livre</span>
+          </motion.a>
         </motion.div>
 
-        <motion.p
-          className="text-gray-500 text-xs mt-10 max-w-2xl mx-auto"
-          initial={{ opacity: 0 }}
-          animate={hasAnimated ? { opacity: 1 } : undefined}
-          transition={{ delay: 1.2, duration: 0.6 }}
+        {/* Category Filter */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="flex flex-wrap justify-center gap-4 mb-12"
         >
-          * Todos os planos incluem setup gratuito e suporte especializado. Valores podem variar conforme demanda e personalização.
-        </motion.p>
+          {categories.map((category) => (
+            <motion.button
+              key={category}
+              onClick={() => setSelectedCategory(category)}
+              className={`px-6 py-3 rounded-full font-medium transition-all duration-300 ${
+                selectedCategory === category
+                  ? "bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-lg shadow-blue-500/30"
+                  : "backdrop-blur-sm bg-white/10 text-white/80 border border-white/20 hover:border-blue-500/50"
+              }`}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              {category}
+            </motion.button>
+          ))}
+        </motion.div>
+
+        {/* Products Grid */}
+        <motion.div
+          layout
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+        >
+          {filteredProducts.map((product, index) => (
+            <motion.div
+              key={product.id}
+              layout
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              whileHover={{ y: -10, scale: 1.02 }}
+              className="group"
+            >
+              <div className="relative backdrop-blur-lg bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-blue-500/50 hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-500">
+                {/* Product Badge */}
+                <div className="absolute top-4 left-4 z-10">
+                  <span
+                    className={`px-3 py-1 text-xs font-semibold text-white rounded-full bg-gradient-to-r ${getBadgeColor(
+                      product.badge
+                    )}`}
+                  >
+                    {product.badge}
+                  </span>
+                </div>
+
+                {/* Product Image */}
+                <div className="relative h-64 overflow-hidden">
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+
+                  {/* Icon Overlay */}
+                  <div className="absolute top-4 right-4">
+                    <div className="p-2 rounded-full bg-gradient-to-r from-blue-600 to-blue-500">
+                      <product.icon className="h-4 w-4 text-white" />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Product Info */}
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-white mb-2 group-hover:text-blue-300 transition-colors duration-300">
+                    {product.name}
+                  </h3>
+
+                  {/* Rating */}
+                  <div className="flex items-center space-x-2 mb-3">
+                    <div className="flex space-x-1">
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className={`h-4 w-4 ${
+                            i < Math.floor(product.rating)
+                              ? "text-yellow-400 fill-current"
+                              : "text-gray-400"
+                          }`}
+                        />
+                      ))}
+                    </div>
+                    <span className="text-sm text-white/60">
+                      {product.rating} ({product.reviews} avaliações)
+                    </span>
+                  </div>
+
+                  {/* Features */}
+                  <div className="grid grid-cols-2 gap-2 mb-4">
+                    {product.features.map((feature, featureIndex) => (
+                      <div
+                        key={featureIndex}
+                        className="flex items-center space-x-1"
+                      >
+                        <div className="w-1.5 h-1.5 bg-blue-400 rounded-full" />
+                        <span className="text-xs text-white/60">{feature}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Price */}
+                  <div className="flex items-center justify-between mb-4">
+                    <div>
+                      <div className="text-2xl font-bold text-white">
+                        {product.price}
+                      </div>
+                      <div className="text-sm text-white/60 line-through">
+                        {product.originalPrice}
+                      </div>
+                    </div>
+                    <div className="text-green-400 font-semibold">
+                      {Math.round(
+                        ((parseFloat(
+                          product.originalPrice
+                            .replace("R$ ", "")
+                            .replace(".", "")
+                            .replace(",", ".")
+                        ) -
+                          parseFloat(
+                            product.price
+                              .replace("R$ ", "")
+                              .replace(".", "")
+                              .replace(",", ".")
+                          )) /
+                          parseFloat(
+                            product.originalPrice
+                              .replace("R$ ", "")
+                              .replace(".", "")
+                              .replace(",", ".")
+                          )) *
+                          100
+                      )}
+                      % OFF
+                    </div>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="flex space-x-2">
+                    <motion.button
+                      className="flex-1 bg-gradient-to-r from-blue-600 to-blue-500 text-white py-2 px-4 rounded-lg hover:shadow-lg hover:shadow-blue-500/30 transition-all duration-300 flex items-center justify-center space-x-2"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <ShoppingCart className="h-4 w-4" />
+                      <span>Comprar</span>
+                    </motion.button>
+                    <motion.button
+                      className="px-4 py-2 backdrop-blur-sm bg-white/10 border border-white/20 text-white rounded-lg hover:border-blue-500/50 transition-all duration-300"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <ExternalLink className="h-4 w-4" />
+                    </motion.button>
+                  </div>
+                </div>
+
+                {/* Hover Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-blue-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* Store CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          className="text-center mt-16"
+        >
+          <div className="backdrop-blur-lg bg-gradient-to-r from-yellow-500/20 to-yellow-400/20 border border-yellow-500/30 rounded-3xl p-8">
+            <h3 className="text-2xl font-bold text-white mb-4">
+              Encontre o produto perfeito para você
+            </h3>
+            <p className="text-white/80 mb-6">
+              Visite nossa loja completa no Mercado Livre e encontre centenas de
+              produtos com entrega rápida
+            </p>
+            <motion.button
+              className="bg-gradient-to-r from-yellow-500 to-yellow-400 text-black px-8 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-yellow-500/30 transition-all duration-300"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Visitar Loja no Mercado Livre
+            </motion.button>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
 };
 
-export default Plans;
+export default Store;
