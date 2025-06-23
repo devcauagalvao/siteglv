@@ -12,39 +12,54 @@ const Testimonials = () => {
       name: "Carlos Oliveira",
       position: "CEO",
       company: "TechSolutions",
+      city: "São Paulo, SP",
       avatar: "https://randomuser.me/api/portraits/men/32.jpg",
       industry: "Tecnologia",
-      project: "Sistema de Gestão Empresarial",
-      result: "Aumento de 40% na produtividade",
+      project: "Sistema de Gestão Empresarial personalizado",
+      challenge:
+        "Precisávamos unificar processos e melhorar a comunicação interna, que estava lenta e descentralizada.",
+      solution:
+        "A GLV entregou uma solução ágil, customizada e com integração total entre setores, agilizando o fluxo de trabalho.",
+      result: "Aumento de 40% na produtividade em 6 meses e redução de retrabalho.",
       rating: 5,
       content:
-        "A GLV transformou nossa operação com uma solução ágil e robusta. Atendimento excelente e entrega pontual!",
+        "Trabalhar com a GLV foi um divisor de águas para nossa empresa. Profissionais técnicos e comprometidos, que realmente entendem do negócio. Entrega no prazo e suporte rápido.",
     },
     {
       id: 2,
       name: "Ana Souza",
       position: "Fundadora",
       company: "Loja BellaModa",
+      city: "Curitiba, PR",
       avatar: "https://randomuser.me/api/portraits/women/65.jpg",
       industry: "E-commerce",
-      project: "Plataforma de vendas online",
-      result: "Dobrou as vendas em 3 meses",
+      project: "Plataforma de vendas online com sistema de fidelidade",
+      challenge:
+        "Queríamos ampliar as vendas online, mas a plataforma antiga não suportava promoções e personalizações.",
+      solution:
+        "GLV criou uma loja online moderna, fácil de usar, integrada com ERP e sistema de fidelidade para clientes frequentes.",
+      result: "Dobrou as vendas em 3 meses e aumentou a retenção de clientes em 25%.",
       rating: 5,
       content:
-        "Equipe incrível! Desenvolveram nossa loja virtual com todos os recursos que precisávamos. Recomendo de olhos fechados!",
+        "Equipe excepcional! Foram flexíveis, ouviram nossas necessidades e entregaram uma solução que superou expectativas. Recomendo demais para quem quer crescer com tecnologia.",
     },
     {
       id: 3,
       name: "João Lima",
       position: "Diretor de TI",
       company: "Hospital Vida",
+      city: "Belo Horizonte, MG",
       avatar: "https://randomuser.me/api/portraits/men/55.jpg",
       industry: "Saúde",
-      project: "Sistema de prontuário eletrônico",
-      result: "Melhoria de 70% na gestão de pacientes",
+      project: "Sistema de prontuário eletrônico integrado",
+      challenge:
+        "Nossa gestão de pacientes era manual e sujeita a erros, o que impactava no atendimento.",
+      solution:
+        "GLV desenvolveu um sistema eletrônico integrado com dispositivos móveis, garantindo dados precisos em tempo real.",
+      result: "Redução de 70% no tempo de atendimento e melhora significativa na segurança dos dados.",
       rating: 4,
       content:
-        "Um trabalho técnico impecável e com foco real em resultados. A GLV entregou valor do início ao fim.",
+        "O trabalho técnico foi impecável. Eles entenderam o impacto que o sistema teria e focaram em resultados práticos. Algumas entregas demoraram um pouco mais, mas compensou pela qualidade final.",
     },
   ];
 
@@ -123,9 +138,24 @@ const Testimonials = () => {
                 ))}
               </div>
 
-              <blockquote className="text-xl md:text-2xl text-center font-light italic leading-relaxed mb-10">
+              <blockquote className="text-lg md:text-xl text-center font-light italic leading-relaxed mb-6">
                 "{currentTestimonial.content}"
               </blockquote>
+
+              <div className="text-sm md:text-base text-white/70 max-w-3xl mx-auto mb-8 space-y-2">
+                <p>
+                  <strong>Desafio:</strong> {currentTestimonial.challenge}
+                </p>
+                <p>
+                  <strong>Solução:</strong> {currentTestimonial.solution}
+                </p>
+                <p>
+                  <strong>Resultado:</strong>{" "}
+                  <span className="text-green-400 font-semibold">
+                    {currentTestimonial.result}
+                  </span>
+                </p>
+              </div>
 
               <div className="flex flex-col md:flex-row items-center justify-between text-center md:text-left gap-6">
                 <div className="flex items-center gap-4">
@@ -139,7 +169,7 @@ const Testimonials = () => {
                       {currentTestimonial.name}
                     </h4>
                     <p className="text-blue-400 text-sm">
-                      {currentTestimonial.position}
+                      {currentTestimonial.position} - {currentTestimonial.city}
                     </p>
                     <p className="text-white/60 text-sm">
                       {currentTestimonial.company}
@@ -155,9 +185,6 @@ const Testimonials = () => {
                   <div className="text-sm text-white/60 mb-1">
                     {currentTestimonial.project}
                   </div>
-                  <div className="text-green-400 font-semibold">
-                    {currentTestimonial.result}
-                  </div>
                 </div>
               </div>
             </motion.div>
@@ -166,6 +193,7 @@ const Testimonials = () => {
           {/* Controles */}
           <div className="flex justify-center items-center gap-4 mt-8">
             <motion.button
+              aria-label="Testemunho anterior"
               onClick={prevTestimonial}
               className="p-3 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 hover:border-blue-500/50 transition-all"
               whileHover={{ scale: 1.05 }}
@@ -185,11 +213,13 @@ const Testimonials = () => {
                       : "bg-white/30 hover:bg-white/50"
                   }`}
                   whileHover={{ scale: 1.2 }}
+                  aria-label={`Ir para testemunho ${index + 1}`}
                 />
               ))}
             </div>
 
             <motion.button
+              aria-label="Próximo testemunho"
               onClick={nextTestimonial}
               className="p-3 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 hover:border-blue-500/50 transition-all"
               whileHover={{ scale: 1.05 }}

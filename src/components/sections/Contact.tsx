@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import emailjs from 'emailjs-com';
 import {
   Send,
   Phone,
@@ -24,15 +25,37 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    setIsSubmitting(false);
-    setFormData({
-      name: '',
-      email: '',
-      company: '',
-      service: '',
-      message: ''
-    });
+
+    const templateParams = {
+      from_name: formData.name,
+      from_email: formData.email,
+      company: formData.company,
+      service: formData.service,
+      message: formData.message
+    };
+
+    try {
+      await emailjs.send(
+        'service_1wuyals', // Service ID
+        'template_9xroo21', // Template ID
+        templateParams,
+        'H_rsp6SrkABlqY5RN' // Public Key
+      );
+
+      alert('Solicitação enviada com sucesso!');
+      setFormData({
+        name: '',
+        email: '',
+        company: '',
+        service: '',
+        message: ''
+      });
+    } catch (error) {
+      console.error('Erro ao enviar o formulário:', error);
+      alert('Ocorreu um erro ao enviar sua solicitação.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e) => {
@@ -103,6 +126,7 @@ const Contact = () => {
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          {/* Formulário */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -112,7 +136,11 @@ const Contact = () => {
             <div className="backdrop-blur-lg bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-3xl p-6 md:p-8">
               <h3 className="text-xl md:text-2xl font-bold text-white mb-6">Solicitar Orçamento</h3>
               <form onSubmit={handleSubmit} className="space-y-6">
-                {[['name', 'Nome Completo', User, 'Seu nome completo'], ['email', 'E-mail', Mail, 'seu@email.com'], ['company', 'Empresa (Opcional)', Building, 'Nome da sua empresa']].map(([name, label, Icon, placeholder]) => (
+                {[
+                  ['name', 'Nome Completo', User, 'Seu nome completo'],
+                  ['email', 'E-mail', Mail, 'seu@email.com'],
+                  ['company', 'Empresa (Opcional)', Building, 'Nome da sua empresa']
+                ].map(([name, label, Icon, placeholder]) => (
                   <div key={name}>
                     <label className="block text-white/80 mb-2 font-medium">{label}</label>
                     <div className="relative">
@@ -184,6 +212,7 @@ const Contact = () => {
             </div>
           </motion.div>
 
+          {/* Informações de Contato */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
