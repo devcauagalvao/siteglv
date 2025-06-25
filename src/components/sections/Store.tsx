@@ -115,25 +115,6 @@ const Store = () => {
       ? products
       : products.filter((product) => product.category === selectedCategory);
 
-  const getBadgeColor = (badge) => {
-    switch (badge) {
-      case "Mais Vendido":
-        return "from-green-500 to-green-400";
-      case "Oferta":
-        return "from-red-500 to-red-400";
-      case "Premium":
-        return "from-purple-500 to-purple-400";
-      case "Velocidade":
-        return "from-yellow-500 to-yellow-400";
-      case "Performance":
-        return "from-orange-500 to-orange-400";
-      case "Novo":
-        return "from-blue-500 to-blue-400";
-      default:
-        return "from-gray-500 to-gray-400";
-    }
-  };
-
   return (
     <section id="store" className="py-20 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-900 to-black" />
@@ -210,16 +191,15 @@ const Store = () => {
               className="group"
             >
               <div className="relative backdrop-blur-lg bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-blue-500/50 hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-500">
-                {/* Product Badge */}
-                <div className="absolute top-4 left-4 z-10">
+                {/* Product Badge Simplified */}
+                {product.badge && (
                   <span
-                    className={`px-3 py-1 text-xs font-semibold text-white rounded-full bg-gradient-to-r ${getBadgeColor(
-                      product.badge
-                    )}`}
+                    className="absolute top-4 left-4 inline-block px-3 py-1 rounded-full text-xs font-semibold text-white bg-gray-700 bg-opacity-70 select-none z-10"
+                    title={product.badge}
                   >
                     {product.badge}
                   </span>
-                </div>
+                )}
 
                 {/* Product Image */}
                 <div className="relative h-64 overflow-hidden">
