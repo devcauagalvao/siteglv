@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowUp } from "lucide-react";
+import { ArrowUp, Send } from "lucide-react";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -10,8 +10,7 @@ const Navbar = () => {
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY;
-      const docHeight =
-        document.documentElement.scrollHeight - window.innerHeight;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
       const progress = docHeight > 0 ? scrollTop / docHeight : 0;
 
       setIsScrolled(scrollTop > 50);
@@ -72,10 +71,7 @@ const Navbar = () => {
           {isScrolled ? (
             <div className="relative w-10 h-10">
               {/* Círculo de progresso */}
-              <svg
-                className="absolute top-0 left-0 w-full h-full"
-                viewBox="0 0 40 40"
-              >
+              <svg className="absolute top-0 left-0 w-full h-full" viewBox="0 0 40 40">
                 <circle
                   cx="20"
                   cy="20"
@@ -115,13 +111,17 @@ const Navbar = () => {
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-500 group-hover:w-full transition-all duration-300" />
             </motion.a>
           ))}
+          {/* CTA Melhorada */}
           <motion.a
             href="#contact"
-            className="bg-gradient-to-r from-blue-600 to-blue-500 text-white px-6 py-2 rounded-full shadow hover:shadow-lg hover:shadow-blue-500/30 transition-all duration-300"
-            whileHover={{ scale: 1.05 }}
+            className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-500 text-white px-6 py-2 rounded-full shadow-lg hover:shadow-xl hover:shadow-blue-500/50 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-blue-400 focus:ring-opacity-50"
+            whileHover={{ scale: 1.07 }}
             whileTap={{ scale: 0.95 }}
+            animate={{ opacity: [1, 0.8, 1] }}
+            transition={{ repeat: Infinity, duration: 2 }}
           >
-            Solicitar Orçamento
+            Peça Seu Orçamento Já
+            <Send className="w-5 h-5" />
           </motion.a>
         </div>
 
@@ -162,12 +162,14 @@ const Navbar = () => {
                   {item.name}
                 </a>
               ))}
+              {/* CTA Mobile Melhorada */}
               <a
                 href="#contact"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="block text-center bg-gradient-to-r from-blue-600 to-blue-500 text-white py-2 rounded-full"
+                className="flex justify-center items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-500 text-white py-2 rounded-full hover:brightness-110 transition duration-300"
               >
-                Solicitar Orçamento
+                Peça Seu Orçamento Já
+                <Send className="w-5 h-5" />
               </a>
             </div>
           </motion.div>

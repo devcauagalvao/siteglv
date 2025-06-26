@@ -5,13 +5,14 @@ import {
   Github,
   X,
   Smartphone,
+  Globe,
 } from "lucide-react";
 
 const Portfolio = () => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [rotation, setRotation] = useState({ rotateX: 0, rotateY: 0 });
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const handleMouseMove = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
@@ -27,11 +28,7 @@ const Portfolio = () => {
   };
 
   useEffect(() => {
-    if (selectedProject) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
+    document.body.style.overflow = selectedProject ? "hidden" : "auto";
     return () => {
       document.body.style.overflow = "auto";
     };
@@ -76,6 +73,27 @@ const Portfolio = () => {
       hoverBg: "hover:bg-[#008fce]",
       color: "from-[#008fce] to-[#008fce]",
     },
+    {
+      id: 3,
+      title: "CR-Transportes",
+      category: "Web Development",
+      image: "/img/portfolio/crtransportes.png",
+      description:
+        "Sistema para gestão de transportes e logística, com controle de frotas, rotas e painéis administrativos. Foi desenvolvida também uma página de conversão para captação de leads.",
+      tech: ["Next.js", "Tailwind CSS", "Prisma", "TypeScript"],
+      features: [
+        "Painel administrativo",
+        "Gestão de frotas",
+        "Controle de entregas",
+        "Mapa em tempo real",
+        "Dashboard de indicadores",
+      ],
+      icon: Globe,
+      githubUrl: "https://github.com/devcauagalvao/cr-transportes",
+      projectUrl: "https://crtransportes.glvinformatica.com.br",
+      hoverBg: "hover:bg-[#ff7f50]",
+      color: "from-[#ff7f50] to-[#ff7f50]",
+    },
   ];
 
   const categories = [
@@ -92,14 +110,9 @@ const Portfolio = () => {
       : projects.filter((project) => project.category === activeCategory);
 
   return (
-    <section
-      id="portfolio"
-      className="py-20 relative overflow-hidden px-4 sm:px-6 lg:px-8"
-    >
+    <section id="portfolio" className="py-20 relative overflow-hidden px-4 sm:px-6 lg:px-8">
       <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-900 to-black" />
-
       <div className="relative z-10 max-w-7xl mx-auto">
-        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -107,245 +120,152 @@ const Portfolio = () => {
           transition={{ duration: 0.8 }}
           className="text-center mb-16 max-w-xl mx-auto px-2"
         >
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6">
+          <h2 className="text-4xl sm:text-5xl font-bold text-white mb-4">
             Nosso{" "}
-            <span className="bg-blue-600 bg-clip-text text-transparent">
-              Portfólio
-            </span>
+            <span className="bg-blue-600 bg-clip-text text-transparent">Portfólio</span>
           </h2>
-          <p className="text-base sm:text-xl text-white/80 max-w-md sm:max-w-3xl mx-auto">
-            Projetos que transformaram negócios e superaram expectativas
+          <p className="text-white/80 text-base sm:text-lg">
+            Projetos que transformaram negócios e superaram expectativas.
           </p>
         </motion.div>
 
-        {/* Category Filter */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="flex flex-wrap justify-center gap-3 mb-12 px-2"
-        >
+        {/* Filtros */}
+        <div className="flex flex-wrap justify-center gap-4 mb-12">
           {categories.map((category) => (
-            <motion.button
+            <button
               key={category}
               onClick={() => setActiveCategory(category)}
-              className={`px-6 py-3 rounded-full font-medium transition-all duration-300 ${
+              className={`px-5 py-2 rounded-full text-sm sm:text-base transition-all duration-300 ${
                 activeCategory === category
-                  ? "bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-lg shadow-blue-500/30"
-                  : "backdrop-blur-sm bg-white/10 text-white/80 border border-white/20 hover:border-blue-500/50"
+                  ? "bg-blue-600 text-white shadow"
+                  : "bg-white/10 text-white/70 border border-white/20 hover:border-blue-400"
               }`}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
             >
               {category}
-            </motion.button>
+            </button>
           ))}
-        </motion.div>
+        </div>
 
-        {/* Projects Grid */}
-        <motion.div
-          layout
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
-        >
-          <AnimatePresence>
-            {filteredProjects.map((project, index) => {
-              const gradient = project.color || "from-blue-600 to-blue-500";
-              const hoverBg = project.hoverBg || "hover:bg-blue-600/80";
-              const hoverText = "group-hover:text-white";
-              return (
-                <motion.div
-                  key={project.id}
-                  layout
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  whileHover={{ y: -10, scale: 1.02 }}
-                  className="group cursor-pointer"
-                  onClick={() => setSelectedProject(project)}
+        {/* Grade de Projetos */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          {filteredProjects.map((project, index) => {
+            const gradient = project.color || "from-blue-600 to-blue-500";
+            return (
+              <motion.div
+                key={project.id}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.3, delay: index * 0.1 }}
+                whileHover={{ y: -5 }}
+                className="group cursor-pointer"
+                onClick={() => setSelectedProject(project)}
+              >
+                <div
+                  className={`rounded-2xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-md transition-all duration-300 ${project.hoverBg}`}
                 >
-                  <div
-                    className={`relative backdrop-blur-lg bg-white/5 border border-white/10 rounded-2xl overflow-hidden transition-all duration-500 ${hoverBg}`}
-                  >
-                    <div className="relative h-48 overflow-hidden">
-                      <img
-                        src={project.image}
-                        alt={project.title}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
-                      <div className="absolute top-4 right-4">
-                        <div
-                          className={`p-2 rounded-full bg-gradient-to-r ${gradient}`}
-                        >
-                          <project.icon className="h-4 w-4 text-white" />
-                        </div>
-                      </div>
+                  <div className="relative h-48">
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute top-4 right-4 bg-gradient-to-r p-2 rounded-full text-white shadow-md ${gradient}">
+                      <project.icon className="w-4 h-4" />
                     </div>
-                    <div className="p-6">
-                      <div
-                        className={`text-sm mb-2 bg-clip-text text-transparent bg-gradient-to-r ${gradient}`}
-                      >
-                        {project.category}
-                      </div>
-                      <h3
-                        className={`text-xl font-bold text-white mb-3 transition-colors duration-300 ${hoverText}`}
-                      >
-                        {project.title}
-                      </h3>
-                      <p
-                        className={`text-white/70 mb-4 line-clamp-2 transition-colors duration-300 ${hoverText}`}
-                      >
-                        {project.description}
-                      </p>
-                      <div className="flex flex-wrap gap-2">
-                        {project.tech.slice(0, 3).map((tech, techIndex) => (
-                          <span
-                            key={techIndex}
-                            className={`px-2 py-1 text-xs bg-white/10 text-white/60 rounded-full transition-colors duration-300 ${hoverText}`}
-                          >
-                            {tech}
-                          </span>
-                        ))}
-                        {project.tech.length > 3 && (
-                          <span
-                            className={`px-2 py-1 text-xs text-blue-400 transition-colors duration-300 ${hoverText}`}
-                          >
-                            +{project.tech.length - 3} mais
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-blue-600/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
                   </div>
-                </motion.div>
-              );
-            })}
-          </AnimatePresence>
-        </motion.div>
+                  <div className="p-5">
+                    <h3 className="text-xl font-semibold text-white mb-2">{project.title}</h3>
+                    <p className="text-white/70 text-sm line-clamp-2">{project.description}</p>
+                    <div className="flex flex-wrap mt-4 gap-2">
+                      {project.tech.slice(0, 3).map((tech, i) => (
+                        <span
+                          key={i}
+                          className="text-xs text-white/80 bg-white/10 px-2 py-1 rounded-full"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                      {project.tech.length > 3 && (
+                        <span className="text-xs text-blue-400">
+                          +{project.tech.length - 3} mais
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
 
-        {/* Project Modal */}
+        {/* Modal de Detalhes */}
         <AnimatePresence>
           {selectedProject && (
             <motion.div
-              key="backdrop"
+              className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
               onClick={() => setSelectedProject(null)}
             >
               <motion.div
-                key="modal"
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.9, opacity: 0 }}
-                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                className="relative w-full max-w-4xl max-h-[90vh] overflow-hidden bg-gray-900/90 border border-white/20 rounded-3xl shadow-xl z-[110] flex flex-col md:flex-row"
+                className="bg-gray-900/90 rounded-3xl max-w-4xl w-full flex flex-col md:flex-row overflow-hidden border border-white/20"
+                initial={{ scale: 0.95 }}
+                animate={{ scale: 1 }}
+                exit={{ scale: 0.9 }}
                 onClick={(e) => e.stopPropagation()}
-                onMouseMove={handleMouseMove}
-                onMouseLeave={handleMouseLeave}
-                style={{
-                  transformStyle: "preserve-3d",
-                  perspective: 1000,
-                  transform: `rotateX(${rotation.rotateX}deg) rotateY(${rotation.rotateY}deg)`,
-                  transition:
-                    rotation.rotateX === 0 && rotation.rotateY === 0
-                      ? "transform 0.5s cubic-bezier(0.22,1,0.36,1)"
-                      : "none",
-                }}
               >
-                {/* Close Button */}
-                <button
-                  onClick={() => setSelectedProject(null)}
-                  className="fixed md:absolute top-4 right-4 z-50 p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors duration-200"
-                  aria-label="Fechar modal"
-                >
-                  <X className="h-6 w-6" />
-                </button>
-
-                {/* Image */}
-                <div className="relative w-full md:w-1/2 h-64 md:h-auto flex-shrink-0">
+                {/* Imagem */}
+                <div className="md:w-1/2 w-full">
                   <img
                     src={selectedProject.image}
                     alt={selectedProject.title}
-                    className="w-full h-full object-cover rounded-t-3xl md:rounded-l-3xl md:rounded-r-none"
+                    className="object-cover w-full h-64 md:h-full"
                   />
                 </div>
 
-                {/* Info */}
-                <div className="p-6 md:p-8 w-full md:w-1/2 overflow-y-auto max-h-[90vh]">
-                  <div
-                    className={`text-sm mb-2 bg-clip-text text-transparent bg-gradient-to-r ${
-                      selectedProject.color || "from-blue-600 to-blue-500"
-                    }`}
-                  >
-                    {selectedProject.category}
-                  </div>
-                  <h3 className="text-2xl sm:text-3xl font-bold text-white mb-4">
-                    {selectedProject.title}
-                  </h3>
-                  <p className="text-white/80 mb-6 leading-relaxed text-sm sm:text-base">
-                    {selectedProject.description}
-                  </p>
-                  <div className="mb-6">
-                    <h4 className="text-lg font-semibold text-white mb-3">
-                      Principais Recursos
-                    </h4>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
-                      {selectedProject.features.map((feature, index) => (
-                        <div key={index} className="flex items-center space-x-2">
-                          <div className="w-2 h-2 bg-blue-400 rounded-full" />
-                          <span className="text-white/70">{feature}</span>
-                        </div>
+                {/* Conteúdo */}
+                <div className="p-6 flex flex-col justify-between md:w-1/2">
+                  <div>
+                    <h3 className="text-2xl font-bold text-white mb-2">{selectedProject.title}</h3>
+                    <p className="text-white/70 text-sm mb-4">{selectedProject.description}</p>
+                    <ul className="text-white/80 text-sm space-y-1 mb-4">
+                      {selectedProject.features.map((f, i) => (
+                        <li key={i}>• {f}</li>
                       ))}
-                    </div>
-                  </div>
-                  <div className="mb-6">
-                    <h4 className="text-lg font-semibold text-white mb-3">
-                      Tecnologias
-                    </h4>
-                    <div className="flex flex-wrap gap-2 text-sm">
-                      {selectedProject.tech.map((tech, index) => (
-                        <span
-                          key={index}
-                          className="px-3 py-1 bg-gradient-to-r from-blue-600/20 to-blue-500/20 border border-blue-500/30 text-blue-300 rounded-full"
-                        >
+                    </ul>
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {selectedProject.tech.map((tech, i) => (
+                        <span key={i} className="text-xs bg-white/10 text-white px-3 py-1 rounded-full">
                           {tech}
                         </span>
                       ))}
                     </div>
                   </div>
-                  <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-3 sm:space-y-0">
+
+                  {/* Botões */}
+                  <div className="flex gap-4 mt-4 flex-wrap">
                     {selectedProject.projectUrl && (
-                      <motion.button
-                        className={`flex items-center justify-center space-x-2 ${
-                          selectedProject.buttonColor || "bg-blue-600 hover:bg-blue-700"
-                        } text-white px-6 py-3 rounded-full hover:shadow-lg transition-all duration-300 text-sm sm:text-base`}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={() =>
-                          window.open(selectedProject.projectUrl, "_blank")
-                        }
+                      <a
+                        href={selectedProject.projectUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bg-blue-600 text-white px-4 py-2 rounded-full flex items-center gap-2 hover:bg-blue-700 transition"
                       >
-                        <ExternalLink className="h-4 w-4" />
-                        <span>Ver Projeto</span>
-                      </motion.button>
+                        <ExternalLink className="w-4 h-4" />
+                        Ver Projeto
+                      </a>
                     )}
                     {selectedProject.githubUrl && (
-                      <motion.button
-                        className="flex items-center justify-center space-x-2 backdrop-blur-sm bg-white/10 border border-white/20 text-white px-6 py-3 rounded-full hover:border-blue-500/50 transition-all duration-300 text-sm sm:text-base"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={() =>
-                          window.open(selectedProject.githubUrl, "_blank")
-                        }
+                      <a
+                        href={selectedProject.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bg-white/10 border border-white/20 text-white px-4 py-2 rounded-full flex items-center gap-2 hover:border-blue-400 transition"
                       >
-                        <Github className="h-4 w-4" />
-                        <span>Código</span>
-                      </motion.button>
+                        <Github className="w-4 h-4" />
+                        Código
+                      </a>
                     )}
                   </div>
                 </div>

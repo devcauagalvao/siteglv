@@ -64,26 +64,27 @@ const Footer = () => {
 
   return (
     <footer className="relative overflow-hidden text-white">
-      {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-gray-900 via-black to-gray-900" />
 
-      {/* Glow effect */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-0 left-1/4 w-80 h-80 bg-blue-500 rounded-full blur-3xl animate-pulse" />
         <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-blue-600 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
       </div>
 
-      {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
-          {/* Sobre + Contato */}
+      <div className="relative z-10 max-w-7xl mx-auto px-6 py-20">
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12"
+        >
           <div>
-            <h4 className="text-xl font-semibold mb-4">GLV Informática</h4>
+            <h4 className="text-2xl font-bold mb-4 text-blue-400">GLV Informática</h4>
             <p className="text-white/70 text-sm mb-6 leading-relaxed">
-              Soluções tecnológicas sob medida para transformar o seu negócio.
-              Inovação, performance e suporte de verdade.
+              Soluções tecnológicas sob medida para transformar o seu negócio. Inovação, performance e suporte de verdade.
             </p>
-            <div className="space-y-3">
+            <div className="space-y-4">
               {contactInfo.map((item, index) => (
                 <div key={index} className="flex items-center gap-3 text-white/70 text-sm">
                   <item.icon className="h-4 w-4 text-blue-400" />
@@ -93,10 +94,9 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Demais seções */}
           {footerSections.map((section, i) => (
             <div key={i}>
-              <h4 className="text-lg font-semibold mb-4">{section.title}</h4>
+              <h4 className="text-xl font-semibold mb-4 text-white/90">{section.title}</h4>
               <ul className="space-y-3 text-sm">
                 {section.links.map((link, j) => (
                   <li key={j}>
@@ -104,7 +104,7 @@ const Footer = () => {
                       href={link.href}
                       target={link.external ? '_blank' : '_self'}
                       rel={link.external ? 'noopener noreferrer' : ''}
-                      className="flex items-center gap-2 text-white/70 hover:text-blue-400 transition-all duration-200"
+                      className="flex items-center gap-2 text-white/70 hover:text-blue-400 transition duration-200"
                     >
                       {link.icon && (
                         <link.icon className="h-4 w-4 text-blue-400/60" />
@@ -116,32 +116,36 @@ const Footer = () => {
               </ul>
             </div>
           ))}
-        </div>
+        </motion.div>
 
-        {/* Divider */}
-        <div className="h-px bg-gradient-to-r from-transparent via-blue-500/40 to-transparent mb-6" />
-
-        {/* Bottom Row */}
-        <div className="flex flex-col md:flex-row items-center justify-between text-sm text-white/60 gap-6">
-          <div className="text-center md:text-left space-y-1">
-            <p>© {currentYear} GLV Informática e Desenvolvimento.</p>
-            <p>CNPJ: 00.000.000/0001-00 - Empresa registrada no Brasil</p>
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 1 }}
+          viewport={{ once: true }}
+        >
+          <div className="h-px bg-gradient-to-r from-transparent via-blue-500/40 to-transparent mb-8" />
+          <div className="flex flex-col md:flex-row items-center justify-between text-sm text-white/60 gap-6">
+            <div className="text-center md:text-left space-y-1">
+              <p>© {currentYear} GLV Informática e Desenvolvimento.</p>
+              <p>CNPJ: 00.000.000/0001-00 - Empresa registrada no Brasil</p>
+            </div>
+            <div className="flex items-center space-x-3">
+              <span className="mr-2">Siga-nos:</span>
+              {socialLinks.map((social, i) => (
+                <a
+                  key={i}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`p-2 rounded-full bg-white/10 border border-white/10 hover:border-blue-500 transition-all duration-300 ${social.color}`}
+                >
+                  <social.icon className="h-5 w-5" />
+                </a>
+              ))}
+            </div>
           </div>
-          <div className="flex items-center space-x-3">
-            <span className="mr-2">Siga-nos:</span>
-            {socialLinks.map((social, i) => (
-              <a
-                key={i}
-                href={social.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`p-2 rounded-full bg-white/10 border border-white/10 hover:border-blue-500 transition-all duration-300 ${social.color}`}
-              >
-                <social.icon className="h-5 w-5" />
-              </a>
-            ))}
-          </div>
-        </div>
+        </motion.div>
       </div>
     </footer>
   );
