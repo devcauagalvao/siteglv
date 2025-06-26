@@ -90,7 +90,7 @@ const Portfolio = () => {
       ],
       icon: Globe,
       githubUrl: "https://github.com/devcauagalvao/cr-transportes",
-      projectUrl: "https://crtransportes.glvinformatica.com.br",
+      projectUrl: "https://crsantostransportes.com.br",
       hoverBg: "hover:bg-[#ff7f50]",
       color: "from-[#ff7f50] to-[#ff7f50]",
     },
