@@ -40,11 +40,9 @@ const About = () => {
 
   return (
     <section id="about" className="py-16 sm:py-20 relative overflow-hidden">
-
       <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-900 to-black" />
 
       <div className="relative z-0 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -58,11 +56,11 @@ const About = () => {
           </h2>
           <p className="text-base sm:text-lg text-white/80 max-w-xl sm:max-w-3xl mx-auto px-2 sm:px-0">
             Construindo o futuro digital através de soluções tecnológicas
-            inovadoras e suporte especializado
+            inovadoras e suporte especializado.
           </p>
         </motion.div>
 
-        {/* Values Grid */}
+        {/* Cards com Liquid Glass */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16 sm:mb-20">
           {values.map((value, index) => (
             <motion.div
@@ -74,7 +72,7 @@ const About = () => {
               whileHover={{ y: -10, scale: 1.02 }}
               className="group"
             >
-              <div className="h-full backdrop-blur-lg bg-white/5 border border-white/10 rounded-2xl p-5 sm:p-6 hover:border-blue-500/30 transition-all duration-300">
+              <div className="h-full backdrop-blur-2xl bg-white/5 border border-white/10 rounded-2xl p-5 sm:p-6 hover:border-blue-500/40 transition-all duration-300 shadow-lg">
                 <div className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-r from-blue-600 to-blue-500 mb-3 sm:mb-4 group-hover:shadow-lg group-hover:shadow-blue-500/30 transition-all duration-300">
                   <value.icon className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                 </div>
@@ -89,18 +87,19 @@ const About = () => {
           ))}
         </div>
 
+        {/* Timeline com Liquid Glass */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="backdrop-blur-lg bg-white/5 border border-white/10 rounded-3xl p-6 sm:p-8 md:p-12"
+          className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-3xl p-6 sm:p-8 md:p-12 shadow-xl"
         >
           <h2 className="text-2xl sm:text-3xl font-bold text-center text-white mb-8 sm:mb-12">
             Nossa Jornada
           </h2>
-          <div className="relative">
 
+          <div className="relative">
             <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 w-0.5 h-full bg-gradient-to-b from-blue-500 to-transparent" />
 
             <div className="space-y-8 md:space-y-12">
@@ -117,23 +116,25 @@ const About = () => {
                 >
                   <div
                     className={`w-full md:w-1/2 ${
-                      index % 2 === 0 ? "md:pr-8 text-left md:text-right" : "md:pl-8 text-left"
+                      index % 2 === 0
+                        ? "md:pr-8 text-left md:text-right"
+                        : "md:pl-8 text-left"
                     } mb-4 md:mb-0`}
                   >
-                    <div className="backdrop-blur-sm bg-white/5 border border-white/10 rounded-xl p-4 hover:border-blue-500/30 transition-all duration-300">
+                    <div className="backdrop-blur-lg bg-white/5 border border-white/10 rounded-xl p-4 hover:border-blue-500/40 transition-all duration-300 shadow-md">
                       <div className="text-xl sm:text-2xl font-bold text-blue-400 mb-1 sm:mb-2">
                         {milestone.year}
                       </div>
-                      <div className="text-white/80 text-sm sm:text-base">{milestone.event}</div>
+                      <div className="text-white/80 text-sm sm:text-base">
+                        {milestone.event}
+                      </div>
                     </div>
                   </div>
 
-                  {/* Bolinha central */}
                   <div className="relative z-10 flex justify-center md:justify-center w-full md:w-auto mb-0 md:mb-0">
                     <div className="w-4 h-4 bg-blue-500 rounded-full border-4 border-black shadow-lg shadow-blue-500/30" />
                   </div>
 
-                  {/* Espaço vazio para alinhar */}
                   <div className="hidden md:block w-1/2" />
                 </motion.div>
               ))}

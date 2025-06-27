@@ -60,12 +60,17 @@ const Hero = () => {
   return (
     <>
       <Helmet>
-        <title>GLV Informática | Software Personalizado e Suporte Técnico em Itu</title>
+        <title>
+          GLV Informática | Software Personalizado e Suporte Técnico em Itu
+        </title>
         <meta
           name="description"
           content="GLV Informática oferece desenvolvimento de sites, softwares personalizados, aplicativos, suporte técnico e automação para escalar seu negócio em Itu e região."
         />
-        <meta name="keywords" content="software personalizado, desenvolvimento de sites, suporte técnico, automação, manutenção de computadores, aplicativos, TI em Itu" />
+        <meta
+          name="keywords"
+          content="software personalizado, desenvolvimento de sites, suporte técnico, automação, manutenção de computadores, aplicativos, TI em Itu"
+        />
         <meta name="author" content="GLV Informática" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Helmet>
@@ -118,7 +123,8 @@ const Hero = () => {
             transition={{ delay: 0.9, duration: 0.8 }}
             className="text-lg md:text-xl text-white/80 mb-12 max-w-3xl leading-relaxed"
           >
-            Software personalizado, infraestrutura e suporte técnico para escalar seu negócio!
+            Software personalizado, infraestrutura e suporte técnico para
+            escalar seu negócio!
           </motion.p>
 
           <motion.div
@@ -145,6 +151,29 @@ const Hero = () => {
           </motion.div>
         </div>
       </header>
+
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1.5, duration: 1 }}
+        className="absolute bottom-10 w-full flex justify-center z-10"
+      >
+        <div className="animate-bounce">
+          <svg
+            className="w-10 h-10 text-blue-500"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
+        </div>
+      </motion.div>
     </>
   );
 };
