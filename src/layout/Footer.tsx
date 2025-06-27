@@ -49,11 +49,11 @@ const Footer = () => {
   ];
 
   const socialLinks = [
-    { icon: Instagram, href: 'https://www.instagram.com/glv_informatica/', color: 'hover:text-pink-400' },
-    { icon: Facebook, href: 'https://www.facebook.com/GLVinformatica/', color: 'hover:text-blue-400' },
-    { icon: Github, href: 'https://github.com/GLV-informatica', color: 'hover:text-gray-300' },
-    { icon: MessageCircle, href: 'https://wa.me/5511919167653', color: 'hover:text-green-400' },
-    { icon: Youtube, href: 'https://www.youtube.com/@GLVinformatica', color: 'hover:text-red-500' },
+    { icon: Instagram, href: 'https://www.instagram.com/glv_informatica/', color: 'hover:text-pink-400 hover:border-pink-400' },
+    { icon: Facebook, href: 'https://www.facebook.com/GLVinformatica/', color: 'hover:text-blue-400 hover:border-blue-400' },
+    { icon: Github, href: 'https://github.com/GLV-informatica', color: 'hover:text-gray-300 hover:border-gray-300' },
+    { icon: MessageCircle, href: 'https://wa.me/5511919167653', color: 'hover:text-green-400 hover:border-green-400' },
+    { icon: Youtube, href: 'https://www.youtube.com/@GLVinformatica', color: 'hover:text-red-500 hover:border-red-500' },
   ];
 
   const contactInfo = [
@@ -82,7 +82,11 @@ const Footer = () => {
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12"
         >
           <div>
-            <h4 className="text-2xl font-bold mb-4 text-blue-400">GLV Informática</h4>
+            <img
+              src="/img/branding/logoglv.png"
+              alt="GLV Informática"
+              className="w-40 mb-4"
+            />
             <p className="text-white/70 text-sm mb-6 leading-relaxed">
               Soluções tecnológicas sob medida para transformar o seu negócio. Inovação, performance e suporte de verdade.
             </p>
@@ -140,7 +144,7 @@ const Footer = () => {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`p-2 rounded-full bg-white/10 border border-white/10 hover:border-blue-500 transition-all duration-300 ${social.color}`}
+                  className={`p-2 rounded-full bg-white/10 border border-transparent transition-all duration-300 ${social.color}`}
                 >
                   <social.icon className="h-5 w-5" />
                 </a>
