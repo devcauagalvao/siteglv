@@ -1,9 +1,9 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from "./components/layout/Navbar";
-import Footer from "./components/layout/Footer";
-import CookieConsent from "./components/layout/CookieConsent";
-import AIAssistant from "./components/features/AIAssistant";
+import Navbar from "./layout/Navbar";
+import Footer from "./layout/Footer";
+import CookieConsent from "./layout/CookieConsent";
+import AIAssistant from "./features/assistant/AIAssistant";
 import Home from "./pages/Home";
 
 function App() {

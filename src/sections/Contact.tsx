@@ -36,10 +36,10 @@ const Contact = () => {
 
     try {
       await emailjs.send(
-        'service_1wuyals', // Service ID
-        'template_9xroo21', // Template ID
+        'service_1wuyals',
+        'template_9xroo21',
         templateParams,
-        'H_rsp6SrkABlqY5RN' // Public Key
+        'H_rsp6SrkABlqY5RN'
       );
 
       alert('Solicitação enviada com sucesso!');
@@ -108,7 +108,7 @@ const Contact = () => {
         <div className="absolute bottom-1/4 right-1/4 w-72 h-72 md:w-96 md:h-96 bg-blue-600 rounded-full blur-3xl" />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative z-0 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}

@@ -7,25 +7,10 @@ import {
   Smartphone,
   Globe,
 } from "lucide-react";
+import ProjectModal from "../components/ProjectModal";
 
 const Portfolio = () => {
   const [selectedProject, setSelectedProject] = useState(null);
-  const [rotation, setRotation] = useState({ rotateX: 0, rotateY: 0 });
-
-  const handleMouseMove = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    const deltaX = e.clientX - centerX;
-    const deltaY = e.clientY - centerY;
-    const rotateY = (deltaX / (rect.width / 2)) * 15;
-    const rotateX = -(deltaY / (rect.height / 2)) * 15;
-    setRotation({ rotateX, rotateY });
-  };
-
-  const handleMouseLeave = () => {
-    setRotation({ rotateX: 0, rotateY: 0 });
-  };
 
   useEffect(() => {
     document.body.style.overflow = selectedProject ? "hidden" : "auto";
@@ -76,7 +61,7 @@ const Portfolio = () => {
     {
       id: 3,
       title: "CR-Transportes",
-      category: "Web Development",
+      category: "Sites",
       image: "/img/portfolio/crtransportes.png",
       description:
         "Sistema para gestão de transportes e logística, com controle de frotas, rotas e painéis administrativos. Foi desenvolvida também uma página de conversão para captação de leads.",
@@ -91,16 +76,36 @@ const Portfolio = () => {
       icon: Globe,
       githubUrl: "https://github.com/devcauagalvao/cr-transportes",
       projectUrl: "https://crsantostransportes.com.br",
-      hoverBg: "hover:bg-[#ff7f50]",
-      color: "from-[#ff7f50] to-[#ff7f50]",
+      hoverBg: "hover:bg-blue-600",
+      color: "from-blue-600 to-blue-600",
     },
+    {
+      "id": 5,
+      title: "TechLearn",
+      category: "Sites",
+      image: "/img/portfolio/techlearn.png",
+      description: "Site de apresentação do TechLearn, um aplicativo inovador para ensino de programação, com informações sobre cursos, designs e tecnologias utilizadas.",
+      tech: ["HTML5", "CSS3", "JavaScript", "React", "AOS (Animate On Scroll)"],
+      features: [
+        "Informações detalhadas sobre recursos do aplicativo",
+        "Apresentação dos cursos disponíveis",
+        "Design responsivo",
+        "Animações suaves com AOS",
+        "Vitrine das funcionalidades do TechLearn"
+      ],
+      githubUrl: "https://github.com/devcauagalvao/Site-TCC-TechLearn.git",
+      projectUrl: "https://site-tcc-tech-learn.vercel.app",
+      icon: Globe,
+      hoverBg: "hover:bg-[#00ffff]",
+      color: "from-[#00ffff] to-[#00ffff]",
+    }
   ];
 
   const categories = [
     "Todos",
-    "Web Development",
+    "Sites",
     "App Mobile",
-    "Infrastructure",
+    "Infraestrutura",
   ];
   const [activeCategory, setActiveCategory] = useState("Todos");
 
@@ -112,7 +117,7 @@ const Portfolio = () => {
   return (
     <section id="portfolio" className="py-20 relative overflow-hidden px-4 sm:px-6 lg:px-8">
       <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-900 to-black" />
-      <div className="relative z-10 max-w-7xl mx-auto">
+      <div className="relative z-0 max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -129,24 +134,21 @@ const Portfolio = () => {
           </p>
         </motion.div>
 
-        {/* Filtros */}
         <div className="flex flex-wrap justify-center gap-4 mb-12">
           {categories.map((category) => (
             <button
               key={category}
               onClick={() => setActiveCategory(category)}
-              className={`px-5 py-2 rounded-full text-sm sm:text-base transition-all duration-300 ${
-                activeCategory === category
-                  ? "bg-blue-600 text-white shadow"
-                  : "bg-white/10 text-white/70 border border-white/20 hover:border-blue-400"
-              }`}
+              className={`px-5 py-2 rounded-full text-sm sm:text-base transition-all duration-300 ${activeCategory === category
+                ? "bg-blue-600 text-white shadow"
+                : "bg-white/10 text-white/70 border border-white/20 hover:border-blue-400"
+                }`}
             >
               {category}
             </button>
           ))}
         </div>
 
-        {/* Grade de Projetos */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {filteredProjects.map((project, index) => {
             const gradient = project.color || "from-blue-600 to-blue-500";
@@ -198,81 +200,15 @@ const Portfolio = () => {
           })}
         </div>
 
-        {/* Modal de Detalhes */}
         <AnimatePresence>
           {selectedProject && (
-            <motion.div
-              className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setSelectedProject(null)}
-            >
-              <motion.div
-                className="bg-gray-900/90 rounded-3xl max-w-4xl w-full flex flex-col md:flex-row overflow-hidden border border-white/20"
-                initial={{ scale: 0.95 }}
-                animate={{ scale: 1 }}
-                exit={{ scale: 0.9 }}
-                onClick={(e) => e.stopPropagation()}
-              >
-                {/* Imagem */}
-                <div className="md:w-1/2 w-full">
-                  <img
-                    src={selectedProject.image}
-                    alt={selectedProject.title}
-                    className="object-cover w-full h-64 md:h-full"
-                  />
-                </div>
-
-                {/* Conteúdo */}
-                <div className="p-6 flex flex-col justify-between md:w-1/2">
-                  <div>
-                    <h3 className="text-2xl font-bold text-white mb-2">{selectedProject.title}</h3>
-                    <p className="text-white/70 text-sm mb-4">{selectedProject.description}</p>
-                    <ul className="text-white/80 text-sm space-y-1 mb-4">
-                      {selectedProject.features.map((f, i) => (
-                        <li key={i}>• {f}</li>
-                      ))}
-                    </ul>
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {selectedProject.tech.map((tech, i) => (
-                        <span key={i} className="text-xs bg-white/10 text-white px-3 py-1 rounded-full">
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Botões */}
-                  <div className="flex gap-4 mt-4 flex-wrap">
-                    {selectedProject.projectUrl && (
-                      <a
-                        href={selectedProject.projectUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="bg-blue-600 text-white px-4 py-2 rounded-full flex items-center gap-2 hover:bg-blue-700 transition"
-                      >
-                        <ExternalLink className="w-4 h-4" />
-                        Ver Projeto
-                      </a>
-                    )}
-                    {selectedProject.githubUrl && (
-                      <a
-                        href={selectedProject.githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="bg-white/10 border border-white/20 text-white px-4 py-2 rounded-full flex items-center gap-2 hover:border-blue-400 transition"
-                      >
-                        <Github className="w-4 h-4" />
-                        Código
-                      </a>
-                    )}
-                  </div>
-                </div>
-              </motion.div>
-            </motion.div>
+            <ProjectModal
+              project={selectedProject}
+              onClose={() => setSelectedProject(null)}
+            />
           )}
         </AnimatePresence>
+
       </div>
     </section>
   );

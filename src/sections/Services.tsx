@@ -113,7 +113,10 @@ const Services = () => {
       : services.filter((s) => s.category === selectedCategory);
 
   return (
-    <section id="services" className="py-24 bg-black text-white">
+    <section id="services" className="py-24 bg-black text-white relative z-0 overflow-hidden">
+      {/* Gradiente ocupa toda a seção atrás */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-900 to-black -z-10" />
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -126,7 +129,8 @@ const Services = () => {
             Nossos <span className="text-blue-500">Serviços</span>
           </h2>
           <p className="text-lg text-gray-400 mt-4 max-w-2xl mx-auto">
-            Soluções completas para transformar e escalar seu negócio com tecnologia de ponta.
+            Soluções completas para transformar e escalar seu negócio com
+            tecnologia de ponta.
           </p>
         </motion.div>
 
@@ -136,7 +140,10 @@ const Services = () => {
               key={cat}
               onClick={() => setSelectedCategory(cat)}
               className={`px-5 py-2 rounded-full text-sm font-semibold border transition-colors duration-300
-                ${selectedCategory === cat ? "bg-blue-600 text-white border-blue-600" : "bg-white/10 text-white border-white/10 hover:bg-blue-600/30"}`}
+                ${selectedCategory === cat
+                  ? "bg-blue-600 text-white border-blue-600"
+                  : "bg-white/10 text-white border-white/10 hover:bg-blue-600/30"
+                }`}
             >
               {cat}
             </button>
@@ -153,20 +160,20 @@ const Services = () => {
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.4, delay: index * 0.05 }}
                 whileHover={{ scale: 1.03 }}
-                className={`p-6 rounded-2xl border shadow-sm transition-all
-                  ${service.highlighted ? "border-blue-500 shadow-blue-500/20" : "border-white/10 hover:border-blue-500/40"} 
-                  bg-gradient-to-br from-gray-800 via-gray-900 to-black backdrop-blur-sm`}
+                className={`p-6 rounded-2xl border bg-white/10 backdrop-blur-md border-white/30 transition-all
+  ${service.highlighted
+                    ? "border-blue-400 bg-white/20 hover:shadow-blue-400/30 hover:shadow-lg"
+                    : "hover:bg-white/20 hover:border-white/40 hover:shadow-white/30 hover:shadow-lg"
+                  }`}
               >
-                <div className="flex items-center justify-center w-14 h-14 mb-5 rounded-xl bg-gradient-to-tr from-blue-600 to-blue-400">
+                <div className="flex items-center justify-center w-14 h-14 mb-5 rounded-xl bg-gradient-to-tr from-blue-600 to-blue-400/70 backdrop-blur-sm shadow-md">
                   <service.icon className="w-7 h-7 text-white" />
                 </div>
                 <h3 className="text-xl font-bold mb-2 text-white">
                   {service.title}
                 </h3>
-                <p className="text-sm text-gray-400 mb-4">
-                  {service.description}
-                </p>
-                <ul className="text-sm text-gray-300 space-y-2">
+                <p className="text-sm text-white/80 mb-4">{service.description}</p>
+                <ul className="text-sm text-white/70 space-y-2">
                   {service.features.map((f, i) => (
                     <li key={i} className="flex items-center gap-2">
                       <div className="w-1.5 h-1.5 rounded-full bg-blue-400" />
@@ -191,12 +198,13 @@ const Services = () => {
               Tem um projeto especial em mente?
             </h3>
             <p className="text-gray-300 text-lg mb-6 max-w-xl mx-auto">
-              Desenvolvemos soluções sob medida com foco em resultado. Fale com nosso especialista agora mesmo.
+              Desenvolvemos soluções sob medida com foco em resultado. Fale com
+              nosso especialista agora mesmo.
             </p>
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full font-semibold text-base shadow-lg"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full font-semibold text-base"
             >
               Falar com Especialista
             </motion.button>

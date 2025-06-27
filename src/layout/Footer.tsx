@@ -63,15 +63,17 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="relative overflow-hidden text-white">
-      <div className="absolute inset-0 bg-gradient-to-b from-gray-900 via-black to-gray-900" />
+    <footer className="relative overflow-hidden text-white z-0">
+      {/* Fundo gradiente */}
+      <div className="absolute inset-0 bg-gradient-to-b from-gray-900 via-black to-gray-900 z-0" />
 
-      <div className="absolute inset-0 opacity-10">
+      {/* Bolhas animadas */}
+      <div className="absolute inset-0 opacity-10 z-0">
         <div className="absolute top-0 left-1/4 w-80 h-80 bg-blue-500 rounded-full blur-3xl animate-pulse" />
         <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-blue-600 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 py-20">
+      <div className="relative z-0 max-w-7xl mx-auto px-6 py-20">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}

@@ -43,8 +43,8 @@ const About = () => {
 
       <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-900 to-black" />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
+      <div className="relative z-0 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -89,7 +89,6 @@ const About = () => {
           ))}
         </div>
 
-        {/* Timeline */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -102,11 +101,8 @@ const About = () => {
           </h2>
           <div className="relative">
 
-            {/* Timeline Line */}
-            {/* Linha central só em md+, escondida em mobile */}
             <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 w-0.5 h-full bg-gradient-to-b from-blue-500 to-transparent" />
 
-            {/* Timeline Items */}
             <div className="space-y-8 md:space-y-12">
               {milestones.map((milestone, index) => (
                 <motion.div
@@ -119,7 +115,6 @@ const About = () => {
                     index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
                   }`}
                 >
-                  {/* Texto */}
                   <div
                     className={`w-full md:w-1/2 ${
                       index % 2 === 0 ? "md:pr-8 text-left md:text-right" : "md:pl-8 text-left"

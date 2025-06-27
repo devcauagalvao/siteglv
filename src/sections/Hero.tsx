@@ -5,13 +5,12 @@ import { Helmet } from "react-helmet";
 
 const Hero = () => {
   const words = [
-    "sites personalizados",
-    "softwares sob medida",
-    "aplicativos eficientes",
-    "suporte técnico especializado",
-    "manutenção preventiva",
-    "automação inteligente",
-    "", 
+    "sites personalizados.",
+    "softwares sob medida.",
+    "aplicativos eficientes.",
+    "suporte técnico especializado.",
+    "manutenção preventiva.",
+    "automação inteligente.",
   ];
 
   const [wordIndex, setWordIndex] = useState(0);
@@ -60,7 +59,6 @@ const Hero = () => {
 
   return (
     <>
-      {/* Meta Tags para SEO */}
       <Helmet>
         <title>GLV Informática | Software Personalizado e Suporte Técnico em Itu</title>
         <meta
@@ -80,12 +78,9 @@ const Hero = () => {
       >
         <ParticleBackground />
 
-        {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/80 pointer-events-none" />
 
-        {/* Main Content */}
-        <div className="relative z-10 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 max-w-5xl w-full">
-          {/* Company Logo */}
+        <div className="relative z-0 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 max-w-5xl w-full">
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -100,7 +95,6 @@ const Hero = () => {
             />
           </motion.h1>
 
-          {/* Dynamic Headline */}
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -118,7 +112,6 @@ const Hero = () => {
             />
           </motion.h2>
 
-          {/* Subheadline */}
           <motion.p
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -128,7 +121,6 @@ const Hero = () => {
             Software personalizado, infraestrutura e suporte técnico para escalar seu negócio!
           </motion.p>
 
-          {/* CTA Buttons Container */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
