@@ -62,6 +62,14 @@ const Footer = () => {
     { icon: MapPin, text: 'Itu, SP - Brasil' },
   ];
 
+  const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    const section = document.querySelector(href);
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <footer className="relative overflow-hidden text-white z-0">
       {/* Fundo gradiente */}
@@ -81,6 +89,7 @@ const Footer = () => {
           viewport={{ once: true }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12"
         >
+          {/* Logo e contato */}
           <div>
             <img
               src="/img/branding/logoglv.png"
@@ -110,6 +119,7 @@ const Footer = () => {
                       href={link.href}
                       target={link.external ? '_blank' : '_self'}
                       rel={link.external ? 'noopener noreferrer' : ''}
+                      onClick={!link.external ? (e) => handleSmoothScroll(e, link.href) : undefined}
                       className="flex items-center gap-2 text-white/70 hover:text-blue-400 transition duration-200"
                     >
                       {link.icon && (

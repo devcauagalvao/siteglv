@@ -100,6 +100,15 @@ const Contact = () => {
     }
   ];
 
+  const liquidGlassStyle = {
+    background: 'rgba(255, 255, 255, 0.1)',
+    border: '1px solid rgba(255, 255, 255, 0.2)',
+    backdropFilter: 'blur(20px)',
+    WebkitBackdropFilter: 'blur(20px)',
+    borderRadius: '24px',
+    borderImageSlice: 1,
+  };
+
   return (
     <section id="contact" className="py-20 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-900 to-black" />
@@ -128,88 +137,88 @@ const Contact = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Formulário */}
           <motion.div
+            style={liquidGlassStyle}
+            className="w-full p-6 md:p-8 rounded-3xl"
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <div className="backdrop-blur-lg bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-3xl p-6 md:p-8">
-              <h3 className="text-xl md:text-2xl font-bold text-white mb-6">Solicitar Orçamento</h3>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                {[
-                  ['name', 'Nome Completo', User, 'Seu nome completo'],
-                  ['email', 'E-mail', Mail, 'seu@email.com'],
-                  ['company', 'Empresa (Opcional)', Building, 'Nome da sua empresa']
-                ].map(([name, label, Icon, placeholder]) => (
-                  <div key={name}>
-                    <label className="block text-white/80 mb-2 font-medium">{label}</label>
-                    <div className="relative">
-                      <input
-                        type={name === 'email' ? 'email' : 'text'}
-                        name={name}
-                        value={formData[name]}
-                        onChange={handleChange}
-                        className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 pl-12 text-white placeholder-white/50 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
-                        placeholder={placeholder}
-                        required={name !== 'company'}
-                      />
-                      <Icon className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-white/50" />
-                    </div>
+            <h3 className="text-xl md:text-2xl font-bold text-white mb-6">Solicitar Orçamento</h3>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {[
+                ['name', 'Nome Completo', User, 'Seu nome completo'],
+                ['email', 'E-mail', Mail, 'seu@email.com'],
+                ['company', 'Empresa (Opcional)', Building, 'Nome da sua empresa']
+              ].map(([name, label, Icon, placeholder]) => (
+                <div key={name}>
+                  <label className="block text-white/80 mb-2 font-medium">{label}</label>
+                  <div className="relative">
+                    <input
+                      type={name === 'email' ? 'email' : 'text'}
+                      name={name}
+                      value={formData[name]}
+                      onChange={handleChange}
+                      className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 pl-12 text-white placeholder-white/50 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                      placeholder={placeholder}
+                      required={name !== 'company'}
+                    />
+                    <Icon className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-white/50" />
                   </div>
-                ))}
+                </div>
+              ))}
 
-                <div>
-                  <label className="block text-white/80 mb-2 font-medium">Serviço de Interesse</label>
-                  <select
-                    name="service"
-                    value={formData.service}
+              <div>
+                <label className="block text-white/80 mb-2 font-medium">Serviço de Interesse</label>
+                <select
+                  name="service"
+                  value={formData.service}
+                  onChange={handleChange}
+                  required
+                  className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                >
+                  <option value="" className="bg-gray-900">Selecione um serviço</option>
+                  {services.map((service) => (
+                    <option key={service} value={service} className="bg-gray-900">
+                      {service}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-white/80 mb-2 font-medium">Mensagem</label>
+                <div className="relative">
+                  <textarea
+                    name="message"
+                    value={formData.message}
                     onChange={handleChange}
                     required
-                    className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
-                  >
-                    <option value="" className="bg-gray-900">Selecione um serviço</option>
-                    {services.map((service) => (
-                      <option key={service} value={service} className="bg-gray-900">
-                        {service}
-                      </option>
-                    ))}
-                  </select>
+                    rows={4}
+                    className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 pl-12 text-white placeholder-white/50 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 resize-none"
+                    placeholder="Descreva seu projeto ou necessidade..."
+                  />
+                  <MessageCircle className="absolute left-4 top-4 h-5 w-5 text-white/50" />
                 </div>
+              </div>
 
-                <div>
-                  <label className="block text-white/80 mb-2 font-medium">Mensagem</label>
-                  <div className="relative">
-                    <textarea
-                      name="message"
-                      value={formData.message}
-                      onChange={handleChange}
-                      required
-                      rows={4}
-                      className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 pl-12 text-white placeholder-white/50 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 resize-none"
-                      placeholder="Descreva seu projeto ou necessidade..."
-                    />
-                    <MessageCircle className="absolute left-4 top-4 h-5 w-5 text-white/50" />
-                  </div>
-                </div>
-
-                <motion.button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full bg-gradient-to-r from-blue-600 to-blue-500 text-white py-4 px-6 rounded-xl font-semibold hover:shadow-lg hover:shadow-blue-500/30 flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                  whileHover={!isSubmitting ? { scale: 1.02 } : {}}
-                  whileTap={!isSubmitting ? { scale: 0.98 } : {}}
-                >
-                  {isSubmitting ? (
-                    <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  ) : (
-                    <>
-                      <Send className="h-5 w-5" />
-                      <span>Enviar Solicitação</span>
-                    </>
-                  )}
-                </motion.button>
-              </form>
-            </div>
+              <motion.button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full bg-gradient-to-r from-blue-600 to-blue-500 text-white py-4 px-6 rounded-xl font-semibold hover:shadow-lg hover:shadow-blue-500/30 flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                whileHover={!isSubmitting ? { scale: 1.02 } : {}}
+                whileTap={!isSubmitting ? { scale: 0.98 } : {}}
+              >
+                {isSubmitting ? (
+                  <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                ) : (
+                  <>
+                    <Send className="h-5 w-5" />
+                    <span>Enviar Solicitação</span>
+                  </>
+                )}
+              </motion.button>
+            </form>
           </motion.div>
 
           {/* Informações de Contato */}
@@ -220,7 +229,7 @@ const Contact = () => {
             transition={{ duration: 0.8 }}
             className="space-y-8"
           >
-            <div className="backdrop-blur-lg bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-3xl p-6 md:p-8">
+            <div style={liquidGlassStyle} className="p-6 md:p-8">
               <h3 className="text-xl md:text-2xl font-bold text-white mb-6">Informações de Contato</h3>
               <div className="space-y-6">
                 {contactInfo.map((item, index) => (
@@ -270,8 +279,8 @@ const Contact = () => {
             </motion.div>
           </motion.div>
         </div>
-      </div>
-    </section>
+      </div >
+    </section >
   );
 };
 
