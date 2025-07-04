@@ -92,7 +92,7 @@ const Footer = () => {
           {/* Logo e contato */}
           <div>
             <img
-              src="/img/branding/logoglv.png"
+              src="/img/branding/logohorizontal.png"
               alt="GLV Informática"
               className="w-40 mb-4"
             />

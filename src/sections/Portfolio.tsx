@@ -106,16 +106,13 @@ const Portfolio = () => {
       category: "Sites",
       image: "/img/portfolio/wowgold.png",
       description:
-        "Plataforma de comércio eletrônico especializada na venda de ouro virtual para World of Warcraft. O site apresenta uma interface responsiva com design moderno, utiliza animações baseadas no scroll e oferece uma experiência fluida ao usuário com integração a ferramentas de análise e marketing digital.",
+        "Plataforma de comércio eletrônico especializada na venda de ouro virtual para World of Warcraft. O site apresenta uma interface responsiva com design moderno e oferece uma experiência fluida ao usuário.",
       tech: [
         "HTML5",
         "CSS3",
         "JavaScript",
         "jQuery",
         "Swiper (carrosséis)",
-        "AOS (Animate On Scroll)",
-        "Tailwind CSS",
-        "Sass",
         "Webpack",
         "Babel",
       ],
@@ -177,11 +174,10 @@ const Portfolio = () => {
             <button
               key={category}
               onClick={() => setActiveCategory(category)}
-              className={`px-5 py-2 rounded-full text-sm sm:text-base transition-all duration-300 ${
-                activeCategory === category
+              className={`px-5 py-2 rounded-full text-sm sm:text-base transition-all duration-300 ${activeCategory === category
                   ? "bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-lg"
                   : "bg-white/10 backdrop-blur-md text-white/80 border border-white/20 hover:border-blue-400 hover:text-white"
-              }`}
+                }`}
             >
               {category}
             </button>

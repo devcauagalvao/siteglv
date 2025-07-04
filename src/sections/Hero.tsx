@@ -93,7 +93,7 @@ const Hero = () => {
             className="mb-6"
           >
             <img
-              src="/img/branding/logoglv.png"
+              src="/img/branding/logohorizontal.png"
               alt="Logo da GLV Informática - Soluções em Tecnologia"
               className="h-10 md:h-20 lg:h-20 object-contain mx-auto"
               loading="lazy"

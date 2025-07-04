@@ -82,9 +82,12 @@ const Navbar = () => {
                 <ArrowUp className="text-blue-500 absolute inset-0 m-auto w-5 h-5" />
               </div>
             ) : (
-              <h1 className="text-xl font-extrabold tracking-wide flex items-center gap-1">
-                <span className="text-blue-500">GLV</span>
-              </h1>
+              <img
+                src="../../public/img/branding/glvsemfundo.png"
+                alt="GLV Logo"
+                className="h-12 w-auto"
+                style={{ maxWidth: 120 }}
+              />
             )}
           </motion.div>
 
