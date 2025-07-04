@@ -106,7 +106,7 @@ const Portfolio = () => {
       category: "Sites",
       image: "/img/portfolio/wowgold.png",
       description:
-        "Plataforma de comércio eletrônico especializada na venda de ouro virtual para World of Warcraft. O site apresenta uma interface responsiva com design moderno e oferece uma experiência fluida ao usuário.",
+        "Plataforma de comércio especializada na venda de ouro virtual para World of Warcraft. O site apresenta uma interface responsiva com design moderno e oferece uma experiência fluida ao usuário.",
       tech: [
         "HTML5",
         "CSS3",
@@ -122,8 +122,6 @@ const Portfolio = () => {
         "Carrosséis de imagens com Swiper",
         "Integração com Google Analytics e Facebook Pixel",
         "Gerenciamento eficiente de tags com Google Tag Manager",
-        "Validação e interação dinâmica via jQuery",
-        "Uso de pré-processador CSS para manutenção de estilos",
       ],
       projectUrl: "https://wowgold.com.br",
       icon: Globe,

@@ -25,8 +25,6 @@ interface Product {
   rating: number;
   reviews: number;
   features: string[];
-  icon: React.ComponentType<any>;
-  badge?: string | null;
 }
 
 interface ProductModalProps {
@@ -89,24 +87,11 @@ const SoftwareModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
 
           {/* Imagem e badge */}
           <div className="md:w-1/2 w-full relative">
-            {product.badge && (
-              <span
-                className="absolute top-4 left-4 inline-block px-3 py-1 rounded-full text-xs font-semibold text-white bg-gray-700 bg-opacity-70 select-none z-10"
-                title={product.badge}
-              >
-                {product.badge}
-              </span>
-            )}
             <img
               src={product.image}
               alt={product.name}
               className="object-cover w-full h-64 md:h-full"
             />
-            <div className="absolute top-4 right-4">
-              <div className="p-2 rounded-full bg-gradient-to-r from-blue-600 to-blue-500">
-                <product.icon className="h-5 w-5 text-white" />
-              </div>
-            </div>
           </div>
 
           {/* Conteúdo */}
