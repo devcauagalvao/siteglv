@@ -12,18 +12,30 @@ import {
 } from "lucide-react";
 import SoftwareModal from "../components/SoftwareModal";
 
+type Product = {
+  id: number;
+  name: string;
+  category: string;
+  priceFirstMonth: string;
+  priceRecurring: string;
+  priceValue: string;
+  originalPrice: string | null;
+  discountPercent: number | null;
+  image: string;
+  rating: number;
+  reviews: number;
+  features: string[];
+  icon: React.ElementType;
+  badge?: string;
+};
+
 const Store = () => {
   const [selectedCategory, setSelectedCategory] = useState("Todos");
-  const [selectedProduct, setSelectedProduct] = useState<any | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
-  const categories = [
-    "Todos",
-    "CRM",
-    "Segurança",
-    "Cloud & Dados",
-  ];
+  const categories = ["Todos", "CRM", "Segurança", "Cloud & Dados"];
 
-  const products = [
+  const products: Product[] = [
     {
       id: 1,
       name: "GLV Easy Haircut",
@@ -41,11 +53,12 @@ const Store = () => {
         "Gestão Financeira",
         "Cadastro de Clientes",
         "Controle de Serviços",
-        "Dashboard em Tempo Real"
+        "Dashboard em Tempo Real",
       ],
       icon: Globe,
       badge: "Mais Recente",
     },
+    // Adicione mais produtos conforme necessário
   ];
 
   const filteredProducts =
@@ -75,15 +88,39 @@ const Store = () => {
             agilidade e segurança
           </p>
 
-          <motion.a
-            href="#"
-            className="inline-flex items-center space-x-2 bg-gradient-to-r from-yellow-500 to-yellow-400 text-black px-6 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-yellow-500/30 transition-all duration-300"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <ExternalLink className="h-5 w-5" />
-            <span>Ver Catálogo Completo</span>
-          </motion.a>
+          <div className="flex flex-col items-center space-y-4">
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="w-full"
+            >
+              <a
+                href="#store"
+                className="inline-flex items-center space-x-2 bg-gradient-to-r from-yellow-500 to-yellow-400 text-black px-6 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-yellow-500/30 transition-all duration-300"
+              >
+                <ExternalLink className="h-5 w-5" />
+                <span>Ver Catálogo Completo</span>
+                <ShoppingCart className="h-5 w-5" />
+              </a>
+            </motion.div>
+
+            <motion.div
+              whileHover={{ scale: 1.07 }}
+              whileTap={{ scale: 0.95 }}
+              className="w-full"
+            >
+              <a
+                href="https://shopee.com.br/shop/491355804"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center space-x-3 bg-gradient-to-r from-orange-500 to-yellow-400 text-white px-6 py-3 rounded-full font-semibold shadow-md hover:shadow-lg hover:shadow-orange-400/40 transition-all duration-300"
+              >
+                <ShoppingCart className="h-5 w-5" />
+                <span className="text-sm sm:text-base">Ver Catálogo na Shopee</span>
+                <ExternalLink className="h-5 w-5" />
+              </a>
+            </motion.div>
+          </div>
         </motion.div>
 
         {/* Filtros */}
@@ -97,11 +134,13 @@ const Store = () => {
           {categories.map((category) => (
             <motion.button
               key={category}
+              type="button"
               onClick={() => setSelectedCategory(category)}
-              className={`px-6 py-3 rounded-full font-medium transition-all duration-300 ${selectedCategory === category
-                ? "bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-lg shadow-blue-500/30"
-                : "backdrop-blur-sm bg-white/10 text-white/80 border border-white/20 hover:border-blue-500/50"
-                }`}
+              className={`px-6 py-3 rounded-full font-medium transition-all duration-300 ${
+                selectedCategory === category
+                  ? "bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-lg shadow-blue-500/30"
+                  : "backdrop-blur-sm bg-white/10 text-white/80 border border-white/20 hover:border-blue-500/50"
+              }`}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -139,7 +178,7 @@ const Store = () => {
                 <div className="relative aspect-[4/3] overflow-hidden rounded-t-2xl">
                   <img
                     src={product.image}
-                    alt={product.name}
+                    alt={`Imagem do produto ${product.name}`}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
@@ -160,10 +199,11 @@ const Store = () => {
                       {[...Array(5)].map((_, i) => (
                         <Star
                           key={i}
-                          className={`h-4 w-4 ${i < Math.floor(product.rating)
-                            ? "text-yellow-400 fill-current"
-                            : "text-gray-400"
-                            }`}
+                          className={`h-4 w-4 ${
+                            i < Math.floor(product.rating)
+                              ? "text-yellow-400 fill-current"
+                              : "text-gray-400"
+                          }`}
                         />
                       ))}
                     </div>
@@ -194,11 +234,10 @@ const Store = () => {
                         </span>
                       </div>
 
-                      <div className="text-sm text-white/80">{product.priceRecurring}{" "}
-                        após
+                      <div className="text-sm text-white/80">
+                        {product.priceRecurring} após
                       </div>
 
-                      {/* Preço original */}
                       {product.originalPrice && (
                         <div className="text-sm text-white/60 line-through">
                           {product.originalPrice}
@@ -206,7 +245,6 @@ const Store = () => {
                       )}
                     </div>
 
-                    {/* Desconto */}
                     {product.discountPercent ? (
                       <div className="text-green-400 font-semibold">
                         {product.discountPercent}% OFF
@@ -216,6 +254,7 @@ const Store = () => {
 
                   <div className="flex space-x-2">
                     <motion.button
+                      type="button"
                       className="flex-1 bg-gradient-to-r from-blue-600 to-blue-500 text-white py-2 px-4 rounded-lg hover:shadow-lg hover:shadow-blue-500/30 transition-all duration-300 flex items-center justify-center space-x-2"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
@@ -225,10 +264,14 @@ const Store = () => {
                       <span>Assinar</span>
                     </motion.button>
                     <motion.button
+                      type="button"
                       className="px-4 py-2 backdrop-blur-sm bg-white/10 border border-white/20 text-white rounded-lg hover:border-blue-500/50 transition-all duration-300"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      onClick={(e) => e.stopPropagation()}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        window.open("https://shopee.com.br/seu-loja-aqui", "_blank", "noopener,noreferrer");
+                      }}
                     >
                       <ExternalLink className="h-4 w-4" />
                     </motion.button>
@@ -242,7 +285,6 @@ const Store = () => {
         </motion.div>
       </div>
 
-      {/* Modal do produto */}
       {selectedProduct && (
         <SoftwareModal
           product={selectedProduct}
@@ -253,4 +295,4 @@ const Store = () => {
   );
 };
 
-export default Store
+export default Store;
