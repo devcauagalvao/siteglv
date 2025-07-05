@@ -144,7 +144,7 @@ const Footer = () => {
           <div className="flex flex-col md:flex-row items-center justify-between text-sm text-white/60 gap-6">
             <div className="text-center md:text-left space-y-1">
               <p>© {currentYear} GLV Informática e Desenvolvimento.</p>
-              <p>CNPJ: 00.000.000/0001-00 - Empresa registrada no Brasil</p>
+              <p>CNPJ: 61.606.358/0001-57 - Empresa registrada no Brasil</p>
             </div>
             <div className="flex items-center space-x-3">
               <span className="mr-2">Siga-nos:</span>
