@@ -5,12 +5,12 @@ import { Helmet } from "react-helmet";
 
 const Hero = () => {
   const words = [
-    "sites personalizados.",
-    "softwares sob medida.",
-    "aplicativos eficientes.",
-    "suporte técnico especializado.",
-    "manutenção preventiva.",
-    "automação inteligente.",
+    "sites.",
+    "softwares.",
+    "aplicativos.",
+    "suporte técnico.",
+    "manutenção.",
+    "automação.",
   ];
 
   const [wordIndex, setWordIndex] = useState(0);

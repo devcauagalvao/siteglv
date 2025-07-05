@@ -32,9 +32,9 @@ const Footer = () => {
       title: 'Empresa',
       links: [
         { name: 'Sobre Nós', href: '#about' },
-        { name: 'Portfolio', href: '#portfolio' },
-        { name: 'Depoimentos', href: '#testimonials' },
-        { name: 'Loja', href: '#store' },
+        { name: 'Portfólio', href: '#portfolio' },
+        { name: 'Clientes', href: '#testimonials' },
+        { name: 'Softwares', href: '#store' },
       ],
     },
     {
