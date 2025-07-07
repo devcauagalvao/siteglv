@@ -156,7 +156,7 @@ const Hero = () => {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.5, duration: 1 }}
-        className="absolute bottom-10 w-full flex justify-center z-10"
+        className="absolute bottom-10 w-full flex justify-center z-0"
       >
         <div className="animate-bounce">
           <svg

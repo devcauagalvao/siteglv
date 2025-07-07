@@ -82,12 +82,11 @@ const Navbar = () => {
                 <ArrowUp className="text-blue-500 absolute inset-0 m-auto w-5 h-5" />
               </div>
             ) : (
-              <span
-                className="text-blue-500 font-extrabold text-2xl tracking-widest select-none"
-                style={{ letterSpacing: "0.1em" }}
-              >
-                GLV
-              </span>
+              <img
+                src="/img/branding/glvsemfundo.png"
+                alt="Logo"
+                className="h-14 w-auto object-contain transition-all duration-300"
+              />
             )}
           </motion.div>
 
@@ -140,7 +139,11 @@ const Navbar = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
-              className="md:hidden backdrop-blur-lg bg-black/90 border-t border-white/10"
+              className="md:hidden border-t border-white/10 backdrop-blur-md"
+              style={{
+                backgroundOrigin: 'border-box',
+                backgroundClip: 'padding-box, border-box',
+              }}
             >
               <div className="px-4 py-6 space-y-4">
                 {navItems.map((item) => (
@@ -148,7 +151,7 @@ const Navbar = () => {
                     key={item.name}
                     href={item.href}
                     onClick={(e) => handleSmoothScroll(e, item.href)}
-                    className="block text-white/80 hover:text-blue-400 transition-colors duration-200 focus:outline-none"
+                    className="block text-white/90 hover:text-blue-400 transition-colors duration-200 focus:outline-none"
                   >
                     {item.name}
                   </a>
