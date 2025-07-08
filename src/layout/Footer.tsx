@@ -143,7 +143,7 @@ const Footer = () => {
           <div className="h-px bg-gradient-to-r from-transparent via-blue-500/40 to-transparent mb-8" />
           <div className="flex flex-col md:flex-row items-center justify-between text-sm text-white/60 gap-6">
             <div className="text-center md:text-left space-y-1">
-              <p>© {currentYear} GLV Informática e Desenvolvimento.</p>
+              <p>©{currentYear} GLV Informática e Desenvolvimento.</p>
               <p>CNPJ: 61.606.358/0001-57 - Empresa registrada no Brasil</p>
             </div>
             <div className="flex items-center space-x-3">

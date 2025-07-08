@@ -93,10 +93,9 @@ const About = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-3xl p-6 sm:p-8 md:p-12 shadow-xl"
         >
-          <h2 className="text-2xl sm:text-3xl font-bold text-center text-white mb-8 sm:mb-12">
-            Nossa Jornada
+          <h2 className="text-4xl sm:text-5xl font-bold text-center text-white mb-8 sm:mb-12">
+            Nossa <span className="text-[#3B82F6]">Jornada</span>
           </h2>
 
           <div className="relative">
@@ -110,28 +109,29 @@ const About = () => {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.8, delay: index * 0.1 }}
-                  className={`flex flex-col md:flex-row items-start md:items-center ${
-                    index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
-                  }`}
+                  className={`flex flex-col md:flex-row items-center md:items-center ${index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
+                    }`}
                 >
+                  {/* Conteúdo do texto */}
                   <div
-                    className={`w-full md:w-1/2 ${
-                      index % 2 === 0
-                        ? "md:pr-8 text-left md:text-right"
-                        : "md:pl-8 text-left"
-                    } mb-4 md:mb-0`}
+                    className={`w-full md:w-1/2 mb-4 md:mb-0
+        ${index % 2 === 0
+                        ? "md:pr-8 md:text-right text-center"
+                        : "md:pl-8 md:text-left text-center"
+                      }`}
                   >
-                    <div className="backdrop-blur-lg bg-white/5 border border-white/10 rounded-xl p-4 hover:border-blue-500/40 transition-all duration-300 shadow-md">
-                      <div className="text-xl sm:text-2xl font-bold text-blue-400 mb-1 sm:mb-2">
+                    <div>
+                      <div className="text-xl sm:text-4xl font-bold text-blue-400 mb-1 sm:mb-2">
                         {milestone.year}
                       </div>
-                      <div className="text-white/80 text-sm sm:text-base">
+                      <div className="text-white/80 text-base sm:text-lg">
                         {milestone.event}
                       </div>
                     </div>
                   </div>
 
-                  <div className="relative z-10 flex justify-center md:justify-center w-full md:w-auto mb-0 md:mb-0">
+                  {/* Bolinha azul aparece só no desktop */}
+                  <div className="relative z-10 hidden md:flex justify-center md:justify-center w-full md:w-auto mb-0 md:mb-0">
                     <div className="w-4 h-4 bg-blue-500 rounded-full border-4 border-black shadow-lg shadow-blue-500/30" />
                   </div>
 

@@ -8,6 +8,7 @@ interface Project {
   title: string;
   category: string;
   image: string;
+  imageModal: string;
   description: string;
   tech: string[];
   features: string[];
@@ -59,7 +60,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
 
           <div className="md:w-1/2 w-full">
             <img
-              src={project.image}
+              src={project.imageModal || project.image}
               alt={project.title}
               className="object-cover w-full h-64 md:h-full"
             />

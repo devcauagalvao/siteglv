@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ExternalLink, Github, X, Smartphone, Globe } from "lucide-react";
 import ProjectModal from "../components/ProjectModal";
+import { imat3 } from "three/examples/jsm/nodes/Nodes.js";
 
 const Portfolio = () => {
   const [selectedProject, setSelectedProject] = useState(null);
@@ -19,6 +20,7 @@ const Portfolio = () => {
       title: "Fit Fusion",
       category: "App Mobile",
       image: "/img/portfolio/fitfusion.png",
+      imageModal: "/img/portfolio/fitfusion.png",
       description:
         "App mobile para gerenciar treinos e atividades físicas, focado em personal trainers e academias. Permite acompanhar a evolução dos usuários, criar treinos e dietas personalizadas, além de enviar notificações para manter a motivação.",
       tech: ["React Native", "TypeScript", "Firebase"],
@@ -33,14 +35,15 @@ const Portfolio = () => {
       ],
       icon: Smartphone,
       githubUrl: "https://github.com/devcauagalvao/AppFitfusion.git",
-      hoverBg: "hover:bg-[#00bc81]",
-      color: "from-[#00bc81] to-[#00bc81]",
+      hoverBg: "hover:bg-[#008a5e]",
+      color: "from-[#008a5e] to-[#006943]",
     },
     {
       id: 2,
       title: "DevFlow",
       category: "App Mobile",
       image: "/img/portfolio/devflow.png",
+      imageModal: "/img/portfolio/devflow.png",
       description:
         "Rede social para desenvolvedores com feed de posts, mensagens privadas, editor de código embutido e integração com GitHub, facilitando a colaboração e troca de conhecimento entre devs.",
       tech: ["React Native", "Firebase", "Supabase", "TypeScript"],
@@ -63,18 +66,18 @@ const Portfolio = () => {
       title: "CR-Transportes",
       category: "Sites",
       image: "/img/portfolio/crtransportes.png",
+      imageModal: "/img/portfolio/crtransporteslogo.jpeg",
       description:
         "Sistema para gestão de transportes e logística, com controle de frotas, rotas e painéis administrativos. Foi desenvolvida também uma página de conversão para captação de leads.",
       tech: ["React", "TypeScript", "Next.js", "Tailwind CSS", "Prisma"],
       features: [
-        "Painel administrativo",
-        "Gestão de frotas",
-        "Controle de entregas",
-        "Mapa em tempo real",
-        "Dashboard de indicadores",
+        "Design responsivo e moderno",
+        "Informações institucionais",
+        "Formulário de contato",
+        "Integração com Google Analytics",
+        "Otimização para SEO",
       ],
       icon: Globe,
-      githubUrl: "https://github.com/devcauagalvao/cr-transportes",
       projectUrl: "https://crsantostransportes.com.br",
       hoverBg: "hover:bg-blue-600",
       color: "from-blue-600 to-blue-600",
@@ -84,6 +87,7 @@ const Portfolio = () => {
       title: "TechLearn",
       category: "Sites",
       image: "/img/portfolio/techlearn.png",
+      imageModal: "/img/portfolio/logotechlearn.png",
       description:
         "Site de apresentação do TechLearn, um aplicativo inovador para ensino de programação, com informações sobre cursos, designs e tecnologias utilizadas.",
       tech: ["HTML5", "CSS3", "JavaScript", "AOS (Animate On Scroll)"],
@@ -97,14 +101,15 @@ const Portfolio = () => {
       githubUrl: "https://github.com/devcauagalvao/Site-TCC-TechLearn.git",
       projectUrl: "https://site-tcc-tech-learn.vercel.app",
       icon: Globe,
-      hoverBg: "hover:bg-[#00ffff]",
-      color: "from-[#00ffff] to-[#00ffff]",
+      hoverBg: "hover:bg-cyan-600",
+      color: "from-cyan-600 to-cyan-600",
     },
     {
       id: 5,
       title: "WowGold",
       category: "Sites",
       image: "/img/portfolio/wowgold.png",
+      imageModal: "/img/portfolio/wowgold.png",
       description:
         "Plataforma de comércio especializada na venda de ouro virtual para World of Warcraft. O site apresenta uma interface responsiva com design moderno e oferece uma experiência fluida ao usuário.",
       tech: [
@@ -125,8 +130,29 @@ const Portfolio = () => {
       ],
       projectUrl: "https://wowgold.com.br",
       icon: Globe,
-      hoverBg: "hover:bg-[#f3c623]",
-      color: "from-[#f3c623] to-[#f3c623]",
+      hoverBg: "hover:bg-yellow-600",
+      color: "from-yellow-600 to-yellow-600",
+    },
+    {
+      id: 6,
+      title: "Easy Haircut",
+      category: "Sites",
+      image: "/img/portfolio/easyhaircut.png",
+      imageModal: "/img/portfolio/easyhaircutlogo.png",
+      description:
+        "Easy Haircut é um software simples e moderno para barbearias, que facilita o agendamento online e o gerenciamento de clientes, ajudando a otimizar o atendimento e aumentar a produtividade.",
+      tech: ["React", "TypeScript", "Vite", "Tailwind CSS"],
+      features: [
+        "Agendamento online fácil e rápido",
+        "Gerenciamento de clientes",
+        "Interface intuitiva e responsiva",
+        "Notificações de lembrete de agendamentos",
+        "Relatórios de desempenho",
+      ],
+      icon: Globe,
+      projectUrl: "https://easyhaircut.vercel.app/",
+      hoverBg: "hover:bg-red-800",
+      color: "from-red-800 to-red-800",
     },
   ];
 
@@ -173,8 +199,8 @@ const Portfolio = () => {
               key={category}
               onClick={() => setActiveCategory(category)}
               className={`px-5 py-2 rounded-full text-sm sm:text-base transition-all duration-300 ${activeCategory === category
-                  ? "bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-lg"
-                  : "bg-white/10 backdrop-blur-md text-white/80 border border-white/20 hover:border-blue-400 hover:text-white"
+                ? "bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-lg"
+                : "bg-white/10 backdrop-blur-md text-white/80 border border-white/20 hover:border-blue-400 hover:text-white"
                 }`}
             >
               {category}
