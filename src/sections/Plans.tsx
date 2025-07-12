@@ -45,7 +45,7 @@ const plans = [
     name: "Suporte Total",
     description:
       "Manutenção contínua e suporte técnico completo para sua empresa.",
-    price: "149,99",
+    price: "Sob Consulta",
     period: "mês",
     features: [
       "Atendimento prioritário",
