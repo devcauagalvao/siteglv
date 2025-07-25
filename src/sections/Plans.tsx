@@ -16,11 +16,13 @@ const plans = [
       "Até 5 seções (Home, Sobre, Serviços, Contato, etc.)",
       "Formulário de contato com envio para o e-mail",
       "Integração com redes sociais",
+      "Prazo médio: 5 dias úteis",
+      "Hospedagem e domínio orientados pela GLV",
     ],
     highlighted: false,
     popular: false,
     buttonText: "Contratar Site",
-    whatsappMsg: "Olá, tenho interesse no plano Site Profissional."
+    whatsappMsg: "Olá, tenho interesse no plano Site Profissional. Pode me explicar como funciona?"
   },
   {
     id: "custom-system",
@@ -34,11 +36,13 @@ const plans = [
       "Integração com APIs e bancos de dados",
       "Painel administrativo personalizado",
       "Acompanhamento e suporte durante o projeto",
+      "Arquitetura escalável e segura",
+      "Tecnologias modernas (React, Node, FastAPI, Firebase)"
     ],
     highlighted: true,
     popular: true,
     buttonText: "Solicitar Sistema",
-    whatsappMsg: "Olá, gostaria de desenvolver um sistema personalizado."
+    whatsappMsg: "Olá, gostaria de desenvolver um sistema personalizado com a GLV. Podemos conversar?"
   },
   {
     id: "full-support",
@@ -51,12 +55,14 @@ const plans = [
       "Atendimento prioritário",
       "Manutenção preventiva e corretiva",
       "Atualizações e melhorias contínuas",
-      "Suporte remoto e presencial (conforme disponibilidade)",
+      "Suporte remoto e presencial (Itu e região)",
+      "Consultoria estratégica em TI mensal",
+      "Inclui checkup de segurança e performance"
     ],
     highlighted: false,
     popular: false,
     buttonText: "Assinar Suporte",
-    whatsappMsg: "Olá, quero contratar o plano Suporte Total."
+    whatsappMsg: "Olá, quero contratar o plano Suporte Total da GLV. Pode me dar mais detalhes?"
   }
 ];
 
@@ -68,7 +74,7 @@ const Plans = () => {
     if (inView && !hasAnimated) setHasAnimated(true);
   }, [inView, hasAnimated]);
 
-  const openWhatsApp = (message: string) => {
+  const openWhatsApp = (message) => {
     const phone = "5511919167653";
     const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
     window.open(url, "_blank");
@@ -83,7 +89,7 @@ const Plans = () => {
           animate={hasAnimated ? { y: 0, opacity: 1 } : undefined}
           transition={{ duration: 0.8 }}
         >
-          Nossos <span className="text-blue-500">Planos</span>
+          Planos <span className="text-blue-500">GLV</span>
         </motion.h2>
 
         <motion.p
@@ -92,7 +98,7 @@ const Plans = () => {
           animate={hasAnimated ? { y: 0, opacity: 1 } : undefined}
           transition={{ delay: 0.2, duration: 0.8 }}
         >
-          Soluções completas para sua empresa crescer com tecnologia de ponta.
+          Soluções inteligentes, acessíveis e completas para transformar seu negócio com tecnologia.
         </motion.p>
 
         <div className="grid gap-10 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
@@ -182,7 +188,7 @@ const Plans = () => {
           animate={hasAnimated ? { opacity: 1 } : undefined}
           transition={{ delay: 1.2, duration: 0.6 }}
         >
-          * Todos os planos incluem setup gratuito e suporte especializado. Valores podem variar conforme demanda e personalização.
+          * Todos os planos incluem setup gratuito, suporte especializado e garantia de qualidade GLV.
         </motion.p>
       </div>
     </section>
