@@ -31,12 +31,15 @@ const About = () => {
   ];
 
   const milestones = [
-    { year: "2022", event: "Fundação da GLV Informática" },
-    { year: "2023", event: "Migração para soluções cloud " },
-    { year: "2024", event: "Expansão para desenvolvimento mobile" },
-    { year: "2025", event: "Implementação de IA e automação" },
-    { year: "2025", event: "Certificação em tecnologias emergentes" },
-  ];
+  { year: "2022", event: "Fundação da GLV Informática e Desenvolvimento" },
+  { year: "2023", event: "Entrada no mercado de desenvolvimento web sob demanda" },
+  { year: "2023", event: "Implementação de soluções em nuvem e infraestrutura de redes" },
+  { year: "2024", event: "Expansão para mobile, SaaS e automações com APIs" },
+  { year: "2024", event: "Início da consultoria estratégica em TI e modernização de sistemas" },
+  { year: "2025", event: "Incorporação de inteligência artificial em bots e ferramentas" },
+  { year: "2025", event: "Certificações em tecnologias emergentes e foco em alto padrão visual" },
+];
+
 
   return (
     <section id="about" className="py-16 sm:py-20 relative overflow-hidden">
