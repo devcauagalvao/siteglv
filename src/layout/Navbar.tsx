@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUp, Send } from "lucide-react";
+import styled from "styled-components";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -10,7 +11,8 @@ const Navbar = () => {
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const docHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
       const progress = docHeight > 0 ? scrollTop / docHeight : 0;
 
       setIsScrolled(scrollTop > 50);
@@ -36,7 +38,10 @@ const Navbar = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+  const handleSmoothScroll = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    href: string
+  ) => {
     e.preventDefault();
     const section = document.querySelector(href);
     if (section) {
@@ -51,11 +56,14 @@ const Navbar = () => {
       animate={{ y: 0 }}
       transition={{ type: "spring", stiffness: 100 }}
     >
-      <nav className={`fixed top-0 left-0 right-0 z-10 w-full transition-all duration-300 ${isScrolled
-        ? "backdrop-blur-md bg-black/30 border-b border-white/10 shadow-md"
-        : "bg-transparent"
-        }`}>
+      <nav
+        className={`fixed top-0 left-0 right-0 z-10 w-full transition-all duration-300 ${isScrolled
+            ? "backdrop-blur-md bg-black/30 border-b border-white/10 shadow-md"
+            : "bg-transparent"
+          }`}
+      >
         <div className="flex justify-between items-center h-16 px-4 sm:px-6 lg:px-8">
+          {/* Logo / Botão Topo */}
           <motion.div
             className="relative cursor-pointer"
             whileHover={{ scale: 1.05 }}
@@ -63,7 +71,10 @@ const Navbar = () => {
           >
             {isScrolled ? (
               <div className="relative w-10 h-10">
-                <svg className="absolute top-0 left-0 w-full h-full" viewBox="0 0 40 40">
+                <svg
+                  className="absolute top-0 left-0 w-full h-full"
+                  viewBox="0 0 40 40"
+                >
                   <circle
                     cx="20"
                     cy="20"
@@ -73,9 +84,12 @@ const Navbar = () => {
                     fill="transparent"
                     strokeLinecap="round"
                     strokeDasharray={2 * Math.PI * 18}
-                    strokeDashoffset={(1 - scrollProgress) * 2 * Math.PI * 18}
+                    strokeDashoffset={
+                      (1 - scrollProgress) * 2 * Math.PI * 18
+                    }
                     style={{
-                      transition: "stroke-dashoffset 0.2s ease, stroke 0.2s ease",
+                      transition:
+                        "stroke-dashoffset 0.2s ease, stroke 0.2s ease",
                     }}
                   />
                 </svg>
@@ -90,6 +104,7 @@ const Navbar = () => {
             )}
           </motion.div>
 
+          {/* Menu Desktop */}
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
               <motion.a
@@ -117,20 +132,27 @@ const Navbar = () => {
             </motion.a>
           </div>
 
-          <label className="md:hidden flex flex-col gap-2 w-8 cursor-pointer z-50 relative">
-            <input
-              type="checkbox"
-              className="peer hidden"
-              title="Menu"
-              onChange={(e) => setIsMobileMenuOpen(e.target.checked)}
-              checked={isMobileMenuOpen}
-            />
-            <div className="rounded-2xl h-[3px] w-1/2 bg-white duration-500 peer-checked:rotate-[225deg] origin-right peer-checked:-translate-x-[12px] peer-checked:-translate-y-[1px]"></div>
-            <div className="rounded-2xl h-[3px] w-full bg-white duration-500 peer-checked:-rotate-45"></div>
-            <div className="rounded-2xl h-[3px] w-1/2 bg-white duration-500 place-self-end peer-checked:rotate-[225deg] origin-left peer-checked:translate-x-[12px] peer-checked:translate-y-[1px]"></div>
-          </label>
+          {/* Menu Mobile - Ícone Novo */}
+          <StyledWrapper className="md:hidden z-50 relative">
+            <label className="hamburger">
+              <input
+                type="checkbox"
+                title="Menu"
+                onChange={(e) => setIsMobileMenuOpen(e.target.checked)}
+                checked={isMobileMenuOpen}
+              />
+              <svg viewBox="0 0 32 32">
+                <path
+                  className="line line-top-bottom"
+                  d="M27 10 13 10C10.8 10 9 8.2 9 6 9 3.5 10.8 2 13 2 15.2 2 17 3.8 17 6L17 26C17 28.2 18.8 30 21 30 23.2 30 25 28.2 25 26 25 23.8 23.2 22 21 22L7 22"
+                />
+                <path className="line" d="M7 16 27 16" />
+              </svg>
+            </label>
+          </StyledWrapper>
         </div>
 
+        {/* Mobile Menu */}
         <AnimatePresence>
           {isMobileMenuOpen && (
             <motion.div
@@ -141,8 +163,8 @@ const Navbar = () => {
               transition={{ duration: 0.3 }}
               className="md:hidden border-t border-white/10 backdrop-blur-md"
               style={{
-                backgroundOrigin: 'border-box',
-                backgroundClip: 'padding-box, border-box',
+                backgroundOrigin: "border-box",
+                backgroundClip: "padding-box, border-box",
               }}
             >
               <div className="px-4 py-6 space-y-4">
@@ -172,5 +194,43 @@ const Navbar = () => {
     </motion.div>
   );
 };
+
+const StyledWrapper = styled.div`
+  .hamburger {
+    cursor: pointer;
+  }
+
+  .hamburger input {
+    display: none;
+  }
+
+  .hamburger svg {
+    height: 3em;
+    transition: transform 600ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .line {
+    fill: none;
+    stroke: white;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 3;
+    transition: stroke-dasharray 600ms cubic-bezier(0.4, 0, 0.2, 1),
+      stroke-dashoffset 600ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .line-top-bottom {
+    stroke-dasharray: 12 63;
+  }
+
+  .hamburger input:checked + svg {
+    transform: rotate(-45deg);
+  }
+
+  .hamburger input:checked + svg .line-top-bottom {
+    stroke-dasharray: 20 300;
+    stroke-dashoffset: -32.42;
+  }
+`;
 
 export default Navbar;
