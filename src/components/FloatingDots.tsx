@@ -16,17 +16,6 @@ export const FloatingDots: React.FC<FloatingDotsProps> = ({ setIsOpen, whatsappC
         <>
             <div className="fixed right-6 bottom-6 flex flex-col items-center space-y-4 z-40">
 
-                {/* Instagram */}
-                <motion.button
-                    onClick={() => setIsInstagramOpen(true)}
-                    className="w-16 h-16 rounded-full flex items-center justify-center shadow-lg bg-pink-500"
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                    aria-label="Abrir Instagram"
-                >
-                    <Instagram className="w-8 h-8 text-white" />
-                </motion.button>
-
                 {/* WhatsApp */}
                 <motion.a
                     href={`https://wa.me/5511919167653?text=${encodeURIComponent(whatsappMessage)}`}
@@ -45,6 +34,17 @@ export const FloatingDots: React.FC<FloatingDotsProps> = ({ setIsOpen, whatsappC
                         className="w-8 h-8"
                     />
                 </motion.a>
+
+                {/* Instagram */}
+                <motion.button
+                    onClick={() => setIsInstagramOpen(true)}
+                    className="w-16 h-16 rounded-full flex items-center justify-center shadow-lg bg-pink-500"
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    aria-label="Abrir Instagram"
+                >
+                    <Instagram className="w-8 h-8 text-white" />
+                </motion.button>
 
                 {/* Botão Assistente */}
                 <motion.button
