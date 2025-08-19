@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion, AnimationControls } from "framer-motion";
-import { Sparkles } from "lucide-react";
+import { Sparkles, Instagram } from "lucide-react";
 import InstagramModal from "./InstagramModal";
 
 interface FloatingDotsProps {
@@ -15,6 +15,18 @@ export const FloatingDots: React.FC<FloatingDotsProps> = ({ setIsOpen, whatsappC
     return (
         <>
             <div className="fixed right-6 bottom-6 flex flex-col items-center space-y-4 z-40">
+
+                {/* Instagram */}
+                <motion.button
+                    onClick={() => setIsInstagramOpen(true)}
+                    className="w-16 h-16 rounded-full flex items-center justify-center shadow-lg bg-pink-500"
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    aria-label="Abrir Instagram"
+                >
+                    <Instagram className="w-8 h-8 text-white" />
+                </motion.button>
+
                 {/* WhatsApp */}
                 <motion.a
                     href={`https://wa.me/5511919167653?text=${encodeURIComponent(whatsappMessage)}`}
@@ -43,21 +55,6 @@ export const FloatingDots: React.FC<FloatingDotsProps> = ({ setIsOpen, whatsappC
                     aria-label="Abrir assistente virtual"
                 >
                     <Sparkles className="w-8 h-8 text-white" />
-                </motion.button>
-
-                {/* Botão Instagram */}
-                <motion.button
-                    onClick={() => setIsInstagramOpen(true)}
-                    className="w-16 h-16 rounded-full flex items-center justify-center shadow-lg bg-pink-500"
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                    aria-label="Abrir Instagram"
-                >
-                    <img
-                        src="https://img.icons8.com/?size=100&id=20504&format=png&color=FFFFFF"
-                        alt="Instagram"
-                        className="w-8 h-8"
-                    />
                 </motion.button>
             </div>
 
