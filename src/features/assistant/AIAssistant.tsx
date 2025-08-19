@@ -2,10 +2,17 @@ import React, { useState, useEffect, useRef } from "react";
 import { useAnimation } from "framer-motion";
 import { AIAssistantUI } from "./AIAssistantUI";
 
+interface Message {
+  id: number;
+  text: string;
+  isBot: boolean;
+  timestamp: Date;
+  actionButton?: { label: string; url: string };
+}
+
 const AIAssistant = () => {
   const [isOpen, setIsOpen] = useState(false);
-
-  const [messages, setMessages] = useState([
+  const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
       text: "Olá! Sou o assistente virtual Commit. Como posso ajudá-lo hoje? 😊",
@@ -13,7 +20,6 @@ const AIAssistant = () => {
       timestamp: new Date(),
     },
   ]);
-
   const [inputMessage, setInputMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -58,7 +64,7 @@ const AIAssistant = () => {
     const finalMsg = msg ?? inputMessage.trim();
     if (!finalMsg) return;
 
-    const userMessage = {
+    const userMessage: Message = {
       id: messages.length + 1,
       text: finalMsg,
       isBot: false,
@@ -72,49 +78,46 @@ const AIAssistant = () => {
 
   const simulateBotResponse = (userInput: string) => {
     setIsTyping(true);
-
     setTimeout(() => {
       const input = userInput.toLowerCase();
-      let botResponse =
-        "Posso ajudar com planos, orçamento ou suporte. Sobre qual você quer saber mais?";
 
-      if (input.includes("orçamento")) {
+      // Respostas inteligentes
+      let botResponse = "🤔 Não entendi. Quer ajuda com planos, orçamento ou suporte?";
+      let actionButton;
+
+      if (/(orçamento|preço|cotação)/i.test(input)) {
         botResponse =
-          "🔍 Para orçamento personalizado, clique aqui e fale com nosso time no WhatsApp.";
-        window.open("https://wa.me/5511919167653", "_blank");
-      } else if (input.includes("plano") || input.includes("planos")) {
+          "🔍 Para orçamento personalizado, clique no botão abaixo e fale com nosso time no WhatsApp.";
+        actionButton = { label: "Falar no WhatsApp", url: "https://wa.me/5511919167653" };
+      } else if (/(plano|planos)/i.test(input)) {
         botResponse = `💡 Temos 3 planos disponíveis:
-
 1️⃣ Site Profissional (R$300) - Apresente sua empresa online.
 2️⃣ Sistema Sob Medida (Sob Consulta) - Soluções exclusivas para seu negócio.
-3️⃣ Suporte Total (R$149/mês) - Manutenção e atendimento prioritário.
-
-👉 Clique abaixo para contratar um plano.`;
-      } else if (input.includes("suporte")) {
-        botResponse = "📞 Nosso suporte técnico está disponível. Clique aqui para contato.";
-        window.open("/contato", "_self");
-      } else if (input.includes("produto") || input.includes("mercado livre")) {
+3️⃣ Suporte Total (R$149/mês) - Manutenção e atendimento prioritário.`;
+      } else if (/(suporte|ajuda técnica)/i.test(input)) {
+        botResponse = "📞 Nosso suporte técnico está disponível. Clique abaixo para contato.";
+        actionButton = { label: "Ir para Contato", url: "/contato" };
+      } else if (/(produto|mercado livre)/i.test(input)) {
         botResponse = "🛒 Confira nossos produtos no Mercado Livre:";
-        window.open("https://www.mercadolivre.com.br/perfil/GLVINFORMATICA", "_blank");
-      } else if (input.includes("fale comigo")) {
+        actionButton = { label: "Ver Produtos", url: "https://www.mercadolivre.com.br/perfil/GLVINFORMATICA" };
+      } else if (/(fale comigo|contato)/i.test(input)) {
         botResponse = "📲 Redirecionando para o WhatsApp...";
-        window.open("https://wa.me/5511919167653", "_blank");
-      } else if (input.includes("redes sociais")) {
+        actionButton = { label: "WhatsApp", url: "https://wa.me/5511919167653" };
+      } else if (/(rede(s)? sociais)/i.test(input)) {
         botResponse = "🌐 Siga-nos nas redes sociais abaixo:";
-      } else {
-        botResponse = "🤔 Não entendi. Quer ajuda com planos, orçamento ou suporte?";
       }
 
-      const botMessage = {
+      const botMessage: Message = {
         id: messages.length + 2,
         text: botResponse,
         isBot: true,
         timestamp: new Date(),
+        actionButton,
       };
 
       setIsTyping(false);
       setMessages((prev) => [...prev, botMessage]);
-    }, 1200);
+    }, 1000 + Math.random() * 800); // tempo de resposta mais humano
   };
 
   const handlePlanClick = (text: string) => {
