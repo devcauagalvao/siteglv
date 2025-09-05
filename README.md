@@ -81,7 +81,7 @@ Estamos localizados em Itu-SP e atuamos fortemente na região, com foco em quali
 
 ## Licença
 
-Este projeto está licenciado sob a licença MIT — veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+Projeto desenvolvido por **GLV Informática e Desenvolvimento**. Todos os direitos reservados.
 
 ---
 
