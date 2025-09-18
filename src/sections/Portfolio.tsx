@@ -1,11 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ExternalLink, Github, X, Smartphone, Globe } from "lucide-react";
+import { ExternalLink, Github, X, Smartphone, Globe, ChevronLeft, ChevronRight } from "lucide-react";
 import ProjectModal from "../components/ProjectModal";
-import { imat3 } from "three/examples/jsm/nodes/Nodes.js";
 
-const Portfolio = () => {
-  const [selectedProject, setSelectedProject] = useState(null);
+type Project = {
+  id: number;
+  title: string;
+  category: string;
+  // aceitando string ou array de imagens
+  image: string | string[];
+  imageModal: string | string[];
+  description: string;
+  tech: string[];
+  features: string[];
+  icon: React.ComponentType<any>;
+  githubUrl?: string;
+  hoverBg?: string;
+  color?: string;
+  projectUrl?: string;
+};
+
+const Portfolio: React.FC = () => {
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   useEffect(() => {
     document.body.style.overflow = selectedProject ? "hidden" : "auto";
@@ -138,7 +154,7 @@ const Portfolio = () => {
       title: "Easy Haircut",
       category: "Sites",
       image: "/img/portfolio/easyhaircut.png",
-      imageModal: "/img/portfolio/easyhaircutlogo.png",
+      imageModal:"/img/portfolio/easyhaircutlogo.png",
       description:
         "Easy Haircut é um software simples e moderno para barbearias, que facilita o agendamento online e o gerenciamento de clientes, ajudando a otimizar o atendimento e aumentar a produtividade.",
       tech: ["React", "TypeScript", "Vite", "Tailwind CSS"],
@@ -154,15 +170,128 @@ const Portfolio = () => {
       hoverBg: "hover:bg-red-800",
       color: "from-red-800 to-red-800",
     },
+    {
+      id: 7,
+      title: "Taurus Black Burgers",
+      category: "Sistemas",
+      image: ["/img/portfolio/taurusburger.png", "/img/portfolio/taurusburger2.png"],
+      imageModal: "/img/portfolio/logo-taurus.png",
+      description:
+        "Plataforma de delivery com catálogo de restaurantes, carrinho, rastreamento de pedidos em tempo real e painel administrativo. Interface responsiva otimizada para web e mobile.",
+      tech: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Supabase", "Sonner", "Leaflet", "OpenStreetMap"],
+      features: [
+        "Catálogo de pratos",
+        "Carrinho e fluxo de checkout",
+        "Notificações em tempo real no recebimento de novos pedidos, assegurando alerta imediato à equipe de atendimento",
+        "Rastreamento de pedidos em tempo real",
+        "Painel administrativo para gerenciamento de pedidos",
+      ],
+      icon: Globe,
+      projectUrl: "https://delivery-lake.vercel.app/",
+      hoverBg: "hover:bg-[#cc9b3b]",
+      color: "from-[#cc9b3b] to-[#cc9b3b]",
+    },
   ];
 
-  const categories = ["Todos", "Sites", "App Mobile", "Infraestrutura"];
+  const categories = ["Todos", "Sites", "App Mobile", "Sistemas", "Infraestrutura"];
   const [activeCategory, setActiveCategory] = useState("Todos");
 
   const filteredProjects =
     activeCategory === "Todos"
       ? projects
       : projects.filter((project) => project.category === activeCategory);
+
+  // Componente interno para cada card (usa estado local para índice do carrossel)
+  const ProjectCard: React.FC<{ project: Project; index: number; onOpen: () => void }> = ({ project, index, onOpen }) => {
+    const images = Array.isArray(project.image) ? project.image : [project.image];
+    const [imgIndex, setImgIndex] = useState(0);
+
+    const prev = (e: React.MouseEvent) => {
+      e.stopPropagation();
+      setImgIndex((i) => (i - 1 + images.length) % images.length);
+    };
+    const next = (e: React.MouseEvent) => {
+      e.stopPropagation();
+      setImgIndex((i) => (i + 1) % images.length);
+    };
+
+    const gradient = project.color || "from-blue-600 to-blue-500";
+
+    return (
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.3, delay: index * 0.1 }}
+        whileHover={{ y: -5 }}
+        className="group cursor-pointer"
+        onClick={onOpen}
+      >
+        <div
+          className={`rounded-2xl overflow-hidden border border-white/10 
+            bg-gradient-to-br from-white/10 via-white/5 to-white/10 
+            backdrop-blur-xl shadow-xl transition-all duration-300 
+            ${project.hoverBg}`}
+        >
+          <div className="relative h-48">
+            <img
+              src={images[imgIndex]}
+              alt={project.title}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+            <div
+              className={`absolute top-4 right-4 p-2 rounded-full shadow-md bg-gradient-to-r ${gradient}`}
+            >
+              <project.icon className="w-4 h-4 text-white" />
+            </div>
+
+            {images.length > 1 && (
+              <>
+                <button
+                  type="button"
+                  onClick={prev}
+                  className="absolute left-2 top-1/2 -translate-y-1/2 z-10 p-2 rounded-full bg-black/40 hover:bg-black/60 text-white"
+                  aria-label="Previous image"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={next}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 z-10 p-2 rounded-full bg-black/40 hover:bg-black/60 text-white"
+                  aria-label="Next image"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+              </>
+            )}
+          </div>
+          <div className="p-5">
+            <h3 className="text-xl font-semibold text-white mb-2">
+              {project.title}
+            </h3>
+            <p className="text-white/70 text-sm line-clamp-2">
+              {project.description}
+            </p>
+            <div className="flex flex-wrap mt-4 gap-2">
+              {project.tech.slice(0, 3).map((tech, i) => (
+                <span
+                  key={i}
+                  className="text-xs text-white/80 bg-white/10 px-2 py-1 rounded-full"
+                >
+                  {tech}
+                </span>
+              ))}
+              {project.tech.length > 3 && (
+                <span className="text-xs text-blue-400">
+                  +{project.tech.length - 3} mais
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    );
+  };
 
   return (
     <section
@@ -209,63 +338,14 @@ const Portfolio = () => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {filteredProjects.map((project, index) => {
-            const gradient = project.color || "from-blue-600 to-blue-500";
-            return (
-              <motion.div
-                key={project.id}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.3, delay: index * 0.1 }}
-                whileHover={{ y: -5 }}
-                className="group cursor-pointer"
-                onClick={() => setSelectedProject(project)}
-              >
-                <div
-                  className={`rounded-2xl overflow-hidden border border-white/10 
-                    bg-gradient-to-br from-white/10 via-white/5 to-white/10 
-                    backdrop-blur-xl shadow-xl transition-all duration-300 
-                    ${project.hoverBg}`}
-                >
-                  <div className="relative h-48">
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                    <div
-                      className={`absolute top-4 right-4 p-2 rounded-full shadow-md bg-gradient-to-r ${gradient}`}
-                    >
-                      <project.icon className="w-4 h-4 text-white" />
-                    </div>
-                  </div>
-                  <div className="p-5">
-                    <h3 className="text-xl font-semibold text-white mb-2">
-                      {project.title}
-                    </h3>
-                    <p className="text-white/70 text-sm line-clamp-2">
-                      {project.description}
-                    </p>
-                    <div className="flex flex-wrap mt-4 gap-2">
-                      {project.tech.slice(0, 3).map((tech, i) => (
-                        <span
-                          key={i}
-                          className="text-xs text-white/80 bg-white/10 px-2 py-1 rounded-full"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                      {project.tech.length > 3 && (
-                        <span className="text-xs text-blue-400">
-                          +{project.tech.length - 3} mais
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            );
-          })}
+          {filteredProjects.map((project, idx) => (
+            <ProjectCard
+              key={project.id}
+              project={project}
+              index={idx}
+              onOpen={() => setSelectedProject(project)}
+            />
+          ))}
         </div>
 
         <AnimatePresence>
