@@ -5,64 +5,76 @@ import { Check, Star, Zap } from "lucide-react";
 
 const plans = [
   {
-    id: "basic-site",
-    name: "Site Profissional",
+    id: "custom-web-app",
+    name: "Aplicativos Web Sob Medida",
     description:
-      "Site institucional completo, ideal para apresentar sua empresa na internet.",
-    price: "299,99",
-    period: "único",
+      "Transforme suas ideias em soluções digitais totalmente personalizadas, que se adaptam ao seu negócio.",
     features: [
-      "Design moderno e responsivo",
-      "Até 5 seções (Home, Sobre, Serviços, Contato, etc.)",
-      "Formulário de contato com envio para o e-mail",
-      "Integração com redes sociais",
-      "Prazo médio: 5 dias úteis",
-      "Hospedagem e domínio orientados pela GLV",
-    ],
-    highlighted: false,
-    popular: false,
-    buttonText: "Contratar Site",
-    whatsappMsg: "Olá, tenho interesse no plano Site Profissional. Pode me explicar como funciona?"
-  },
-  {
-    id: "custom-system",
-    name: "Sistema Sob Medida",
-    description:
-      "Desenvolvimento de sistemas personalizados para otimizar seus processos.",
-    price: "Sob Consulta",
-    period: "",
-    features: [
-      "Funcionalidades exclusivas conforme sua necessidade",
-      "Integração com APIs e bancos de dados",
-      "Painel administrativo personalizado",
-      "Acompanhamento e suporte durante o projeto",
-      "Arquitetura escalável e segura",
-      "Tecnologias modernas (React, Node, FastAPI, Firebase)"
+      "Funcionalidades exclusivas para seu fluxo de trabalho",
+      "Painel administrativo intuitivo e seguro",
+      "Integração com sistemas e APIs existentes",
+      "Arquitetura escalável para crescer junto com sua empresa",
+      "Design moderno, responsivo e otimizado para todos os dispositivos",
+      "Suporte e acompanhamento durante todo o projeto"
     ],
     highlighted: true,
     popular: true,
-    buttonText: "Solicitar Sistema",
-    whatsappMsg: "Olá, gostaria de desenvolver um sistema personalizado com a GLV. Podemos conversar?"
+    buttonText: "Solicitar Aplicativo",
+    whatsappMsg: "Olá, quero criar um aplicativo web personalizado para minha empresa. Podemos conversar?"
   },
   {
-    id: "full-support",
-    name: "Suporte Total",
+    id: "automation-system",
+    name: "Automação de Processos",
     description:
-      "Manutenção contínua e suporte técnico completo para sua empresa.",
-    price: "Sob Consulta",
-    period: "mês",
+      "Otimize seu tempo e aumente a produtividade automatizando tarefas repetitivas e processos internos.",
     features: [
-      "Atendimento prioritário",
-      "Manutenção preventiva e corretiva",
-      "Atualizações e melhorias contínuas",
-      "Suporte remoto e presencial (Itu e região)",
-      "Consultoria estratégica em TI mensal",
-      "Inclui checkup de segurança e performance"
+      "Automatização de fluxos de trabalho críticos",
+      "Integração com ferramentas e sistemas existentes",
+      "Relatórios e dashboards em tempo real",
+      "Redução de erros humanos e aumento de eficiência",
+      "Suporte contínuo e ajustes conforme sua necessidade",
+      "Tecnologias modernas e seguras"
     ],
     highlighted: false,
     popular: false,
-    buttonText: "Assinar Suporte",
-    whatsappMsg: "Olá, quero contratar o plano Suporte Total da GLV. Pode me dar mais detalhes?"
+    buttonText: "Solicitar Automação",
+    whatsappMsg: "Olá, quero automatizar processos na minha empresa. Como podemos começar?"
+  },
+  {
+    id: "custom-software",
+    name: "Sistemas Personalizados",
+    description:
+      "Desenvolvemos softwares sob medida para atender exatamente às necessidades do seu negócio, sem limitações.",
+    features: [
+      "Funcionalidades exclusivas e escaláveis",
+      "Integração com APIs, bancos de dados e ferramentas internas",
+      "Segurança avançada e performance otimizada",
+      "Painel administrativo fácil de usar",
+      "Acompanhamento e suporte durante todo o projeto",
+      "Tecnologias modernas: React, Node, FastAPI, Firebase"
+    ],
+    highlighted: true,
+    popular: false,
+    buttonText: "Solicitar Sistema",
+    whatsappMsg: "Olá, quero desenvolver um sistema personalizado para minha empresa. Podemos conversar?"
+  },
+  {
+    id: "maintenance-support",
+    name: "Suporte e Manutenção Contínua",
+    description:
+      "Garantimos que seus sistemas funcionem sempre com performance máxima e segurança total.",
+    features: [
+      "Monitoramento e manutenção preventiva",
+      "Correção de bugs e atualizações contínuas",
+      "Suporte remoto e presencial (região definida)",
+      "Consultoria estratégica de TI",
+      "Checkup de segurança e performance regularmente",
+      "Atendimento prioritário para sua empresa"
+    ],
+    highlighted: false,
+    popular: false,
+    buttonText: "Solicitar Suporte",
+    whatsappMsg: "Olá, quero contratar suporte contínuo para meus sistemas. Pode me dar mais detalhes?"
   }
 ];
 
@@ -81,7 +93,10 @@ const Plans = () => {
   };
 
   return (
-    <section id="plans" className="relative py-24 bg-gradient-to-b from-black via-gray-900 to-black text-white px-4 sm:px-6 lg:px-8">
+    <section
+      id="plans"
+      className="relative py-24 bg-gradient-to-b from-black via-gray-900 to-black text-white px-4 sm:px-6 lg:px-8"
+    >
       <div ref={ref} className="max-w-7xl mx-auto text-center">
         <motion.h2
           className="text-4xl md:text-5xl font-extrabold mb-4"
@@ -123,12 +138,14 @@ const Plans = () => {
                 <h3 className="text-2xl font-bold mb-2 text-white">{plan.name}</h3>
                 <p className="text-gray-400 text-sm mb-6">{plan.description}</p>
 
-                <div className="flex items-baseline justify-center gap-1 mb-6">
-                  <span className="text-3xl font-extrabold">
-                    {plan.price !== "Sob Consulta" ? `R$${plan.price}` : plan.price}
-                  </span>
-                  {plan.period && <span className="text-gray-400 text-sm">/{plan.period}</span>}
-                </div>
+                {plan.price && (
+                  <div className="flex items-baseline justify-center gap-1 mb-6">
+                    <span className="text-3xl font-extrabold">
+                      {plan.price !== "Sob Consulta" ? `R$${plan.price}` : plan.price}
+                    </span>
+                    {plan.period && <span className="text-gray-400 text-sm">/{plan.period}</span>}
+                  </div>
+                )}
 
                 <ul className="space-y-3 text-left">
                   {plan.features.map((feature, idx) => (
