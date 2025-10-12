@@ -1,174 +1,169 @@
 import React, { useEffect } from "react";
-import ReactDOM from "react-dom";
 import { motion } from "framer-motion";
-import {
-  ExternalLink,
-  Star,
-  ShoppingCart,
-  Globe,
-  Server,
-  Database,
-  Cloud,
-  ShieldCheck,
-} from "lucide-react";
+import { X, ShoppingCart, Star } from "lucide-react";
 
-interface Product {
+type Product = {
   id: number;
   name: string;
-  category: string;
-  priceFirstMonth: string;
-  priceRecurring: string;
-  priceValue: string;
-  originalPrice?: string | null;
-  discountPercent?: number | null;
-  image: string;
-  rating: number;
-  reviews: number;
-  features: string[];
-}
+  category?: string;
+  image?: string;
+  rating?: number;
+  reviews?: number;
+  features?: string[];
+  badge?: string;
+};
 
-interface ProductModalProps {
+type Props = {
   product: Product;
   onClose: () => void;
-}
+  whatsapp?: string;
+};
 
-const SoftwareModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
+const SoftwareModal: React.FC<Props> = ({ product, onClose, whatsapp }) => {
+  // Substitua pelo número real da GLV (formato internacional sem + ou espaços, ex: 5511999999999)
+  const GLV_WHATSAPP = whatsapp || "5511919167653";
 
   useEffect(() => {
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "";
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
     };
-  }, []);
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [onClose]);
 
-  return ReactDOM.createPortal(
-    <>
-      {/* Fundo escuro com blur */}
-      <motion.div
-        className="fixed inset-0 bg-black/40"
-        style={{
-          backdropFilter: "blur(20px)",
-          WebkitBackdropFilter: "blur(20px)",
-          zIndex: 9999,
-        }}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
+  const handleWhatsApp = () => {
+    const message = `Olá! Quero personalizar "${product.name}" (Categoria: ${product.category || "—"}). Podemos conversar?`;
+    const url = `https://wa.me/${GLV_WHATSAPP}?text=${encodeURIComponent(message)}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6"
+      aria-modal="true"
+      role="dialog"
+      aria-labelledby="modal-title"
+    >
+      {/* overlay */}
+      <div
+        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
         onClick={onClose}
       />
 
-      {/* Modal container */}
       <motion.div
-        className="fixed inset-0 flex items-center justify-center p-4"
-        style={{ zIndex: 10000 }}
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.9 }}
-        onClick={(e) => e.stopPropagation()}
+        initial={{ opacity: 0, y: 12, scale: 0.98 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: 8, scale: 0.98 }}
+        transition={{ duration: 0.18 }}
+        className="relative w-full max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-2xl max-h-[92vh] overflow-auto"
       >
-        <div className="relative rounded-3xl max-w-4xl w-full flex flex-col md:flex-row overflow-hidden shadow-lg bg-white/10 border border-white/25">
-          {/* Botão fechar */}
-          <button
-            onClick={onClose}
-            className="absolute top-4 right-4 text-white bg-black/30 hover:bg-black/60 rounded-full p-1.5 transition cursor-pointer z-50"
-            aria-label="Fechar modal"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
+        <div className="grid grid-cols-1 md:grid-cols-2 bg-gradient-to-br from-white/5 via-white/3 to-white/2 backdrop-blur-lg border border-white/10">
+          {/* imagem */}
+          <div className="relative h-48 sm:h-56 md:h-auto">
+            {product.image ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={product.image}
+                alt={product.name}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  const img = e.currentTarget as HTMLImageElement;
+                  img.onerror = null;
+                  img.src =
+                    "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80";
+                }}
+              />
+            ) : (
+              <div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-700 flex items-center justify-center">
+                <span className="text-white/70">Sem imagem</span>
+              </div>
+            )}
 
-          {/* Imagem e badge */}
-          <div className="md:w-1/2 w-full relative">
-            <img
-              src={product.image}
-              alt={product.name}
-              className="object-cover w-full h-64 md:h-full"
-            />
+            {/* badge */}
+            {product.badge && (
+              <span className="absolute top-4 left-4 inline-flex items-center px-3 py-1.5 text-xs font-semibold rounded-full bg-black/50 text-white/90 backdrop-blur-sm">
+                {product.badge}
+              </span>
+            )}
+
+            {/* close button (sobre a imagem) */}
+            <button
+              onClick={onClose}
+              aria-label="Fechar"
+              className="absolute top-4 right-4 z-20 inline-flex items-center justify-center w-9 h-9 rounded-lg bg-white/6 hover:bg-white/10 text-white transition"
+            >
+              <X className="w-4 h-4" />
+            </button>
           </div>
 
-          {/* Conteúdo */}
-          <div className="p-6 flex flex-col justify-between md:w-1/2 text-white">
+          {/* conteúdo */}
+          <div className="p-5 sm:p-6 flex flex-col justify-between">
             <div>
-              <h3 className="text-3xl font-bold mb-2">{product.name}</h3>
-              <p className="text-white/70 text-sm mb-4 font-semibold">Categoria: {product.category}</p>
+              <h2 id="modal-title" className="text-lg sm:text-2xl font-bold text-white">
+                {product.name}
+              </h2>
 
-              {/* Avaliação */}
-              <div className="flex items-center space-x-2 mb-4">
-                <div className="flex space-x-1">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className={`h-5 w-5 ${i < Math.floor(product.rating) ? "text-yellow-400 fill-current" : "text-gray-400"}`}
-                    />
-                  ))}
-                </div>
-                <span className="text-white/60 text-sm">
-                  {product.rating} ({product.reviews} avaliações)
-                </span>
-              </div>
+              {product.category && (
+                <div className="mt-2 text-sm text-white/60">{product.category}</div>
+              )}
 
-              {/* Features */}
-              <ul className="mb-6 space-y-1">
-                {product.features.map((feature, i) => (
-                  <li key={i} className="flex items-center space-x-2 text-white/80 text-sm">
-                    <div className="w-2 h-2 bg-blue-400 rounded-full" />
-                    <span>{feature}</span>
-                  </li>
-                ))}
-              </ul>
-
-              {/* Preços */}
-              <div className="mb-6">
-                <div className="text-3xl font-bold">
-                  {product.priceFirstMonth}{" "}
-                  <span className="text-sm font-normal text-white/60">no 1º mês</span>
-                </div>
-                <div className="text-white/80 text-sm mb-1">{product.priceRecurring} após</div>
-
-                {product.originalPrice && (
-                  <div className="text-white/60 line-through">{product.originalPrice}</div>
-                )}
-
-                {product.discountPercent && (
-                  <div className="text-green-400 font-semibold mt-1">
-                    {product.discountPercent}% OFF
+              <div className="mt-4 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="flex -space-x-1">
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={i}
+                        className={`w-4 h-4 ${i < Math.floor(product.rating || 0) ? "text-yellow-400" : "text-white/20"}`}
+                      />
+                    ))}
                   </div>
-                )}
+                  <div className="text-sm text-white/60">
+                    {product.rating} ({product.reviews || 0} avaliações)
+                  </div>
+                </div>
+
+                <div className="text-sm text-white/50">Projeto personalizado</div>
               </div>
+
+              <hr className="my-4 border-white/6" />
+
+              <div>
+                <h3 className="text-sm font-semibold text-white/90 mb-3">Principais recursos</h3>
+                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-white/70">
+                  {(product.features || []).map((f, idx) => (
+                    <li key={idx} className="flex items-center gap-3">
+                      <span className="inline-block w-2 h-2 rounded-full bg-emerald-400" />
+                      <span>{f}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <p className="mt-4 text-sm text-white/60">
+                Queremos entender suas necessidades e montar uma solução sob medida. Fale com a GLV via WhatsApp para iniciar a personalização e receber orientação de onboarding.
+              </p>
             </div>
 
-            {/* Botões */}
-            <div className="flex space-x-3">
-              <motion.button
-                className="flex-1 bg-gradient-to-r from-blue-600 to-blue-500 text-white py-3 px-5 rounded-lg hover:shadow-lg hover:shadow-blue-500/30 transition-all duration-300 flex items-center justify-center space-x-2"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+            <div className="mt-6 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+              <button
+                onClick={handleWhatsApp}
+                className="w-full sm:flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-gradient-to-r from-blue-700 to-blue-600 text-white font-semibold shadow-lg hover:brightness-105 transition focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <ShoppingCart className="h-5 w-5" />
-                <span>Assinar</span>
-              </motion.button>
+                <ShoppingCart className="w-4 h-4" />
+                <span>Quero Personalizar (WhatsApp)</span>
+              </button>
 
-              <motion.button
-                className="px-5 py-3 backdrop-blur-sm bg-white/10 border border-white/20 text-white rounded-lg hover:border-blue-500/50 transition-all duration-300"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+              <button
+                onClick={onClose}
+                className="w-full sm:w-auto px-4 py-2 rounded-lg border border-white/10 text-white/90 hover:bg-white/3 transition focus:outline-none focus:ring-2 focus:ring-white/20"
               >
-                <ExternalLink className="h-5 w-5" />
-              </motion.button>
+                Fechar
+              </button>
             </div>
           </div>
         </div>
       </motion.div>
-    </>,
-    document.body
+    </div>
   );
 };
 
