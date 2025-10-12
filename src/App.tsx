@@ -16,6 +16,22 @@ function App() {
     return () => clearTimeout(timer);
   }, []);
 
+  useEffect(() => {
+    if (loading) return;
+    const scrollToHash = () => {
+      const { hash } = window.location;
+      if (!hash) return;
+      const el = document.querySelector(hash);
+      if (el) {
+        // Delay to ensure sections are in the DOM after route render
+        setTimeout(() => el.scrollIntoView({ behavior: "smooth", block: "start" }), 0);
+      }
+    };
+    scrollToHash();
+    window.addEventListener("hashchange", scrollToHash);
+    return () => window.removeEventListener("hashchange", scrollToHash);
+  }, [loading]);
+
   if (loading) return <Loader />;
 
   return (

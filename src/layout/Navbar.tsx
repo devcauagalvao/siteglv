@@ -7,6 +7,7 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>("home");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,6 +22,61 @@ const Navbar = () => {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // ScrollSpy robusto baseado em posição no viewport
+  useEffect(() => {
+    const ids = [
+      "home",
+      "about",
+      "portfolio",
+      "services",
+      "plans",
+      "store",
+      "testimonials",
+      "contact",
+    ];
+    const getActiveId = () => {
+      const scrollY = window.scrollY;
+      const viewportMarker = scrollY + window.innerHeight * 0.35; // ponto de referência (35% da tela)
+      let bestId = ids[0];
+      let minDist = Infinity;
+
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (!el) continue;
+
+        const rect = el.getBoundingClientRect();
+        const top = rect.top + scrollY;
+        const bottom = top + el.offsetHeight;
+
+        // Prioriza a seção que contém o marcador no viewport
+        if (viewportMarker >= top && viewportMarker < bottom) {
+          return id;
+        }
+
+        // Fallback: a mais próxima do topo (considerando navbar ~64px)
+        const dist = Math.abs(top - (scrollY + 64));
+        if (dist < minDist) {
+          minDist = dist;
+          bestId = id;
+        }
+      }
+      return bestId;
+    };
+
+    const onScroll = () => {
+      const id = getActiveId();
+      setActiveSection((prev) => (prev !== id ? id : prev));
+    };
+
+    onScroll(); // inicializa estado corretamente no load
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, []);
 
   const navItems = [
@@ -46,6 +102,7 @@ const Navbar = () => {
     const section = document.querySelector(href);
     if (section) {
       section.scrollIntoView({ behavior: "smooth" });
+      setActiveSection(href.replace("#", "")); // feedback instantâneo
     }
     setIsMobileMenuOpen(false);
   };
@@ -106,18 +163,27 @@ const Navbar = () => {
 
           {/* Menu Desktop */}
           <div className="hidden md:flex items-center space-x-8">
-            {navItems.map((item) => (
-              <motion.a
-                key={item.name}
-                href={item.href}
-                onClick={(e) => handleSmoothScroll(e, item.href)}
-                className="text-white/80 hover:text-blue-400 px-1 relative group focus:outline-none"
-                whileHover={{ y: -2 }}
-              >
-                {item.name}
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-500 group-hover:w-full transition-all duration-300" />
-              </motion.a>
-            ))}
+            {navItems.map((item) => {
+              const isActive = item.href === `#${activeSection}`;
+              return (
+                <motion.a
+                  key={item.name}
+                  href={item.href}
+                  onClick={(e) => handleSmoothScroll(e, item.href)}
+                  className={`px-1 relative group focus:outline-none transition-colors ${
+                    isActive ? "text-white" : "text-white/80 hover:text-blue-400"
+                  }`}
+                  whileHover={{ y: -2 }}
+                >
+                  {item.name}
+                  <span
+                    className={`absolute bottom-0 left-0 h-0.5 bg-blue-500 transition-all duration-300 ${
+                      isActive ? "w-full" : "w-0 group-hover:w-full"
+                    }`}
+                  />
+                </motion.a>
+              );
+            })}
             <motion.a
               href="#contact"
               onClick={(e) => handleSmoothScroll(e, "#contact")}
@@ -168,16 +234,23 @@ const Navbar = () => {
               }}
             >
               <div className="px-4 py-6 space-y-4">
-                {navItems.map((item) => (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    onClick={(e) => handleSmoothScroll(e, item.href)}
-                    className="block text-white/90 hover:text-blue-400 transition-colors duration-200 focus:outline-none"
-                  >
-                    {item.name}
-                  </a>
-                ))}
+                {navItems.map((item) => {
+                  const isActive = item.href === `#${activeSection}`;
+                  return (
+                    <a
+                      key={item.name}
+                      href={item.href}
+                      onClick={(e) => handleSmoothScroll(e, item.href)}
+                      className={`block transition-colors duration-200 focus:outline-none ${
+                        isActive
+                          ? "text-white border-l-2 border-blue-500 pl-2"
+                          : "text-white/90 hover:text-blue-400"
+                      }`}
+                    >
+                      {item.name}
+                    </a>
+                  );
+                })}
                 <a
                   href="#contact"
                   onClick={(e) => handleSmoothScroll(e, "#contact")}
