@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import emailjs from 'emailjs-com';
 import {
@@ -22,6 +22,20 @@ const Contact = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // ✅ Carrega a tag do Google Ads uma única vez
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = "https://www.googletagmanager.com/gtag/js?id=AW-17644830612";
+    document.head.appendChild(script);
+
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){window.dataLayer.push(arguments);}
+    window.gtag = gtag;
+    gtag('js', new Date());
+    gtag('config', 'AW-17644830612');
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -41,6 +55,15 @@ const Contact = () => {
         templateParams,
         'H_rsp6SrkABlqY5RN'
       );
+
+      // ✅ Dispara o evento de conversão do Google Ads
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'conversion', {
+          send_to: 'AW-17644830612/xRF7CJao5asbEJT_2t1B',
+          value: 1.0,
+          currency: 'BRL'
+        });
+      }
 
       alert('Solicitação enviada com sucesso!');
       setFormData({
@@ -279,8 +302,8 @@ const Contact = () => {
             </motion.div>
           </motion.div>
         </div>
-      </div >
-    </section >
+      </div>
+    </section>
   );
 };
 
