@@ -10,6 +10,7 @@ interface Message {
   text: string;
   isBot: boolean;
   timestamp: Date;
+  actionButton?: { label: string; url: string };
 }
 
 interface Props {
@@ -54,7 +55,13 @@ export const AIAssistantUI: React.FC<Props> = ({
     </div>
   );
 
-  const whatsappMessage = "Olá, quero saber mais sobre os planos!";
+  const handleActionClick = (url: string) => {
+    if (/^https?:\/\//i.test(url)) {
+      window.open(url, "_blank", "noopener,noreferrer");
+    } else {
+      window.location.href = url;
+    }
+  };
 
   return (
     <>
@@ -75,7 +82,7 @@ export const AIAssistantUI: React.FC<Props> = ({
           >
             <div className="flex items-center justify-between p-4 border-b border-gray-700">
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 rounded-full overflow-hidden shadow-lg bg-white">
+                <div className="w-10 h-10 rounded-full overflow-hidden shadow-lg bg-black">
                   <img src="/img/assistant/bot.png" alt="Assistente GLV" className="w-full h-full object-cover" />
                 </div>
                 <div>
@@ -101,6 +108,16 @@ export const AIAssistantUI: React.FC<Props> = ({
                 >
                   <div className={`max-w-[75%] p-3 rounded-2xl text-sm whitespace-pre-line break-words ${message.isBot ? "bg-gray-800 text-gray-200" : "bg-blue-600 text-white"}`}>
                     {message.text}
+                    {message.isBot && message.actionButton && (
+                      <div className="mt-2">
+                        <button
+                          onClick={() => handleActionClick(message.actionButton!.url)}
+                          className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1 text-xs rounded-full"
+                        >
+                          {message.actionButton!.label}
+                        </button>
+                      </div>
+                    )}
                     {message.text.includes("planos disponíveis") && (
                       <div className="mt-2 space-y-2">
                         <button onClick={() => handlePlanClick("Quero contratar o plano Site Profissional")} className="bg-white/10 hover:bg-white/20 px-3 py-1 text-xs rounded w-full">Contratar Site Profissional</button>

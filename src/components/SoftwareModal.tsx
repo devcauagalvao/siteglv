@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import ReactDOM from "react-dom";
 import { motion } from "framer-motion";
 import { X, ShoppingCart, Star } from "lucide-react";
 
@@ -20,7 +21,6 @@ type Props = {
 };
 
 const SoftwareModal: React.FC<Props> = ({ product, onClose, whatsapp }) => {
-  // Substitua pelo número real da GLV (formato internacional sem + ou espaços, ex: 5511999999999)
   const GLV_WHATSAPP = whatsapp || "5511919167653";
 
   useEffect(() => {
@@ -28,7 +28,15 @@ const SoftwareModal: React.FC<Props> = ({ product, onClose, whatsapp }) => {
       if (e.key === "Escape") onClose();
     };
     document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
+
+    // lock body scroll while modal is open
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+    };
   }, [onClose]);
 
   const handleWhatsApp = () => {
@@ -37,35 +45,48 @@ const SoftwareModal: React.FC<Props> = ({ product, onClose, whatsapp }) => {
     window.open(url, "_blank", "noopener,noreferrer");
   };
 
-  return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6"
-      aria-modal="true"
-      role="dialog"
-      aria-labelledby="modal-title"
-    >
-      {/* overlay */}
-      <div
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+  return ReactDOM.createPortal(
+    <>
+      {/* Overlay com blur e fade */}
+      <motion.div
+        className="fixed inset-0 bg-black/40"
+        style={{
+          backdropFilter: "blur(20px)",
+          WebkitBackdropFilter: "blur(20px)",
+          zIndex: 9999,
+        }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
         onClick={onClose}
       />
 
+      {/* Container do modal centralizado */}
       <motion.div
-        initial={{ opacity: 0, y: 12, scale: 0.98 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        exit={{ opacity: 0, y: 8, scale: 0.98 }}
-        transition={{ duration: 0.18 }}
-        className="relative w-full max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-2xl max-h-[92vh] overflow-auto"
+        className="fixed inset-0 flex items-center justify-center p-4"
+        style={{ zIndex: 10000 }}
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.9 }}
+        onClick={(e) => e.stopPropagation()}
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 bg-gradient-to-br from-white/5 via-white/3 to-white/2 backdrop-blur-lg border border-white/10">
-          {/* imagem */}
-          <div className="relative h-48 sm:h-56 md:h-auto">
+        <div className="relative rounded-3xl max-w-4xl w-full flex flex-col md:flex-row md:items-start overflow-hidden shadow-lg bg-white/10 border border-white/25">
+          {/* Botão fechar no canto superior direito */}
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 text-white bg-black/30 hover:bg-black/60 rounded-full p-1.5 transition cursor-pointer z-50"
+            aria-label="Fechar modal"
+          >
+            <X size={24} />
+          </button>
+
+          {/* Imagem à esquerda */}
+          <div className="md:w-1/2 w-full relative md:self-start md:max-h-[420px] overflow-hidden">
             {product.image ? (
-              // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={product.image}
                 alt={product.name}
-                className="w-full h-full object-cover"
+                className="block object-cover w-full h-64 md:h-auto md:max-h-[420px]"
                 onError={(e) => {
                   const img = e.currentTarget as HTMLImageElement;
                   img.onerror = null;
@@ -74,46 +95,41 @@ const SoftwareModal: React.FC<Props> = ({ product, onClose, whatsapp }) => {
                 }}
               />
             ) : (
-              <div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-700 flex items-center justify-center">
+              <div className="w-full h-64 md:h-auto md:max-h-[420px] bg-gradient-to-br from-gray-800 to-gray-700 flex items-center justify-center">
                 <span className="text-white/70">Sem imagem</span>
               </div>
             )}
 
-            {/* badge */}
             {product.badge && (
               <span className="absolute top-4 left-4 inline-flex items-center px-3 py-1.5 text-xs font-semibold rounded-full bg-black/50 text-white/90 backdrop-blur-sm">
                 {product.badge}
               </span>
             )}
-
-            {/* close button (sobre a imagem) */}
-            <button
-              onClick={onClose}
-              aria-label="Fechar"
-              className="absolute top-4 right-4 z-20 inline-flex items-center justify-center w-9 h-9 rounded-lg bg-white/6 hover:bg-white/10 text-white transition"
-            >
-              <X className="w-4 h-4" />
-            </button>
           </div>
 
-          {/* conteúdo */}
-          <div className="p-5 sm:p-6 flex flex-col justify-between">
+          {/* Conteúdo à direita */}
+          <div className="p-6 flex flex-col md:w-1/2 gap-4">
             <div>
-              <h2 id="modal-title" className="text-lg sm:text-2xl font-bold text-white">
+              <h3 className="text-2xl font-bold text-white mb-1">
                 {product.name}
-              </h2>
-
+              </h3>
               {product.category && (
-                <div className="mt-2 text-sm text-white/60">{product.category}</div>
+                <div className="text-white/70 text-sm mb-4">
+                  {product.category}
+                </div>
               )}
 
-              <div className="mt-4 flex items-center justify-between">
+              <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
                   <div className="flex -space-x-1">
                     {[...Array(5)].map((_, i) => (
                       <Star
                         key={i}
-                        className={`w-4 h-4 ${i < Math.floor(product.rating || 0) ? "text-yellow-400" : "text-white/20"}`}
+                        className={`w-4 h-4 ${
+                          i < Math.floor(product.rating || 0)
+                            ? "text-yellow-400"
+                            : "text-white/20"
+                        }`}
                       />
                     ))}
                   </div>
@@ -121,17 +137,16 @@ const SoftwareModal: React.FC<Props> = ({ product, onClose, whatsapp }) => {
                     {product.rating} ({product.reviews || 0} avaliações)
                   </div>
                 </div>
-
-                <div className="text-sm text-white/50">Projeto personalizado</div>
+                <div className="text-sm text-white/60">Projeto personalizado</div>
               </div>
 
-              <hr className="my-4 border-white/6" />
-
-              <div>
-                <h3 className="text-sm font-semibold text-white/90 mb-3">Principais recursos</h3>
-                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-white/70">
-                  {(product.features || []).map((f, idx) => (
-                    <li key={idx} className="flex items-center gap-3">
+              <div className="mb-4">
+                <h4 className="text-sm font-semibold text-white/90 mb-2">
+                  Principais recursos
+                </h4>
+                <ul className="text-white/80 text-sm space-y-1">
+                  {(product.features || []).map((f, i) => (
+                    <li key={i} className="flex items-center gap-2">
                       <span className="inline-block w-2 h-2 rounded-full bg-emerald-400" />
                       <span>{f}</span>
                     </li>
@@ -139,31 +154,26 @@ const SoftwareModal: React.FC<Props> = ({ product, onClose, whatsapp }) => {
                 </ul>
               </div>
 
-              <p className="mt-4 text-sm text-white/60">
-                Queremos entender suas necessidades e montar uma solução sob medida. Fale com a GLV via WhatsApp para iniciar a personalização e receber orientação de onboarding.
+              <p className="text-white/70 text-sm">
+                Fale com a GLV via WhatsApp para personalizarmos sua solução e
+                orientar o onboarding.
               </p>
             </div>
 
-            <div className="mt-6 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+            <div className="flex gap-3 mt-6 flex-wrap">
               <button
                 onClick={handleWhatsApp}
-                className="w-full sm:flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-gradient-to-r from-blue-700 to-blue-600 text-white font-semibold shadow-lg hover:brightness-105 transition focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="bg-blue-600 text-white px-4 py-2 rounded-full flex items-center gap-2 hover:bg-blue-700 transition w-full sm:w-auto justify-center"
               >
                 <ShoppingCart className="w-4 h-4" />
-                <span>Quero Personalizar (WhatsApp)</span>
-              </button>
-
-              <button
-                onClick={onClose}
-                className="w-full sm:w-auto px-4 py-2 rounded-lg border border-white/10 text-white/90 hover:bg-white/3 transition focus:outline-none focus:ring-2 focus:ring-white/20"
-              >
-                Fechar
+                Quero Personalizar (WhatsApp)
               </button>
             </div>
           </div>
         </div>
       </motion.div>
-    </div>
+    </>,
+    document.body
   );
 };
 
