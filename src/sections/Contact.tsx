@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import emailjs from 'emailjs-com';
+import type { LucideIcon } from 'lucide-react';
 import {
   Send,
   Phone,
@@ -12,7 +13,6 @@ import {
   Building
 } from 'lucide-react';
 
-// Adiciona declarações globais para evitar erros de tipo em TS/TSX
 declare global {
   interface Window {
     dataLayer?: any[];
@@ -122,8 +122,15 @@ const Contact = () => {
     borderImageSlice: 1,
   };
 
+  type FieldName = 'name' | 'email' | 'company';
+  const fields: Array<[FieldName, string, LucideIcon, string]> = [
+    ['name', 'Nome Completo', User, 'Seu nome completo'],
+    ['email', 'E-mail', Mail, 'seu@email.com'],
+    ['company', 'Empresa (Opcional)', Building, 'Nome da sua empresa'],
+  ];
+
   return (
-    <section id="contact" className="py-20 relative overflow-hidden">
+    <section id="contact" className="py-20 relative overflow-hidden z-0">
       {/* Fundo Gradiente e Blobs */}
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-black via-gray-900 to-black" />
       <div className="absolute inset-0 opacity-10 -z-10">
@@ -131,7 +138,7 @@ const Contact = () => {
         <div className="absolute bottom-1/4 right-1/4 w-72 h-72 md:w-96 md:h-96 bg-blue-600 rounded-full blur-3xl" />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative z-0 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Cabeçalho */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -161,11 +168,7 @@ const Contact = () => {
           >
             <h3 className="text-xl md:text-2xl font-bold text-white mb-6">Solicitar Orçamento</h3>
             <form onSubmit={handleSubmit} className="space-y-6">
-              {[
-                ['name', 'Nome Completo', User, 'Seu nome completo'],
-                ['email', 'E-mail', Mail, 'seu@email.com'],
-                ['company', 'Empresa (Opcional)', Building, 'Nome da sua empresa']
-              ].map(([name, label, Icon, placeholder]) => (
+              {fields.map(([name, label, IconComp, placeholder]) => (
                 <div key={name}>
                   <label className="block text-white/80 mb-2 font-medium">{label}</label>
                   <div className="relative">
@@ -178,7 +181,7 @@ const Contact = () => {
                       placeholder={placeholder}
                       required={name !== 'company'}
                     />
-                    <Icon className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-white/50" />
+                    <IconComp className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-white/50" />
                   </div>
                 </div>
               ))}

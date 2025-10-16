@@ -115,8 +115,8 @@ const Navbar = () => {
     >
       <nav
         className={`fixed top-0 left-0 right-0 z-10 w-full transition-all duration-300 ${isScrolled
-            ? "backdrop-blur-md bg-black/30 border-b border-white/10 shadow-md"
-            : "bg-transparent"
+          ? "backdrop-blur-md bg-black/30 border-b border-white/10 shadow-md"
+          : "bg-transparent"
           }`}
       >
         <div className="flex justify-between items-center h-16 px-4 sm:px-6 lg:px-8">
@@ -170,23 +170,22 @@ const Navbar = () => {
                   key={item.name}
                   href={item.href}
                   onClick={(e) => handleSmoothScroll(e, item.href)}
-                  className={`px-1 relative group focus:outline-none transition-colors ${
-                    isActive ? "text-white" : "text-white/80 hover:text-blue-400"
-                  }`}
+                  className={`px-1 relative group focus:outline-none transition-colors ${isActive ? "text-white" : "text-white/80 hover:text-blue-400"
+                    }`}
                   whileHover={{ y: -2 }}
                 >
                   {item.name}
                   <span
-                    className={`absolute bottom-0 left-0 h-0.5 bg-blue-500 transition-all duration-300 ${
-                      isActive ? "w-full" : "w-0 group-hover:w-full"
-                    }`}
+                    className={`absolute bottom-0 left-0 h-0.5 bg-blue-500 transition-all duration-300 ${isActive ? "w-full" : "w-0 group-hover:w-full"
+                      }`}
                   />
                 </motion.a>
               );
             })}
             <motion.a
-              href="#contact"
-              onClick={(e) => handleSmoothScroll(e, "#contact")}
+              href="https://wa.me/5511919167653"
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-500 text-white px-6 py-2 rounded-full shadow-lg hover:shadow-xl hover:shadow-blue-500/50 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-blue-400 focus:ring-opacity-50"
               whileHover={{ scale: 1.07 }}
               whileTap={{ scale: 0.95 }}
@@ -241,19 +240,17 @@ const Navbar = () => {
                       key={item.name}
                       href={item.href}
                       onClick={(e) => handleSmoothScroll(e, item.href)}
-                      className={`block transition-colors duration-200 focus:outline-none ${
-                        isActive
+                      className={`block transition-colors duration-200 focus:outline-none ${isActive
                           ? "text-white border-l-2 border-blue-500 pl-2"
                           : "text-white/90 hover:text-blue-400"
-                      }`}
+                        }`}
                     >
                       {item.name}
                     </a>
                   );
                 })}
                 <a
-                  href="#contact"
-                  onClick={(e) => handleSmoothScroll(e, "#contact")}
+                  href="https://wa.me/5511919167653"
                   className="flex justify-center items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-500 text-white py-2 rounded-full hover:brightness-110 transition duration-300 focus:outline-none"
                 >
                   Peça Seu Orçamento Já
