@@ -30,12 +30,10 @@ const Contact = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // ✅ Carrega o script do Google Ads apenas uma vez
   useEffect(() => {
     const GA_ID = 'AW-17644830612';
     const scriptSrc = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
 
-    // Só adiciona o script se ainda não existir (evita duplicatas)
     if (!document.querySelector(`script[src="${scriptSrc}"]`)) {
       const script = document.createElement('script');
       script.async = true;
@@ -43,25 +41,18 @@ const Contact = () => {
       document.head.appendChild(script);
     }
 
-    // Inicializa dataLayer / gtag com proteção de tipos
     window.dataLayer = window.dataLayer || [];
     const gtag = (...args: any[]) => window.dataLayer!.push(args);
     window.gtag = gtag;
     window.gtag('js', new Date());
     window.gtag('config', GA_ID);
 
-    // Inicializa o emailjs com a chave pública (garante funcionamento)
     try {
-      // emailjs.init pode lançar se já inicializado; proteger com try/catch
-      // @ts-ignore - alguns pacotes não exportam tipagem completa para init
+      // @ts-ignore
       emailjs.init('H_rsp6SrkABlqY5RN');
-    } catch (err) {
-      // silencioso: se já estiver inicializado, não falha a renderização
-      // console.warn('emailjs init:', err);
-    }
+    } catch (err) {}
   }, []);
 
-  // Tipagem do evento do form
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -82,7 +73,6 @@ const Contact = () => {
         'H_rsp6SrkABlqY5RN'
       );
 
-      // ✅ Evento de conversão do Google Ads
       if (typeof window.gtag === 'function') {
         window.gtag('event', 'conversion', {
           send_to: 'AW-17644830612/xRF7CJao5asbEJT_2t1B',
@@ -92,13 +82,7 @@ const Contact = () => {
       }
 
       alert('Solicitação enviada com sucesso!');
-      setFormData({
-        name: '',
-        email: '',
-        company: '',
-        service: '',
-        message: ''
-      });
+      setFormData({ name: '', email: '', company: '', service: '', message: '' });
     } catch (error) {
       console.error('Erro ao enviar o formulário:', error);
       alert('Ocorreu um erro ao enviar sua solicitação.');
@@ -107,7 +91,6 @@ const Contact = () => {
     }
   };
 
-  // Tipagem do evento de mudança para inputs/textarea/select
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -124,30 +107,10 @@ const Contact = () => {
   ];
 
   const contactInfo = [
-    {
-      icon: Phone,
-      title: 'Telefone',
-      info: '+55 (11) 91916-7653',
-      description: 'Segunda a Sexta, 8h às 18h'
-    },
-    {
-      icon: Mail,
-      title: 'E-mail',
-      info: 'glvinformatica2024@gmail.com',
-      description: 'Resposta em até 2 horas'
-    },
-    {
-      icon: MapPin,
-      title: 'Endereço',
-      info: 'Itu, SP',
-      description: 'Atendimento presencial agendado'
-    },
-    {
-      icon: Clock,
-      title: 'Horário',
-      info: 'Seg-Sex: 7h-18h',
-      description: 'Suporte 24/7 disponível'
-    }
+    { icon: Phone, title: 'Telefone', info: '+55 (11) 91916-7653', description: 'Segunda a Sexta, 8h às 18h' },
+    { icon: Mail, title: 'E-mail', info: 'glvinformatica2024@gmail.com', description: 'Resposta em até 2 horas' },
+    { icon: MapPin, title: 'Endereço', info: 'Itu, SP', description: 'Atendimento presencial agendado' },
+    { icon: Clock, title: 'Horário', info: 'Seg-Sex: 7h-18h', description: 'Suporte 24/7 disponível' }
   ];
 
   const liquidGlassStyle = {
@@ -162,8 +125,8 @@ const Contact = () => {
   return (
     <section id="contact" className="py-20 relative overflow-hidden">
       {/* Fundo Gradiente e Blobs */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-900 to-black" />
-      <div className="absolute inset-0 opacity-10">
+      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-black via-gray-900 to-black" />
+      <div className="absolute inset-0 opacity-10 -z-10">
         <div className="absolute top-1/4 left-1/4 w-72 h-72 md:w-96 md:h-96 bg-blue-500 rounded-full blur-3xl" />
         <div className="absolute bottom-1/4 right-1/4 w-72 h-72 md:w-96 md:h-96 bg-blue-600 rounded-full blur-3xl" />
       </div>
