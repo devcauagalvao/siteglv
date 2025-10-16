@@ -12,8 +12,16 @@ import {
   Building
 } from 'lucide-react';
 
+// Adiciona declarações globais para evitar erros de tipo em TS/TSX
+declare global {
+  interface Window {
+    dataLayer?: any[];
+    gtag?: (...args: any[]) => void;
+  }
+}
+
 const Contact = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{ name: string; email: string; company: string; service: string; message: string }>({
     name: '',
     email: '',
     company: '',
@@ -22,21 +30,39 @@ const Contact = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // ✅ Carrega a tag do Google Ads uma única vez
+  // ✅ Carrega o script do Google Ads apenas uma vez
   useEffect(() => {
-    const script = document.createElement('script');
-    script.async = true;
-    script.src = "https://www.googletagmanager.com/gtag/js?id=AW-17644830612";
-    document.head.appendChild(script);
+    const GA_ID = 'AW-17644830612';
+    const scriptSrc = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
 
+    // Só adiciona o script se ainda não existir (evita duplicatas)
+    if (!document.querySelector(`script[src="${scriptSrc}"]`)) {
+      const script = document.createElement('script');
+      script.async = true;
+      script.src = scriptSrc;
+      document.head.appendChild(script);
+    }
+
+    // Inicializa dataLayer / gtag com proteção de tipos
     window.dataLayer = window.dataLayer || [];
-    function gtag(){window.dataLayer.push(arguments);}
+    const gtag = (...args: any[]) => window.dataLayer!.push(args);
     window.gtag = gtag;
-    gtag('js', new Date());
-    gtag('config', 'AW-17644830612');
+    window.gtag('js', new Date());
+    window.gtag('config', GA_ID);
+
+    // Inicializa o emailjs com a chave pública (garante funcionamento)
+    try {
+      // emailjs.init pode lançar se já inicializado; proteger com try/catch
+      // @ts-ignore - alguns pacotes não exportam tipagem completa para init
+      emailjs.init('H_rsp6SrkABlqY5RN');
+    } catch (err) {
+      // silencioso: se já estiver inicializado, não falha a renderização
+      // console.warn('emailjs init:', err);
+    }
   }, []);
 
-  const handleSubmit = async (e) => {
+  // Tipagem do evento do form
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
 
@@ -56,7 +82,7 @@ const Contact = () => {
         'H_rsp6SrkABlqY5RN'
       );
 
-      // ✅ Dispara o evento de conversão do Google Ads
+      // ✅ Evento de conversão do Google Ads
       if (typeof window.gtag === 'function') {
         window.gtag('event', 'conversion', {
           send_to: 'AW-17644830612/xRF7CJao5asbEJT_2t1B',
@@ -81,7 +107,8 @@ const Contact = () => {
     }
   };
 
-  const handleChange = (e) => {
+  // Tipagem do evento de mudança para inputs/textarea/select
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -134,13 +161,15 @@ const Contact = () => {
 
   return (
     <section id="contact" className="py-20 relative overflow-hidden">
+      {/* Fundo Gradiente e Blobs */}
       <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-900 to-black" />
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-1/4 left-1/4 w-72 h-72 md:w-96 md:h-96 bg-blue-500 rounded-full blur-3xl" />
         <div className="absolute bottom-1/4 right-1/4 w-72 h-72 md:w-96 md:h-96 bg-blue-600 rounded-full blur-3xl" />
       </div>
 
-      <div className="relative z-0 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Cabeçalho */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -191,6 +220,7 @@ const Contact = () => {
                 </div>
               ))}
 
+              {/* Serviço */}
               <div>
                 <label className="block text-white/80 mb-2 font-medium">Serviço de Interesse</label>
                 <select
@@ -209,6 +239,7 @@ const Contact = () => {
                 </select>
               </div>
 
+              {/* Mensagem */}
               <div>
                 <label className="block text-white/80 mb-2 font-medium">Mensagem</label>
                 <div className="relative">
@@ -277,6 +308,7 @@ const Contact = () => {
               </div>
             </div>
 
+            {/* Atendimento Imediato */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}

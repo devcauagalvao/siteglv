@@ -5,12 +5,12 @@ import { Helmet } from "react-helmet";
 
 const Hero = () => {
   const words = [
-    "sites.",
-    "softwares.",
-    "aplicativos.",
-    "suporte técnico.",
-    "manutenção.",
-    "automação.",
+    "sites profissionais.",
+    "softwares sob medida.",
+    "aplicativos personalizados.",
+    "suporte técnico especializado.",
+    "manutenção de computadores.",
+    "automação de processos.",
   ];
 
   const [wordIndex, setWordIndex] = useState(0);
@@ -26,9 +26,7 @@ const Hero = () => {
       const currentWord = words[currentWordIndex];
       const visibleText = currentWord.substring(0, typingIndex);
 
-      if (wordRef.current) {
-        wordRef.current.innerText = visibleText;
-      }
+      if (wordRef.current) wordRef.current.innerText = visibleText;
 
       if (!isDeleting) {
         if (typingIndex < currentWord.length) {
@@ -36,8 +34,7 @@ const Hero = () => {
           typingTimeout = setTimeout(type, 100);
         } else {
           isDeleting = true;
-          const delay = currentWord === "" ? 500 : 2000;
-          typingTimeout = setTimeout(type, delay);
+          typingTimeout = setTimeout(type, 2000);
         }
       } else {
         if (typingIndex > 0) {
@@ -53,26 +50,53 @@ const Hero = () => {
     };
 
     type();
-
     return () => clearTimeout(typingTimeout);
   }, []);
 
   return (
     <>
       <Helmet>
+        {/* 🔹 Título otimizado com foco local e CTA implícita */}
         <title>
-          GLV Informática | Software Personalizado e Suporte Técnico em Itu
+          Desenvolvimento de Software, Sites e Suporte Técnico | GLV Informática Itu
         </title>
+
+        {/* 🔹 Descrição mais atrativa e orientada a ação */}
         <meta
           name="description"
-          content="GLV Informática oferece desenvolvimento de sites, softwares personalizados, aplicativos, suporte técnico e automação para escalar seu negócio em Itu e região."
+          content="GLV Informática é especialista em desenvolvimento de software sob medida, criação de sites profissionais, aplicativos personalizados, automação e suporte técnico em Itu e região."
         />
+
+        {/* 🔹 Palavras-chave específicas, relevantes e sem repetição desnecessária */}
         <meta
           name="keywords"
-          content="software personalizado, desenvolvimento de sites, suporte técnico, automação, manutenção de computadores, aplicativos, TI em Itu"
+          content="desenvolvimento de software, criação de sites, aplicativos personalizados, automação de processos, suporte técnico, manutenção de computadores, GLV Informática Itu"
         />
+
         <meta name="author" content="GLV Informática" />
+        <meta name="robots" content="index, follow" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        {/* 🔹 Dados estruturados para SEO local */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            name: "GLV Informática",
+            url: "https://www.glvinformatica.com.br",
+            logo: "https://www.glvinformatica.com.br/img/branding/logohorizontal.png",
+            sameAs: [
+              "https://www.instagram.com/glvinformatica",
+              "https://wa.me/5511919167653",
+            ],
+            address: {
+              "@type": "PostalAddress",
+              addressLocality: "Itu",
+              addressRegion: "SP",
+              addressCountry: "BR",
+            },
+          })}
+        </script>
       </Helmet>
 
       <header
@@ -83,9 +107,9 @@ const Hero = () => {
       >
         <ParticleBackground />
 
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/80 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black/80 pointer-events-none" />
 
-        <div className="relative z-0 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 max-w-5xl w-full">
+        <div className="relative z-10 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 max-w-5xl w-full">
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -94,8 +118,8 @@ const Hero = () => {
           >
             <img
               src="/img/branding/logohorizontal.png"
-              alt="Logo da GLV Informática - Soluções em Tecnologia"
-              className="h-10 md:h-20 lg:h-20 object-contain mx-auto"
+              alt="GLV Informática - Desenvolvimento de Software e Suporte Técnico em Itu"
+              className="h-12 md:h-20 object-contain mx-auto"
               loading="lazy"
             />
           </motion.h1>
@@ -106,14 +130,13 @@ const Hero = () => {
             transition={{ delay: 0.7, duration: 0.8 }}
             className="text-2xl md:text-4xl lg:text-5xl font-light text-white mb-4"
           >
-            Desenvolvemos soluções em{" "}
+            Soluções inteligentes em{" "}
             <span
               className="inline-flex items-center font-semibold text-blue-500 ml-1"
+              ref={wordRef}
               aria-live="polite"
               aria-atomic="true"
-              aria-relevant="text"
               role="text"
-              ref={wordRef}
             />
           </motion.h2>
 
@@ -123,8 +146,8 @@ const Hero = () => {
             transition={{ delay: 0.9, duration: 0.8 }}
             className="text-lg md:text-xl text-white/80 mb-12 max-w-3xl leading-relaxed"
           >
-            Software personalizado, infraestrutura e suporte técnico para
-            escalar seu negócio!
+            Desenvolvimento de software, infraestrutura e suporte técnico para
+            impulsionar o crescimento do seu negócio!
           </motion.p>
 
           <motion.div
@@ -141,12 +164,11 @@ const Hero = () => {
               whileHover={{
                 scale: 1.05,
                 boxShadow: "0 0 40px rgba(59, 130, 246, 0.6)",
-                borderColor: "rgba(59, 130, 246, 0.8)",
               }}
               whileTap={{ scale: 0.95 }}
               aria-label="Solicitar orçamento personalizado via WhatsApp"
             >
-              Solicitar Orçamento Personalizado
+              Solicitar Orçamento
             </motion.a>
           </motion.div>
         </div>
@@ -166,11 +188,7 @@ const Hero = () => {
             strokeWidth="2"
             viewBox="0 0 24 24"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M19 9l-7 7-7-7"
-            />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
           </svg>
         </div>
       </motion.div>

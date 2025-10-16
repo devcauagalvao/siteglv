@@ -7,7 +7,6 @@ type Project = {
   id: number;
   title: string;
   category: string;
-  // aceitando string ou array de imagens
   image: string | string[];
   imageModal: string | string[];
   description: string;
@@ -30,7 +29,7 @@ const Portfolio: React.FC = () => {
     };
   }, [selectedProject]);
 
-  const projects = [
+  const projects: Project[] = [
     {
       id: 1,
       title: "Fit Fusion",
@@ -201,7 +200,7 @@ const Portfolio: React.FC = () => {
       ? projects
       : projects.filter((project) => project.category === activeCategory);
 
-  // Componente interno para cada card (usa estado local para índice do carrossel)
+  // Componente interno para cada card
   const ProjectCard: React.FC<{ project: Project; index: number; onOpen: () => void }> = ({ project, index, onOpen }) => {
     const images = Array.isArray(project.image) ? project.image : [project.image];
     const [imgIndex, setImgIndex] = useState(0);
@@ -235,8 +234,9 @@ const Portfolio: React.FC = () => {
           <div className="relative h-48">
             <img
               src={images[imgIndex]}
-              alt={project.title}
+              alt={`${project.title} - imagem ${imgIndex + 1}`}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              loading="lazy"
             />
             <div
               className={`absolute top-4 right-4 p-2 rounded-full shadow-md bg-gradient-to-r ${gradient}`}
@@ -327,6 +327,7 @@ const Portfolio: React.FC = () => {
             <button
               key={category}
               onClick={() => setActiveCategory(category)}
+              aria-pressed={activeCategory === category}
               className={`px-5 py-2 rounded-full text-sm sm:text-base transition-all duration-300 ${activeCategory === category
                 ? "bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-lg"
                 : "bg-white/10 backdrop-blur-md text-white/80 border border-white/20 hover:border-blue-400 hover:text-white"

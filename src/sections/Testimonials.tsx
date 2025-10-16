@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Star, ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -55,26 +55,38 @@ const Testimonials = () => {
         "Enfrentávamos lentidão nos computadores, falhas em softwares e riscos de perda de dados por falta de backups adequados.",
       solution:
         "A GLV realizou diagnóstico completo, corrigiu problemas de hardware, instalou os softwares necessários e implementou rotinas automatizadas de backup.",
-      result: "Aumentamos a produtividade da equipe e garantimos a segurança das informações críticas do negócio.",
+      result:
+        "Aumentamos a produtividade da equipe e garantimos a segurança das informações críticas do negócio.",
       rating: 5,
       content:
         "O atendimento foi ágil e técnico. A equipe da GLV resolveu todos os problemas com profissionalismo. Agora nossos sistemas funcionam com estabilidade e temos tranquilidade quanto aos dados.",
     },
   ];
 
-  const nextTestimonial = () => {
+  const nextTestimonial = useCallback(() => {
     setActiveIndex((prev) => (prev + 1) % testimonials.length);
-  };
+  }, [testimonials.length]);
 
-  const prevTestimonial = () => {
+  const prevTestimonial = useCallback(() => {
     setActiveIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
-  };
+  }, [testimonials.length]);
 
+  // Autoplay
   useEffect(() => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     timeoutRef.current = setTimeout(nextTestimonial, 6000);
-    return () => clearTimeout(timeoutRef.current!);
-  }, [activeIndex]);
+    return () => timeoutRef.current && clearTimeout(timeoutRef.current);
+  }, [activeIndex, nextTestimonial]);
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "ArrowRight") nextTestimonial();
+      if (e.key === "ArrowLeft") prevTestimonial();
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [nextTestimonial, prevTestimonial]);
 
   const current = testimonials[activeIndex];
 
@@ -93,7 +105,10 @@ const Testimonials = () => {
           transition={{ duration: 0.7 }}
           className="text-center mb-14"
         >
-          <h2 id="testimonials-heading" className="text-4xl font-extrabold tracking-tight mb-3">
+          <h2
+            id="testimonials-heading"
+            className="text-4xl font-extrabold tracking-tight mb-3"
+          >
             <span className="text-white">O Que Nossos </span>
             <span className="text-blue-500">Clientes Dizem</span>
           </h2>
@@ -106,6 +121,7 @@ const Testimonials = () => {
         <div
           onMouseEnter={() => timeoutRef.current && clearTimeout(timeoutRef.current)}
           onMouseLeave={() => (timeoutRef.current = setTimeout(nextTestimonial, 6000))}
+          aria-live="polite"
         >
           <AnimatePresence mode="wait">
             <motion.div
@@ -118,9 +134,16 @@ const Testimonials = () => {
               role="region"
               aria-label={`Depoimento de ${current.name}`}
             >
-              <div className="flex justify-center gap-1" aria-label={`Avaliação ${current.rating} estrelas`}>
+              <div
+                className="flex justify-center gap-1"
+                aria-label={`Avaliação ${current.rating} estrelas`}
+              >
                 {Array.from({ length: current.rating }).map((_, i) => (
-                  <Star key={i} className="h-6 w-6 text-yellow-400 fill-current" />
+                  <Star
+                    key={i}
+                    className="h-6 w-6 text-yellow-400 fill-current"
+                    aria-hidden="true"
+                  />
                 ))}
               </div>
 
