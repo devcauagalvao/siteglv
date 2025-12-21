@@ -6,9 +6,8 @@ import CookieConsent from "./layout/CookieConsent";
 import AIAssistant from "./features/assistant/AIAssistant";
 import Home from "./pages/Home";
 import Loader from "./components/Loader";
-import { Instagram, Facebook } from "lucide-react"; // add icons
+import { Instagram, Facebook } from "lucide-react";
 
-// Fonte de dados local de usuários
 type UserRecord = {
   id: string;
   name: string;
