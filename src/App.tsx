@@ -6,7 +6,7 @@ import CookieConsent from "./layout/CookieConsent";
 import AIAssistant from "./features/assistant/AIAssistant";
 import Home from "./pages/Home";
 import Loader from "./components/Loader";
-import { Instagram, Facebook } from "lucide-react";
+import { Instagram, Facebook, Phone } from "lucide-react";
 
 type UserRecord = {
   id: string;
@@ -90,13 +90,16 @@ const UserPage: React.FC = () => {
           {user.role && <p className="mt-2 text-white/70 text-lg">{user.role}</p>}
 
           {user.phone && (
-            <div className="mt-6 flex items-center justify-center gap-3">
-              <span className="text-white/80 text-sm md:text-base">{formatPhone(user.phone)}</span>
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+              <span className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-white/10 border border-blue-500/40 text-white text-2xl md:text-3xl font-semibold">
+                <Phone className="w-6 h-6 text-blue-400" />
+                {formatPhone(user.phone)}
+              </span>
               <a
                 href={`https://wa.me/${user.phone}?text=${encodeURIComponent(`Olá ${user.name}, podemos conversar?`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-500 text-white px-4 py-2 rounded-full hover:shadow-lg hover:shadow-blue-500/30 transition"
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-500 text-white px-5 py-3 rounded-full hover:shadow-lg hover:shadow-blue-500/30 transition"
               >
                 Entrar em contato
               </a>
