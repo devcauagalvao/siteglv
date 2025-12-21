@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { motion, AnimationControls } from "framer-motion";
 import { Sparkles, Instagram } from "lucide-react";
 import InstagramModal from "./InstagramModal";
+import { useLocation } from "react-router-dom";
 
 interface FloatingDotsProps {
     setIsOpen: (val: boolean) => void;
@@ -9,8 +10,19 @@ interface FloatingDotsProps {
 }
 
 export const FloatingDots: React.FC<FloatingDotsProps> = ({ setIsOpen, whatsappControls }) => {
+    const location = useLocation();
+    const isDynamicRoute = location.pathname !== "/";
     const [isInstagramOpen, setIsInstagramOpen] = useState(false);
     const whatsappMessage = "Olá, quero saber mais sobre os planos!";
+
+    // Na rota dinâmica, não renderizar os botões/círculos
+    if (isDynamicRoute) {
+        return (
+            <div className="fixed inset-0 min-h-screen pointer-events-none">
+                {/* Mantém o background preenchendo a tela, se necessário */}
+            </div>
+        );
+    }
 
     return (
         <>

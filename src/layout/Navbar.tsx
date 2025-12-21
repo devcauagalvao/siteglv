@@ -2,13 +2,18 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUp, Send } from "lucide-react";
 import styled from "styled-components";
+import { useLocation, useNavigate } from "react-router-dom"; // add
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("home");
+  const location = useLocation();
+  const isDynamicRoute = location.pathname !== "/";
+  const navigate = useNavigate(); // add
 
+  // Observe scroll progress (mantém)
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY;
@@ -24,8 +29,13 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // ScrollSpy robusto baseado em posição no viewport
+  // ScrollSpy: desativa em rota dinâmica
   useEffect(() => {
+    if (isDynamicRoute) {
+      // evita qualquer destaque na rota dinâmica
+      setActiveSection("");
+      return;
+    }
     const ids = [
       "home",
       "about",
@@ -70,14 +80,14 @@ const Navbar = () => {
       setActiveSection((prev) => (prev !== id ? id : prev));
     };
 
-    onScroll(); // inicializa estado corretamente no load
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
-  }, []);
+  }, [isDynamicRoute]);
 
   const navItems = [
     { name: "Home", href: "#home" },
@@ -99,10 +109,17 @@ const Navbar = () => {
     href: string
   ) => {
     e.preventDefault();
+    // Se estiver na rota dinâmica, navega para "/" com hash para funcionar os links
+    if (isDynamicRoute) {
+      navigate({ pathname: "/", hash: href });
+      setIsMobileMenuOpen(false);
+      return;
+    }
+    // Home: scroll suave para a seção
     const section = document.querySelector(href);
     if (section) {
       section.scrollIntoView({ behavior: "smooth" });
-      setActiveSection(href.replace("#", "")); // feedback instantâneo
+      setActiveSection(href.replace("#", ""));
     }
     setIsMobileMenuOpen(false);
   };
@@ -164,7 +181,7 @@ const Navbar = () => {
           {/* Menu Desktop */}
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => {
-              const isActive = item.href === `#${activeSection}`;
+              const isActive = !isDynamicRoute && item.href === `#${activeSection}`; // guard
               return (
                 <motion.a
                   key={item.name}
@@ -234,7 +251,7 @@ const Navbar = () => {
             >
               <div className="px-4 py-6 space-y-4">
                 {navItems.map((item) => {
-                  const isActive = item.href === `#${activeSection}`;
+                  const isActive = !isDynamicRoute && item.href === `#${activeSection}`; // guard
                   return (
                     <a
                       key={item.name}
