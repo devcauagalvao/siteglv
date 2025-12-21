@@ -71,6 +71,11 @@ const UserPage: React.FC = () => {
     );
   }
 
+  const profileUrl = `https://www.glvinformatica.com.br/${user.id}`;
+  const staticQrPath = `/qrcodes/${user.id}.png`;
+  const dynamicQrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(profileUrl)}`;
+  const [qrSrc, setQrSrc] = useState<string>(staticQrPath);
+
   return (
     <section className="min-h-screen relative overflow-hidden flex items-center">
       <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-900 to-black" />

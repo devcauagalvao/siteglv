@@ -1,4 +1,5 @@
 {
+  "buildCommand": "npm run generate:qrcodes && npm run build",
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ]
