@@ -53,6 +53,16 @@ const Hero = () => {
     return () => clearTimeout(typingTimeout);
   }, []);
 
+  const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const target = document.getElementById("services");
+    if (target) {
+      const navOffset = 64; // navbar height (~h-16)
+      const y = target.getBoundingClientRect().top + window.scrollY - navOffset;
+      window.scrollTo({ top: y, behavior: "smooth" });
+    }
+  };
+
   return (
     <>
       <Helmet>
@@ -137,6 +147,7 @@ const Hero = () => {
               aria-live="polite"
               aria-atomic="true"
               role="text"
+              aria-label={words[wordIndex]}
             />
           </motion.h2>
 
@@ -157,9 +168,8 @@ const Hero = () => {
             className="flex items-center gap-4 justify-center"
           >
             <motion.a
-              href="https://wa.me/5511919167653"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="#services"
+              onClick={handleSmoothScroll}
               className="inline-block bg-gradient-to-r from-blue-600 to-blue-500 text-white px-8 sm:px-12 py-3 sm:py-4 rounded-full text-base sm:text-lg font-semibold shadow-2xl shadow-blue-500/30 border border-blue-400/30 text-center"
               whileHover={{
                 scale: 1.05,
@@ -168,7 +178,7 @@ const Hero = () => {
               whileTap={{ scale: 0.95 }}
               aria-label="Solicitar orçamento personalizado via WhatsApp"
             >
-              Solicitar Orçamento
+              Encontrar sua solução
             </motion.a>
           </motion.div>
         </div>

@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Link, useParams } from "react-router-dom";
 import Navbar from "./layout/Navbar";
 import Footer from "./layout/Footer";
 import CookieConsent from "./layout/CookieConsent";
-import AIAssistant from "./features/assistant/AIAssistant";
+const AIAssistant = React.lazy(() => import("./features/assistant/AIAssistant"));
 import Home from "./pages/Home";
-import Loader from "./components/Loader";
+import Sobre from "./pages/Sobre";
+import CustomizeService from "./pages/CustomizeService";
 import { Instagram, Facebook, Phone } from "lucide-react";
 
 type UserRecord = {
@@ -71,10 +72,6 @@ const UserPage: React.FC = () => {
     );
   }
 
-  const profileUrl = `https://www.glvinformatica.com.br/${user.id}`;
-  const staticQrPath = `/qrcodes/${user.id}.png`;
-  const dynamicQrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(profileUrl)}`;
-  const [qrSrc, setQrSrc] = useState<string>(staticQrPath);
 
   return (
     <section className="min-h-screen relative overflow-hidden flex items-center">
@@ -134,15 +131,7 @@ const UserPage: React.FC = () => {
 };
 
 function App() {
-  const [loading, setLoading] = useState(true);
-
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 3000); // 3s
-    return () => clearTimeout(timer);
-  }, []);
-
-  useEffect(() => {
-    if (loading) return;
     const scrollToHash = () => {
       const { hash } = window.location;
       if (!hash) return;
@@ -154,9 +143,7 @@ function App() {
     scrollToHash();
     window.addEventListener("hashchange", scrollToHash);
     return () => window.removeEventListener("hashchange", scrollToHash);
-  }, [loading]);
-
-  if (loading) return <Loader />;
+  }, []);
 
   return (
     <div className="bg-black text-white overflow-x-hidden">
@@ -164,10 +151,14 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<><Home /><Footer /></>} />
+          <Route path="/sobre" element={<Sobre />} />
+          <Route path="/personalizar/:slug" element={<CustomizeService />} />
           <Route path="/:id" element={<UserPage />} />
         </Routes>
         <CookieConsent />
-        <AIAssistant />
+        <Suspense fallback={null}>
+          <AIAssistant />
+        </Suspense>
       </Router>
     </div>
   );

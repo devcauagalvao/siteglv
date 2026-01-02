@@ -1,7 +1,6 @@
 import React from "react";
 import Hero from "../sections/Hero";
 import About from "../sections/About";
-import Services from "../sections/Services";
 import Plans from "../sections/Plans";
 import Portfolio from "../sections/Portfolio";
 import Store from "../sections/Store";
@@ -12,10 +11,9 @@ const Home = () => {
   return (
     <>
       <Hero />
+      <Plans />
       <About />
       <Portfolio />
-      <Services />
-      <Plans />
       <Store />
       <Testimonials />
       <Contact />

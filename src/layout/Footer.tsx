@@ -17,12 +17,14 @@ import {
   ScrollText,
 } from "lucide-react";
 import TermsModal from "../components/TermsModal";
+import { useNavigate } from "react-router-dom";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   const [modalContent, setModalContent] = useState<"privacy" | "terms" | null>(
     null
   );
+  const navigate = useNavigate();
 
   const footerSections = [
     {
@@ -37,7 +39,7 @@ const Footer = () => {
     {
       title: "Empresa",
       links: [
-        { name: "Sobre Nós", href: "#about" },
+        { name: "Sobre Nós", href: "/sobre" },
         { name: "Portfólio", href: "#portfolio" },
         { name: "Clientes", href: "#testimonials" },
         { name: "Softwares", href: "#store" },
@@ -109,6 +111,20 @@ const Footer = () => {
     }
   };
 
+  const handleNavClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    href: string,
+    external?: boolean
+  ) => {
+    if (external) return; // allow default behavior
+    if (href.startsWith("/")) {
+      e.preventDefault();
+      navigate(href);
+      return;
+    }
+    handleSmoothScroll(e, href);
+  };
+
   return (
     <footer className="relative overflow-hidden text-white z-0">
       {/* Fundo gradiente */}
@@ -167,7 +183,7 @@ const Footer = () => {
               <ul className="space-y-3 text-sm">
                 {section.links.map((link, j) => (
                   <li key={j}>
-                    {link.modal ? (
+                    {"modal" in link ? (
                       <button
                         onClick={() =>
                           setModalContent(link.modal as "privacy" | "terms")
@@ -182,12 +198,10 @@ const Footer = () => {
                     ) : (
                       <a
                         href={link.href}
-                        target={link.external ? "_blank" : "_self"}
-                        rel={link.external ? "noopener noreferrer" : ""}
-                        onClick={
-                          !link.external
-                            ? (e) => handleSmoothScroll(e, link.href)
-                            : undefined
+                        target={"external" in link && link.external ? "_blank" : "_self"}
+                        rel={"external" in link && link.external ? "noopener noreferrer" : undefined}
+                        onClick={(e) =>
+                          handleNavClick(e, link.href, ("external" in link && link.external) || false)
                         }
                         className="flex items-center gap-2 text-white/70 hover:text-blue-400 transition duration-200"
                       >

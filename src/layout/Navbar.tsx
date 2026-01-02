@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUp, Send } from "lucide-react";
 import styled from "styled-components";
-import { useLocation, useNavigate } from "react-router-dom"; // add
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -11,7 +11,7 @@ const Navbar = () => {
   const [activeSection, setActiveSection] = useState<string>("home");
   const location = useLocation();
   const isDynamicRoute = location.pathname !== "/";
-  const navigate = useNavigate(); // add
+  const navigate = useNavigate();
 
   // Observe scroll progress (mantém)
   useEffect(() => {
@@ -29,10 +29,8 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // ScrollSpy: desativa em rota dinâmica
   useEffect(() => {
     if (isDynamicRoute) {
-      // evita qualquer destaque na rota dinâmica
       setActiveSection("");
       return;
     }
@@ -48,7 +46,7 @@ const Navbar = () => {
     ];
     const getActiveId = () => {
       const scrollY = window.scrollY;
-      const viewportMarker = scrollY + window.innerHeight * 0.35; // ponto de referência (35% da tela)
+      const viewportMarker = scrollY + window.innerHeight * 0.35;
       let bestId = ids[0];
       let minDist = Infinity;
 
@@ -60,12 +58,10 @@ const Navbar = () => {
         const top = rect.top + scrollY;
         const bottom = top + el.offsetHeight;
 
-        // Prioriza a seção que contém o marcador no viewport
         if (viewportMarker >= top && viewportMarker < bottom) {
           return id;
         }
 
-        // Fallback: a mais próxima do topo (considerando navbar ~64px)
         const dist = Math.abs(top - (scrollY + 64));
         if (dist < minDist) {
           minDist = dist;
@@ -89,37 +85,38 @@ const Navbar = () => {
     };
   }, [isDynamicRoute]);
 
-  const navItems = [
-    { name: "Home", href: "#home" },
-    { name: "Sobre", href: "#about" },
-    { name: "Portfólio", href: "#portfolio" },
-    { name: "Serviços", href: "#services" },
-    { name: "Planos", href: "#plans" },
-    { name: "Softwares", href: "#store" },
-    { name: "Clientes", href: "#testimonials" },
-    { name: "Contato", href: "#contact" },
+  const navItems: Array<{ name: string; href: string; type: "section" | "route" }> = [
+    { name: "Home", href: "#home", type: "section" },
+    { name: "Serviços", href: "#services", type: "section" },
+    { name: "Portfólio", href: "#portfolio", type: "section" },
+    { name: "Softwares", href: "#store", type: "section" },
+    { name: "Clientes", href: "#testimonials", type: "section" },
+    { name: "Contato", href: "#contact", type: "section" },
   ];
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const handleSmoothScroll = (
+  const handleNavClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
-    href: string
+    href: string,
+    type: "section" | "route"
   ) => {
     e.preventDefault();
-    // Se estiver na rota dinâmica, navega para "/" com hash para funcionar os links
-    if (isDynamicRoute) {
-      navigate({ pathname: "/", hash: href });
-      setIsMobileMenuOpen(false);
-      return;
-    }
-    // Home: scroll suave para a seção
-    const section = document.querySelector(href);
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
-      setActiveSection(href.replace("#", ""));
+    if (type === "route") {
+      navigate(href);
+    } else {
+      if (isDynamicRoute) {
+        navigate({ pathname: "/", hash: href });
+        setIsMobileMenuOpen(false);
+        return;
+      }
+      const section = document.querySelector(href);
+      if (section) {
+        section.scrollIntoView({ behavior: "smooth" });
+        setActiveSection(href.replace("#", ""));
+      }
     }
     setIsMobileMenuOpen(false);
   };
@@ -131,13 +128,12 @@ const Navbar = () => {
       transition={{ type: "spring", stiffness: 100 }}
     >
       <nav
-        className={`fixed top-0 left-0 right-0 z-10 w-full transition-all duration-300 ${isScrolled
+        className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ${isScrolled
           ? "backdrop-blur-md bg-black/30 border-b border-white/10 shadow-md"
           : "bg-transparent"
           }`}
       >
         <div className="flex justify-between items-center h-16 px-4 sm:px-6 lg:px-8">
-          {/* Logo / Botão Topo */}
           <motion.div
             className="relative cursor-pointer"
             whileHover={{ scale: 1.05 }}
@@ -181,12 +177,14 @@ const Navbar = () => {
           {/* Menu Desktop */}
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => {
-              const isActive = !isDynamicRoute && item.href === `#${activeSection}`; // guard
+              const isSectionActive = item.type === "section" && !isDynamicRoute && item.href === `#${activeSection}`;
+              const isRouteActive = item.type === "route" && location.pathname === item.href;
+              const isActive = isSectionActive || isRouteActive;
               return (
                 <motion.a
                   key={item.name}
                   href={item.href}
-                  onClick={(e) => handleSmoothScroll(e, item.href)}
+                  onClick={(e) => handleNavClick(e, item.href, item.type)}
                   className={`px-1 relative group focus:outline-none transition-colors ${isActive ? "text-white" : "text-white/80 hover:text-blue-400"
                     }`}
                   whileHover={{ y: -2 }}
@@ -251,15 +249,17 @@ const Navbar = () => {
             >
               <div className="px-4 py-6 space-y-4">
                 {navItems.map((item) => {
-                  const isActive = !isDynamicRoute && item.href === `#${activeSection}`; // guard
+                  const isSectionActive = item.type === "section" && !isDynamicRoute && item.href === `#${activeSection}`;
+                  const isRouteActive = item.type === "route" && location.pathname === item.href;
+                  const isActive = isSectionActive || isRouteActive;
                   return (
                     <a
                       key={item.name}
                       href={item.href}
-                      onClick={(e) => handleSmoothScroll(e, item.href)}
+                      onClick={(e) => handleNavClick(e, item.href, item.type)}
                       className={`block transition-colors duration-200 focus:outline-none ${isActive
-                          ? "text-white border-l-2 border-blue-500 pl-2"
-                          : "text-white/90 hover:text-blue-400"
+                        ? "text-white border-l-2 border-blue-500 pl-2"
+                        : "text-white/90 hover:text-blue-400"
                         }`}
                     >
                       {item.name}

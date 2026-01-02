@@ -82,50 +82,7 @@ const About = () => {
       <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-900 to-black" />
 
       <div className="relative z-0 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-12 sm:mb-16"
-        >
-          <h2 id="about-title" className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6">
-            <span className="text-white">Sobre a </span>
-            <span className="text-[#3B82F6]">GLV</span>
-          </h2>
-          <p className="text-base sm:text-lg text-white/80 max-w-xl sm:max-w-3xl mx-auto px-2 sm:px-0">
-            Construindo o futuro digital através de softwares, automações, sites e suporte especializado.
-          </p>
-        </motion.div>
 
-        {/* Cards de valores */}
-        <div role="list" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16 sm:mb-20">
-          {values.map((value, index) => (
-            <motion.div
-              key={index}
-              role="listitem"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: index * 0.1 }}
-              whileHover={{ y: -10, scale: 1.02 }}
-              className="group"
-            >
-              <div className="h-full backdrop-blur-2xl bg-white/5 border border-white/10 rounded-2xl p-5 sm:p-6 hover:border-blue-500/40 transition-all duration-300 shadow-lg">
-                <div
-                  className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-r from-blue-600 to-blue-500 mb-3 sm:mb-4 group-hover:shadow-lg group-hover:shadow-blue-500/30 transition-all duration-300"
-                  aria-hidden="true"
-                >
-                  <value.icon className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
-                </div>
-                <h3 className="text-lg sm:text-xl font-semibold text-white mb-2 sm:mb-3">{value.title}</h3>
-                <p className="text-sm sm:text-base text-white/70 leading-relaxed">{value.description}</p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Timeline */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
