@@ -12,6 +12,7 @@ import {
   User,
   Building
 } from 'lucide-react';
+import SuccessModal from "../components/SuccessModal";
 
 declare global {
   interface Window {
@@ -29,6 +30,8 @@ const Contact = () => {
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [successOpen, setSuccessOpen] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   useEffect(() => {
     const GA_ID = 'AW-17644830612';
@@ -56,6 +59,7 @@ const Contact = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setErrorMsg(null);
 
     const templateParams = {
       from_name: formData.name,
@@ -80,12 +84,11 @@ const Contact = () => {
           currency: 'BRL'
         });
       }
-
-      alert('Solicitação enviada com sucesso!');
+      setSuccessOpen(true);
       setFormData({ name: '', email: '', company: '', service: '', message: '' });
     } catch (error) {
       console.error('Erro ao enviar o formulário:', error);
-      alert('Ocorreu um erro ao enviar sua solicitação.');
+      setErrorMsg('Ocorreu um erro ao enviar sua solicitação. Tente novamente.');
     } finally {
       setIsSubmitting(false);
     }
@@ -139,7 +142,7 @@ const Contact = () => {
       </div>
 
       <div className="relative z-0 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Cabeçalho */}
+          {/* Formulário */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -149,6 +152,11 @@ const Contact = () => {
         >
           <h2 className="text-3xl md:text-5xl font-bold mb-6">
             <span className="text-white">Fale Conosco </span>
+            {errorMsg && (
+              <div className="mb-4 p-3 rounded-xl border border-red-500/30 bg-red-500/10 text-red-300 text-sm">
+                {errorMsg}
+              </div>
+            )}
             <span className="text-[#3B82F6]">Hoje</span>
           </h2>
           <p className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto">
@@ -301,6 +309,7 @@ const Contact = () => {
           </motion.div>
         </div>
       </div>
+      <SuccessModal open={successOpen} onClose={() => setSuccessOpen(false)} title="Enviado com sucesso" message="Recebemos sua solicitação e retornaremos em até 12 horas." />
     </section>
   );
 };

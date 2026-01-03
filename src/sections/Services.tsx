@@ -93,27 +93,18 @@ const Plans = () => {
                 </ul>
               </div>
               <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {service.slug === "sistemas-personalizados" ? (
-                  <motion.button
-                    onClick={() => navigate(`/personalizar/${service.slug}`)}
-                    className={`w-full py-3 rounded-full font-semibold text-base transition-all ${
-                      service.highlighted
-                        ? "bg-blue-600 text-white hover:bg-blue-700"
-                        : "bg-white/10 text-white hover:bg-white/20"
-                    }`}
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.97 }}
-                  >
-                    Personalizar
-                  </motion.button>
-                ) : (
-                  <motion.button
-                    disabled
-                    className="w-full py-3 rounded-full font-semibold text-base transition-all bg-white/10 text-white/60 cursor-not-allowed"
-                  >
-                    Personalizar (em breve)
-                  </motion.button>
-                )}
+                <motion.button
+                  onClick={() => navigate(`/personalizar/${service.slug}`)}
+                  className={`w-full py-3 rounded-full font-semibold text-base transition-all ${
+                    service.highlighted
+                      ? "bg-blue-600 text-white hover:bg-blue-700"
+                      : "bg-white/10 text-white hover:bg-white/20"
+                  }`}
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                >
+                  Personalizar
+                </motion.button>
                 <motion.button
                   onClick={() => setSelectedService(service)}
                   className="w-full py-3 rounded-full font-semibold text-base transition-all bg-white/10 text-white hover:bg-white/20"
