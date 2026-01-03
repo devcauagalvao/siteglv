@@ -6,7 +6,7 @@ import CookieConsent from "./layout/CookieConsent";
 const AIAssistant = React.lazy(() => import("./features/assistant/AIAssistant"));
 import Home from "./pages/Home";
 import Sobre from "./pages/Sobre";
-import CustomizeService from "./pages/CustomizeService";
+import CustomizeService from "./pages/custom/CustomizeSoftware";
 import { Instagram, Facebook, Phone } from "lucide-react";
 
 type UserRecord = {
