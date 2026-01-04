@@ -15,11 +15,9 @@ export const FloatingDots: React.FC<FloatingDotsProps> = ({ setIsOpen, whatsappC
     const [isInstagramOpen, setIsInstagramOpen] = useState(false);
     const whatsappMessage = "Olá, quero saber mais sobre os planos!";
 
-    // Na rota dinâmica, não renderizar os botões/círculos
     if (isDynamicRoute) {
         return (
             <div className="fixed inset-0 min-h-screen pointer-events-none">
-                {/* Mantém o background preenchendo a tela, se necessário */}
             </div>
         );
     }
@@ -69,8 +67,6 @@ export const FloatingDots: React.FC<FloatingDotsProps> = ({ setIsOpen, whatsappC
                     <Sparkles className="w-8 h-8 text-white" />
                 </motion.button>
             </div>
-
-            {/* Modal Instagram */}
             <InstagramModal isOpen={isInstagramOpen} onClose={() => setIsInstagramOpen(false)} />
         </>
     );
