@@ -1,4 +1,4 @@
-import { Code, Brain, Wrench, Server } from "lucide-react";
+import { Code, Wrench, Server } from "lucide-react";
 import type { ComponentType } from "react";
 
 export type ServiceItem = {

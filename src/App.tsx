@@ -8,6 +8,7 @@ import Home from "./pages/Home";
 import Sobre from "./pages/Sobre";
 import CustomizeService from "./pages/custom/CustomizeSoftware";
 import CustomizePage from "./pages/custom/CustomizePage";
+import CustomizeServer from "./pages/custom/CustomizeServer";
 import { Instagram, Facebook, Phone } from "lucide-react";
 
 type UserRecord = {
@@ -153,6 +154,7 @@ function App() {
         <Routes>
           <Route path="/" element={<><Home /><Footer /></>} />
           <Route path="/sobre" element={<Sobre />} />
+          <Route path="/personalizar/redes-servidores" element={<CustomizeServer />} />
           <Route path="/personalizar/:slug" element={<CustomizeService />} />
           <Route path="/personalizar/site-landing" element={<CustomizePage />} />
           <Route path="/:id" element={<UserPage />} />
