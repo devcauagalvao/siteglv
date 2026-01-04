@@ -6,14 +6,15 @@ import { services } from "../../data/services";
 import FloatingArrow from "../../components/FloatingArrow";
 import emailjs from "emailjs-com";
 import SuccessModal from "../../components/SuccessModal";
+import { Select, Checkbox } from "../../components";
 
 const CustomizeService = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const service = services.find((s) => s.slug === slug);
 
-  const title = service?.title || "Personalizar Serviço";
-  const description = service?.description || "Em breve você poderá personalizar esse serviço aqui.";
+  const title = service?.title;
+  const description = service?.description;
   const isCustomSystems = service?.slug === "sistemas-personalizados";
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successOpen, setSuccessOpen] = useState(false);
@@ -203,18 +204,18 @@ const CustomizeService = () => {
                     className="w-full rounded-xl bg-black/30 border border-white/10 px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
 
-                  <label className="text-white/80 text-sm mb-1">Tamanho da empresa</label>
-                  <select
+                  <Select
+                    label="Tamanho da empresa"
+                    placeholder="Selecione"
                     value={companySize}
-                    onChange={(e) => setCompanySize(e.target.value)}
-                    className="w-full rounded-xl bg-black/30 border border-white/10 px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  >
-                    <option value="">Selecione</option>
-                    <option value="ME">ME</option>
-                    <option value="PME">PME</option>
-                    <option value="Médio">Médio</option>
-                    <option value="Grande">Grande</option>
-                  </select>
+                    onChange={setCompanySize}
+                    options={[
+                      { label: "ME", value: "ME" },
+                      { label: "PME", value: "PME" },
+                      { label: "Médio", value: "Médio" },
+                      { label: "Grande", value: "Grande" },
+                    ]}
+                  />
                 </div>
 
                 <div className="grid grid-cols-1 gap-4">
@@ -241,17 +242,17 @@ const CustomizeService = () => {
 
                 <div className="grid grid-cols-1 gap-4">
                   <h2 className="text-white text-xl font-semibold">3. Usuários e permissões</h2>
-                  <label className="text-white/80 text-sm mb-1">O sistema será usado por usuários internos, clientes ou ambos?</label>
-                  <select
+                  <Select
+                    label="O sistema será usado por usuários internos, clientes ou ambos?"
+                    placeholder="Selecione"
                     value={usageType}
-                    onChange={(e) => setUsageType(e.target.value)}
-                    className="w-full rounded-xl bg-black/30 border border-white/10 px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  >
-                    <option value="">Selecione</option>
-                    <option value="Internos">Internos</option>
-                    <option value="Clientes">Clientes</option>
-                    <option value="Ambos">Ambos</option>
-                  </select>
+                    onChange={setUsageType}
+                    options={[
+                      { label: "Internos", value: "Internos" },
+                      { label: "Clientes", value: "Clientes" },
+                      { label: "Ambos", value: "Ambos" },
+                    ]}
+                  />
 
                   <label className="text-white/80 text-sm mb-1">Quais tipos de usuários existirão? (ex: admin, operador, cliente)</label>
                   <input
@@ -262,43 +263,32 @@ const CustomizeService = () => {
                     className="w-full rounded-xl bg-black/30 border border-white/10 px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
 
-                  <label className="flex items-center gap-2 text-white/80 text-sm">
-                    <input
-                      type="checkbox"
-                      checked={differentPermissions}
-                      onChange={(e) => setDifferentPermissions(e.target.checked)}
-                      className="accent-blue-500"
-                    />
-                    Cada tipo de usuário terá permissões diferentes?
-                  </label>
+                  <Checkbox
+                    label="Cada tipo de usuário terá permissões diferentes?"
+                    checked={differentPermissions}
+                    onChange={(e) => setDifferentPermissions(e.target.checked)}
+                  />
                 </div>
 
                 <div className="grid grid-cols-1 gap-4">
                   <h2 className="text-white text-xl font-semibold">4. Integrações</h2>
-                  <label className="flex items-center gap-2 text-white/80 text-sm">
-                    <input
-                      type="checkbox"
-                      checked={needIntegrations}
-                      onChange={(e) => setNeedIntegrations(e.target.checked)}
-                      className="accent-blue-500"
-                    />
-                    O sistema precisa integrar com outros softwares?
-                  </label>
+                  <Checkbox
+                    label="O sistema precisa integrar com outros softwares?"
+                    checked={needIntegrations}
+                    onChange={(e) => setNeedIntegrations(e.target.checked)}
+                  />
 
                   {needIntegrations && (
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {Object.keys(integrationOptions).map((key) => (
-                        <label key={key} className="flex items-center gap-2 text-white/80 text-sm">
-                          <input
-                            type="checkbox"
-                            checked={integrationOptions[key]}
-                            onChange={(e) =>
-                              setIntegrationOptions((prev) => ({ ...prev, [key]: e.target.checked }))
-                            }
-                            className="accent-blue-500"
-                          />
-                          {key}
-                        </label>
+                        <Checkbox
+                          key={key}
+                          label={key}
+                          checked={integrationOptions[key]}
+                          onChange={(e) =>
+                            setIntegrationOptions((prev) => ({ ...prev, [key]: e.target.checked }))
+                          }
+                        />
                       ))}
                       {integrationOptions["Outro"] && (
                         <input
@@ -312,16 +302,16 @@ const CustomizeService = () => {
                     </div>
                   )}
 
-                  <label className="text-white/80 text-sm mb-1">Esses sistemas já possuem API?</label>
-                  <select
+                  <Select
+                    label="Esses sistemas já possuem API?"
+                    placeholder="Selecione"
                     value={hasAPI}
-                    onChange={(e) => setHasAPI(e.target.value)}
-                    className="w-full rounded-xl bg-black/30 border border-white/10 px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  >
-                    <option value="">Selecione</option>
-                    <option value="Sim">Sim</option>
-                    <option value="Não">Não</option>
-                  </select>
+                    onChange={setHasAPI}
+                    options={[
+                      { label: "Sim", value: "Sim" },
+                      { label: "Não", value: "Não" },
+                    ]}
+                  />
                 </div>
 
                 <div className="grid grid-cols-1 gap-4">

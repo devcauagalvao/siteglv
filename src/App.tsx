@@ -7,6 +7,7 @@ const AIAssistant = React.lazy(() => import("./features/assistant/AIAssistant"))
 import Home from "./pages/Home";
 import Sobre from "./pages/Sobre";
 import CustomizeService from "./pages/custom/CustomizeSoftware";
+import CustomizePage from "./pages/custom/CustomizePage";
 import { Instagram, Facebook, Phone } from "lucide-react";
 
 type UserRecord = {
@@ -153,6 +154,7 @@ function App() {
           <Route path="/" element={<><Home /><Footer /></>} />
           <Route path="/sobre" element={<Sobre />} />
           <Route path="/personalizar/:slug" element={<CustomizeService />} />
+          <Route path="/personalizar/site-landing" element={<CustomizePage />} />
           <Route path="/:id" element={<UserPage />} />
         </Routes>
         <CookieConsent />

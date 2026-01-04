@@ -94,7 +94,11 @@ const Plans = () => {
               </div>
               <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <motion.button
-                  onClick={() => navigate(`/personalizar/${service.slug}`)}
+                  onClick={() =>
+                    service.slug === "landing-pages-sites"
+                      ? navigate("/personalizar/site-landing")
+                      : navigate(`/personalizar/${service.slug}`)
+                  }
                   className={`w-full py-3 rounded-full font-semibold text-base transition-all ${
                     service.highlighted
                       ? "bg-blue-600 text-white hover:bg-blue-700"
