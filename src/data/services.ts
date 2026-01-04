@@ -133,50 +133,6 @@ export const services: ServiceItem[] = [
     ],
   },
   {
-    icon: Brain,
-    title: "Consultoria em TI",
-    slug: "consultoria-ti",
-    description:
-      "Aconselhamento técnico e estratégico para escalar sua empresa com tecnologia.",
-    features: [
-      "Planejamento de sistemas",
-      "Validação de produtos",
-      "Otimização de processos",
-      "Visão técnica + estratégica",
-    ],
-    category: "Consultoria",
-    longDescription:
-      "Apoiamos decisões estratégicas com visão técnica e de negócio, reduzindo riscos e aumentando o retorno sobre investimentos em tecnologia.",
-    offerings: ["Diagnóstico de sistemas", "Roadmap de evolução", "Estimativas e priorização", "Treinamentos"],
-    audience: ["Gestores e founders", "Equipes de produto e TI"],
-    benefits: ["Melhores decisões de investimento", "Redução de riscos"],
-    outcomes: ["Plano acionável", "Metas e indicadores claros"],
-    faqs: [{ q: "Como funciona a consultoria?", a: "Conduzimos reuniões, levantamentos e entregamos um plano com próximos passos." }],
-    examples: [{ name: "Plano de modernização", description: "Migração gradual com metas e indicadores." }],
-  },
-  {
-    icon: Brain,
-    title: "Arquitetura e Modernização",
-    slug: "arquitetura-modernizacao",
-    description:
-      "Transformamos sistemas legados em soluções modernas, escaláveis e seguras.",
-    features: [
-      "Reengenharia de software",
-      "Escalabilidade e performance",
-      "Segurança avançada",
-      "Code review e refatoração",
-    ],
-    category: "Consultoria",
-    longDescription:
-      "Planejamos e executamos a modernização de sistemas com foco em escalabilidade, manutenção e segurança, preservando o que gera valor hoje.",
-    offerings: ["Mapeamento de legado", "Refatoração dirigida a testes", "Migração para cloud", "Observabilidade"],
-    audience: ["Empresas com sistemas antigos", "Times com dificuldade de evoluir software"],
-    benefits: ["Redução de falhas", "Deploy previsível", "Base preparada para crescer"],
-    outcomes: ["Menos downtime", "Velocidade de entrega maior"],
-    faqs: [{ q: "Parar tudo para modernizar?", a: "Não. Priorizamos o que traz mais retorno, mantendo o sistema operando." }],
-    examples: [{ name: "Monólito modularizado", description: "Quedas reduzidas e deploy previsível." }],
-  },
-  {
     icon: Wrench,
     title: "Manutenção de Computadores",
     slug: "manutencao-computadores",
