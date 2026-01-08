@@ -68,22 +68,22 @@ const Hero = () => {
       <Helmet>
         {/* 🔹 Título otimizado com foco local e CTA implícita */}
         <title>
-          Desenvolvimento de Software, Sites e Suporte Técnico | GLV Informática Itu
+          Desenvolvimento de Software, Sites e Suporte Técnico | GLV Tecnologia Itu
         </title>
 
         {/* 🔹 Descrição mais atrativa e orientada a ação */}
         <meta
           name="description"
-          content="GLV Informática é especialista em desenvolvimento de software sob medida, criação de sites profissionais, aplicativos personalizados, automação e suporte técnico em Itu e região."
+          content="GLV Tecnologia é especialista em desenvolvimento de software sob medida, criação de sites profissionais, aplicativos personalizados, automação e suporte técnico em Itu e região."
         />
 
         {/* 🔹 Palavras-chave específicas, relevantes e sem repetição desnecessária */}
         <meta
           name="keywords"
-          content="desenvolvimento de software, criação de sites, aplicativos personalizados, automação de processos, suporte técnico, manutenção de computadores, GLV Informática Itu"
+          content="desenvolvimento de software, criação de sites, aplicativos personalizados, automação de processos, suporte técnico, manutenção de computadores, GLV Tecnologia Itu"
         />
 
-        <meta name="author" content="GLV Informática" />
+        <meta name="author" content="GLV Tecnologia" />
         <meta name="robots" content="index, follow" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -92,7 +92,7 @@ const Hero = () => {
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Organization",
-            name: "GLV Informática",
+            name: "GLV Tecnologia",
             url: "https://www.glvinformatica.com.br",
             logo: "https://www.glvinformatica.com.br/img/branding/logohorizontal.png",
             sameAs: [
@@ -113,7 +113,7 @@ const Hero = () => {
         id="home"
         className="relative min-h-screen flex items-center justify-center text-center overflow-hidden"
         role="banner"
-        aria-label="Seção principal - GLV Informática"
+        aria-label="Seção principal - GLV Tecnologia"
       >
         <ParticleBackground />
 
@@ -128,7 +128,7 @@ const Hero = () => {
           >
             <img
               src="/img/branding/logohorizontal.png"
-              alt="GLV Informática - Desenvolvimento de Software e Suporte Técnico em Itu"
+              alt="GLV Tecnologia - Desenvolvimento de Software e Suporte Técnico em Itu"
               className="h-12 md:h-20 object-contain mx-auto"
               loading="lazy"
             />

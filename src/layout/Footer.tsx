@@ -63,7 +63,7 @@ const Footer = () => {
   const socialLinks = [
     {
       icon: Instagram,
-      href: "https://www.instagram.com/glv_informatica/",
+      href: "https://www.instagram.com/glvtecnologia/",
       color: "hover:shadow-[0_0_15px_#e1306c]",
     },
     {
@@ -95,7 +95,7 @@ const Footer = () => {
   ];
 
   const contactInfo = [
-    { icon: Mail, text: "glvinformatica2024@gmail.com" },
+    { icon: Mail, text: "contato.glvtecnologia@gmail.com" },
     { icon: Phone, text: "+55 (11) 91916-7653" },
     { icon: MapPin, text: "Itu, SP - Brasil" },
   ];
@@ -116,7 +116,7 @@ const Footer = () => {
     href: string,
     external?: boolean
   ) => {
-    if (external) return; // allow default behavior
+    if (external) return;
     if (href.startsWith("/")) {
       e.preventDefault();
       navigate(href);
@@ -152,7 +152,7 @@ const Footer = () => {
           <div>
             <img
               src="/img/branding/logohorizontal.png"
-              alt="GLV Informática"
+              alt="GLV Tecnologia"
               className="w-44 mb-4"
             />
             <p className="text-white/70 text-sm mb-6 leading-relaxed">
@@ -228,7 +228,7 @@ const Footer = () => {
           <div className="h-px bg-gradient-to-r from-transparent via-blue-500/40 to-transparent mb-8 animate-pulse" />
           <div className="flex flex-col md:flex-row items-center justify-between text-sm text-white/60 gap-6">
             <div className="text-center md:text-left space-y-1">
-              <p>©{currentYear} GLV Informática e Desenvolvimento.</p>
+              <p>©{currentYear} GLV Tecnologia.</p>
               <p>CNPJ: 61.606.358/0001-57 - Empresa registrada no Brasil</p>
             </div>
             <div className="flex items-center space-x-3">

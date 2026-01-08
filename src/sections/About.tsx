@@ -15,7 +15,7 @@ const About = () => {
       icon: Users,
       title: "Valores",
       description:
-        "Transparência, excelência técnica e atendimento personalizado, pilares da GLV Informática.",
+        "Transparência, excelência técnica e atendimento personalizado, pilares da GLV Tecnologia.",
     },
     {
       icon: Lightbulb,
@@ -32,7 +32,7 @@ const About = () => {
   ];
 
   const milestones = [
-    { year: "2022", event: "Fundação da GLV Informática e início do desenvolvimento de software" },
+    { year: "2022", event: "Fundação da GLV Tecnologia e início do desenvolvimento de software" },
     { year: "2023", event: "Entrada no mercado de desenvolvimento web sob demanda" },
     { year: "2023", event: "Implementação de soluções em nuvem e infraestrutura de redes" },
     { year: "2024", event: "Expansão para mobile, SaaS e automações com APIs" },
@@ -44,16 +44,16 @@ const About = () => {
   return (
     <section id="about" className="py-16 sm:py-20 relative overflow-hidden">
       <Helmet>
-        <title>Sobre a GLV Informática | Missão, Valores e Jornada</title>
+        <title>Sobre a GLV Tecnologia | Missão, Valores e Jornada</title>
         <meta
           name="description"
-          content="Conheça a GLV Informática: missão, valores, visão, experiência e trajetória de inovação em softwares, sites, automações e suporte técnico em Itu e região."
+          content="Conheça a GLV Tecnologia: missão, valores, visão, experiência e trajetória de inovação em softwares, sites, automações e suporte técnico em Itu e região."
         />
         <meta
           name="keywords"
-          content="missão, valores, visão, experiência, GLV Informática, soluções tecnológicas, TI em Itu, desenvolvimento de software, automação"
+          content="missão, valores, visão, experiência, GLV Tecnologia, soluções tecnológicas, TI em Itu, desenvolvimento de software, automação"
         />
-        <meta name="author" content="GLV Informática" />
+        <meta name="author" content="GLV Tecnologia" />
         <meta name="robots" content="index, follow" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -62,7 +62,7 @@ const About = () => {
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Organization",
-            name: "GLV Informática",
+            name: "GLV Tecnologia",
             url: "https://www.glvinformatica.com.br",
             logo: "https://www.glvinformatica.com.br/img/branding/logohorizontal.png",
             sameAs: [

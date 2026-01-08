@@ -1,6 +1,6 @@
-# GLV Informática e Desenvolvimento
+# GLV Tecnologia
 
-Bem-vindo ao repositório oficial do site da **GLV Informática e Desenvolvimento**, empresa referência em soluções digitais e tecnologia profissional na região de Itu-SP. Nossa missão é transformar ideias em soluções tecnológicas inteligentes, escaláveis e de alto impacto para empresas e empreendedores que buscam inovação, eficiência e crescimento.
+Bem-vindo ao repositório oficial do site da **GLV Tecnologia**, empresa referência em soluções digitais e tecnologia profissional na região de Itu-SP. Nossa missão é transformar ideias em soluções tecnológicas inteligentes, escaláveis e de alto impacto para empresas e empreendedores que buscam inovação, eficiência e crescimento.
 
 ---
 
@@ -62,12 +62,12 @@ Estamos localizados em Itu-SP e atuamos fortemente na região, com foco em quali
 
 ## Contato
 
-- **Empresa:** GLV Informática e Desenvolvimento  
+- **Empresa:** GLV Tecnologia 
 - **Localização:** Itu - São Paulo, Brasil  
 - **Telefone / WhatsApp:** +55 (11) 91916-7653  
 - **Website:** [www.glvinformatica.com.br](https://www.glvinformatica.com.br)  
 - **Instagram:** [@glvinformatica](https://www.instagram.com/glvinformatica)  
-- **Facebook:** [GLV Informática e Desenvolvimento](https://www.facebook.com/glvinformatica)  
+- **Facebook:** [GLV Tecnologia](https://www.facebook.com/glvinformatica)  
 
 ---
 
@@ -75,21 +75,21 @@ Estamos localizados em Itu-SP e atuamos fortemente na região, com foco em quali
 
 **Missão:** Prover soluções tecnológicas personalizadas e inteligentes que potencializem negócios locais, promovendo inovação, eficiência e crescimento sustentável.
 
-**Visão:** Ser a maior referência em tecnologia e desenvolvimento de software na região de Itu e região, reconhecida pela excelência técnica, atendimento estratégico e impacto positivo nos negócios de nossos clientes.
+**Visão:** Ser a maior referência em tecnologia de software na região de Itu e região, reconhecida pela excelência técnica, atendimento estratégico e impacto positivo nos negócios de nossos clientes.
 
 ---
 
 ## Licença
 
-Projeto desenvolvido por **GLV Informática e Desenvolvimento**. Todos os direitos reservados.
+Projeto desenvolvido por **GLV Tecnologia**. Todos os direitos reservados.
 
 ---
 
 ## Agradecimentos
 
-Agradecemos a todos os clientes, parceiros e colaboradores que confiam e fazem parte da história da GLV Informática e Desenvolvimento. Seguimos juntos na jornada da inovação e transformação digital.
+Agradecemos a todos os clientes, parceiros e colaboradores que confiam e fazem parte da história da GLV Tecnologia. Seguimos juntos na jornada da inovação e transformação digital.
 
 ---
 
-**GLV Informática e Desenvolvimento** — Tecnologia que transforma seu negócio.
+**GLV Tecnologia** — Tecnologia que transforma seu negócio.
 

@@ -25,7 +25,7 @@ const AIAssistant = () => {
       {
         id: Date.now(),
         text:
-          "Olá! Sou o assistente virtual da GLV Informática. Posso ajudar a personalizar Sites, ERPs, PWAs, Sites/Landing Pages e Plataformas sob medida. Como posso ajudar hoje? 😊",
+          "Olá! Sou o assistente virtual da GLV Tecnologia. Posso ajudar a personalizar Sites, ERPs, PWAs, Sites/Landing Pages e Plataformas sob medida. Como posso ajudar hoje? 😊",
         isBot: true,
         timestamp: new Date(),
       },

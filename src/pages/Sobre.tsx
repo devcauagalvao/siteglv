@@ -16,7 +16,7 @@ const Sobre = () => {
             icon: Users,
             title: "Valores",
             description:
-                "Transparência, excelência técnica e atendimento personalizado, pilares da GLV Informática.",
+                "Transparência, excelência técnica e atendimento personalizado, pilares da GLV Tecnologia.",
         },
         {
             icon: Lightbulb,
@@ -35,12 +35,12 @@ const Sobre = () => {
     return (
         <main className="relative overflow-hidden min-h-screen">
             <Helmet>
-                <title>Sobre Nós | GLV Informática</title>
+                <title>Sobre Nós | GLV Tecnologia</title>
                 <meta
                     name="description"
-                    content="Conheça a GLV Informática: missão, valores, visão, experiência e jornada de inovação em softwares, sites e automações."
+                    content="Conheça a GLV Tecnologia: missão, valores, visão, experiência e jornada de inovação em softwares, sites e automações."
                 />
-                <meta name="author" content="GLV Informática" />
+                <meta name="author" content="GLV Tecnologia" />
                 <meta name="robots" content="index, follow" />
             </Helmet>
             <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-900 to-black" />
