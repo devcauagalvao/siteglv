@@ -1,4 +1,4 @@
-import { Code, Wrench, Server } from "lucide-react";
+import { Code, Server } from "lucide-react";
 import type { ComponentType } from "react";
 
 export type ServiceItem = {
@@ -20,6 +20,29 @@ export type ServiceItem = {
 
 export const services: ServiceItem[] = [
   {
+    icon: Server,
+    title: "Redes & Servidores",
+    slug: "redes-servidores",
+    description:
+      "Projetos completos de infraestrutura com alta disponibilidade e segurança.",
+    features: [
+      "Cabeamento estruturado",
+      "Firewall, switches e Wi-Fi",
+      "Montagem de racks e servidores",
+      "Backup e rede local",
+    ],
+    category: "Infraestrutura",
+    highlighted: true,
+    longDescription:
+      "Desenhamos e implementamos redes e servidores confiáveis, com alta disponibilidade, segurança e monitoramento de ponta a ponta.",
+    offerings: ["Survey e projeto", "Cabeamento e racks", "Firewall e VLANs", "Backup e monitoramento"],
+    audience: ["Escritórios", "Lojas e operações com múltiplos pontos"],
+    benefits: ["Wi‑Fi estável", "Segurança da rede", "Backups confiáveis"],
+    outcomes: ["Infra pronta para crescer", "Menos quedas"],
+    faqs: [{ q: "É possível instalar em etapas?", a: "Sim, estruturamos um plano por fases para minimizar impacto." }],
+    examples: [{ name: "Rede de escritório", description: "VLANs por setor e Wi‑Fi seguro." }],
+  },
+  {
     icon: Code,
     title: "Sistemas Personalizados",
     slug: "sistemas-personalizados",
@@ -32,7 +55,6 @@ export const services: ServiceItem[] = [
       "Visual refinado com Tailwind",
     ],
     category: "Desenvolvimento",
-    highlighted: true,
     longDescription:
       "Projetamos e construímos sistemas completos sob medida para o seu fluxo de trabalho, com foco em confiabilidade, segurança e uma experiência moderna para usuários e administradores.",
     offerings: [
@@ -131,50 +153,6 @@ export const services: ServiceItem[] = [
       { name: "Bot de WhatsApp", description: "Agendamento e FAQ com integração ao CRM." },
       { name: "ETL simples", description: "Consolidação diária de dados e envio de relatório." },
     ],
-  },
-  {
-    icon: Wrench,
-    title: "Manutenção de Computadores",
-    slug: "manutencao-computadores",
-    description:
-      "Montagem, upgrades e suporte técnico especializado para seu setup.",
-    features: [
-      "Montagem de PCs profissionais",
-      "Upgrades sob medida",
-      "Instalação de software original",
-      "Diagnóstico técnico completo",
-    ],
-    category: "Manutenção",
-    longDescription:
-      "Cuidamos do seu ambiente de trabalho com montagem, upgrades e manutenção preventiva para máxima performance e segurança.",
-    offerings: ["Montagem completa", "Limpeza e troca de pasta térmica", "Upgrade de RAM/SSD", "Licenças e backup"],
-    audience: ["Profissionais criativos", "Escritórios e home offices"],
-    benefits: ["Desempenho melhor", "Menos travamentos", "Ambiente confiável"],
-    outcomes: ["Equipamentos prontos para demanda", "Setup otimizado"],
-    faqs: [{ q: "Perco a garantia?", a: "Seguimos boas práticas e mantemos garantias conforme o fabricante." }],
-    examples: [{ name: "PC criativo", description: "Upgrade para renderização e edição sem travar." }],
-  },
-  {
-    icon: Server,
-    title: "Redes & Servidores",
-    slug: "redes-servidores",
-    description:
-      "Projetos completos de infraestrutura com alta disponibilidade e segurança.",
-    features: [
-      "Cabeamento estruturado",
-      "Firewall, switches e Wi-Fi",
-      "Montagem de racks e servidores",
-      "Backup e rede local",
-    ],
-    category: "Infraestrutura",
-    longDescription:
-      "Desenhamos e implementamos redes e servidores confiáveis, com alta disponibilidade, segurança e monitoramento de ponta a ponta.",
-    offerings: ["Survey e projeto", "Cabeamento e racks", "Firewall e VLANs", "Backup e monitoramento"],
-    audience: ["Escritórios", "Lojas e operações com múltiplos pontos"],
-    benefits: ["Wi‑Fi estável", "Segurança da rede", "Backups confiáveis"],
-    outcomes: ["Infra pronta para crescer", "Menos quedas"],
-    faqs: [{ q: "É possível instalar em etapas?", a: "Sim, estruturamos um plano por fases para minimizar impacto." }],
-    examples: [{ name: "Rede de escritório", description: "VLANs por setor e Wi‑Fi seguro." }],
   },
 ];
 
