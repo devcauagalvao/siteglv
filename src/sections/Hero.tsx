@@ -1,17 +1,18 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import ParticleBackground from "../ui/ParticleBackground";
+import WorldMapBackground from "../ui/WorldMapBackground";
 import { Helmet } from "react-helmet";
 
 const Hero = () => {
-  const words = [
+  const words = useMemo(() => [
+    "softwares com IA aplicada.",
+    "servidores em nuvem.",
     "sites profissionais.",
-    "softwares sob medida.",
-    "aplicativos personalizados.",
-    "suporte técnico especializado.",
-    "manutenção de computadores.",
-    "automação de processos.",
-  ];
+    "aplicativos inteligentes.",
+    "automação com inteligência artificial.",
+    "infraestrutura cloud escalável.",
+  ], []);
 
   const [wordIndex, setWordIndex] = useState(0);
   const wordRef = useRef<HTMLSpanElement>(null);
@@ -51,7 +52,7 @@ const Hero = () => {
 
     type();
     return () => clearTimeout(typingTimeout);
-  }, []);
+  }, [words]);
 
   const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
@@ -66,21 +67,21 @@ const Hero = () => {
   return (
     <>
       <Helmet>
-        {/* 🔹 Título otimizado com foco local e CTA implícita */}
+        {/* 🔹 Título otimizado com foco em IA, Cloud e Infraestrutura */}
         <title>
-          Desenvolvimento de Software, Sites e Suporte Técnico | GLV Tecnologia Itu
+          Software com IA, Servidores Cloud e Infraestrutura | GLV Tecnologia
         </title>
 
-        {/* 🔹 Descrição mais atrativa e orientada a ação */}
+        {/* 🔹 Descrição focada em IA e Cloud */}
         <meta
           name="description"
-          content="GLV Tecnologia é especialista em desenvolvimento de software sob medida, criação de sites profissionais, aplicativos personalizados, automação e suporte técnico em Itu e região."
+          content="GLV Tecnologia especialista em desenvolvimento de software com IA aplicada, servidores cloud, infraestrutura escalável e automação inteligente de processos."
         />
 
-        {/* 🔹 Palavras-chave específicas, relevantes e sem repetição desnecessária */}
+        {/* 🔹 Palavras-chave focadas em IA e Cloud */}
         <meta
           name="keywords"
-          content="desenvolvimento de software, criação de sites, aplicativos personalizados, automação de processos, suporte técnico, manutenção de computadores, GLV Tecnologia Itu"
+          content="IA aplicada, software inteligente, servidores cloud, infraestrutura cloud, GLV Tecnologia, automação com IA, computação em nuvem"
         />
 
         <meta name="author" content="GLV Tecnologia" />
@@ -116,6 +117,7 @@ const Hero = () => {
         aria-label="Seção principal - GLV Tecnologia"
       >
         <ParticleBackground />
+        <WorldMapBackground />
 
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black/80 pointer-events-none" />
 
@@ -157,8 +159,7 @@ const Hero = () => {
             transition={{ delay: 0.9, duration: 0.8 }}
             className="text-lg md:text-xl text-white/80 mb-12 max-w-3xl leading-relaxed"
           >
-            Desenvolvimento de software, infraestrutura e suporte técnico para
-            impulsionar o crescimento do seu negócio!
+            Desenvolvimento de software com inteligência artificial, infraestrutura cloud escalável e servidores em nuvem para impulsionar a transformação digital do seu negócio!
           </motion.p>
 
           <motion.div
@@ -176,7 +177,7 @@ const Hero = () => {
                 boxShadow: "0 0 40px rgba(59, 130, 246, 0.6)",
               }}
               whileTap={{ scale: 0.95 }}
-              aria-label="Solicitar orçamento personalizado via WhatsApp"
+              aria-label="Descobrir soluções de IA e Cloud"
             >
               Encontrar sua solução
             </motion.a>
@@ -188,11 +189,11 @@ const Hero = () => {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.5, duration: 1 }}
-        className="absolute bottom-10 w-full flex justify-center z-0"
+        className="absolute bottom-10 w-full flex justify-center z-10"
       >
         <div className="animate-bounce">
           <svg
-            className="w-10 h-10 text-blue-500"
+            className="w-10 h-10 text-blue-600"
             fill="none"
             stroke="currentColor"
             strokeWidth="2"

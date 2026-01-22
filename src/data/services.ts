@@ -90,41 +90,8 @@ export const services: ServiceItem[] = [
   },
   {
     icon: Code,
-    title: "Landing Pages & Sites",
-    slug: "landing-pages-sites",
-    description:
-      "Criação de sites institucionais e páginas de vendas otimizadas para resultados.",
-    features: [
-      "Design responsivo",
-      "Alto índice de conversão",
-      "SEO e performance",
-      "Hospedagem otimizada",
-    ],
-    category: "Desenvolvimento",
-    longDescription:
-      "Sites e landing pages com foco em conversão e desempenho, seguindo boas práticas de SEO e acessibilidade.",
-    offerings: [
-      "Design e identidade visual",
-      "Copy otimizada e componentes reutilizáveis",
-      "Integração com analytics e pixels",
-      "Formulários, chatbot e CMS quando necessário",
-    ],
-    audience: ["Empresas que precisam presença digital", "Times de marketing com foco em conversão"],
-    benefits: ["Maior credibilidade online", "Melhor performance e SEO", "Conversões acompanhadas"],
-    outcomes: ["Aumento de leads", "Tempo de carregamento otimizado"],
-    faqs: [
-      { q: "O site é responsivo?", a: "Sim, desenhamos para funcionar bem em qualquer dispositivo." },
-      { q: "Vocês hospedam?", a: "Podemos orientar ou provisionar uma hospedagem otimizada." },
-    ],
-    examples: [
-      { name: "Landing de produto", description: "PPC e funil com rastreamento completo." },
-      { name: "Site institucional", description: "Páginas estáticas rápidas e bem indexadas." },
-    ],
-  },
-  {
-    icon: Code,
-    title: "Automação & IA",
-    slug: "automacao-ia",
+    title: "IA Aplicada",
+    slug: "ia-aplicada",
     description:
       "Bots, integrações e IA para automação de tarefas e decisões inteligentes.",
     features: [

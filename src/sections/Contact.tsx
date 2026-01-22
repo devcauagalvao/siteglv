@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import emailjs from 'emailjs-com';
+import DOMPurify from 'dompurify';
 import type { LucideIcon } from 'lucide-react';
 import {
   Send,
@@ -10,7 +11,8 @@ import {
   Clock,
   MessageCircle,
   User,
-  Building
+  Building,
+  AlertCircle
 } from 'lucide-react';
 import SuccessModal from "../components/SuccessModal";
 
@@ -21,6 +23,24 @@ declare global {
   }
 }
 
+// Funções de validação e sanitização
+const sanitizeInput = (input: string): string => {
+  return DOMPurify.sanitize(input, { ALLOWED_TAGS: [] }).trim().substring(0, 1000);
+};
+
+const validateEmail = (email: string): boolean => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email) && email.length <= 100;
+};
+
+const validateInput = (input: string, minLength: number = 2, maxLength: number = 100): boolean => {
+  return input.length >= minLength && input.length <= maxLength;
+};
+
+interface FormErrors {
+  [key: string]: string;
+}
+
 const Contact = () => {
   const [formData, setFormData] = useState<{ name: string; email: string; company: string; service: string; message: string }>({
     name: '',
@@ -29,6 +49,7 @@ const Contact = () => {
     service: '',
     message: ''
   });
+  const [formErrors, setFormErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successOpen, setSuccessOpen] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -56,17 +77,51 @@ const Contact = () => {
     } catch (err) {}
   }, []);
 
+  const validateForm = (): boolean => {
+    const errors: FormErrors = {};
+
+    if (!validateInput(formData.name, 2, 100)) {
+      errors.name = "Nome deve ter entre 2 e 100 caracteres";
+    }
+
+    if (!validateEmail(formData.email)) {
+      errors.email = "Email inválido";
+    }
+
+    if (!validateInput(formData.company, 2, 100)) {
+      errors.company = "Empresa deve ter entre 2 e 100 caracteres";
+    }
+
+    if (!formData.service) {
+      errors.service = "Selecione um serviço";
+    }
+
+    if (!validateInput(formData.message, 10, 1000)) {
+      errors.message = "Mensagem deve ter entre 10 e 1000 caracteres";
+    }
+
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!validateForm()) {
+      setErrorMsg("Por favor, corrija os erros antes de enviar.");
+      return;
+    }
+
     setIsSubmitting(true);
     setErrorMsg(null);
 
+    // Sanitizar dados antes de enviar
     const templateParams = {
-      from_name: formData.name,
-      from_email: formData.email,
-      company: formData.company,
+      from_name: sanitizeInput(formData.name),
+      from_email: sanitizeInput(formData.email),
+      company: sanitizeInput(formData.company),
       service: formData.service,
-      message: formData.message
+      message: sanitizeInput(formData.message)
     };
 
     try {
@@ -86,17 +141,28 @@ const Contact = () => {
       }
       setSuccessOpen(true);
       setFormData({ name: '', email: '', company: '', service: '', message: '' });
+      setFormErrors({});
     } catch (error) {
       console.error('Erro ao enviar o formulário:', error);
-      setErrorMsg('Ocorreu um erro ao enviar sua solicitação. Tente novamente.');
+      setErrorMsg('Ocorreu um erro ao enviar sua solicitação. Tente novamente mais tarde.');
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    
+    // Limpar erro ao editar
+    if (formErrors[name]) {
+      setFormErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors[name];
+        return newErrors;
+      });
+    }
+  }, [formErrors]);
 
   const services = [
     'Desenvolvimento Web',
@@ -174,35 +240,55 @@ const Contact = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <h3 className="text-xl md:text-2xl font-bold text-white mb-6">Solicitar Orçamento</h3>
+            <h3 className="text-2xl md:text-3xl font-bold text-white mb-8">Solicitar Orçamento</h3>
+            {errorMsg && (
+              <motion.div className="mb-6 p-4 rounded-xl border border-red-500/30 bg-red-500/10 flex items-start gap-3" initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+                <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
+                <p className="text-red-300 text-sm">{errorMsg}</p>
+              </motion.div>
+            )}
             <form onSubmit={handleSubmit} className="space-y-6">
               {fields.map(([name, label, IconComp, placeholder]) => (
                 <div key={name}>
-                  <label className="block text-white/80 mb-2 font-medium">{label}</label>
+                  <label className="block text-sm font-bold text-gray-200 mb-2.5">{label}</label>
                   <div className="relative">
                     <input
                       type={name === 'email' ? 'email' : 'text'}
                       name={name}
                       value={formData[name]}
                       onChange={handleChange}
-                      className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 pl-12 text-white placeholder-white/50 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                      maxLength={100}
+                      className={`w-full bg-gray-800/40 border-2 rounded-xl px-4 py-3 pl-12 text-white placeholder-gray-500 focus:outline-none transition-all font-medium ${
+                        formErrors[name]
+                          ? "border-red-500/50 focus:ring-2 focus:ring-red-500/30"
+                          : "border-blue-500/30 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30"
+                      }`}
                       placeholder={placeholder}
                       required={name !== 'company'}
                     />
                     <IconComp className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-white/50" />
                   </div>
+                  {formErrors[name] && (
+                    <motion.p className="text-red-400 text-xs mt-1.5 flex items-center gap-1" initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }}>
+                      <AlertCircle className="w-3 h-3" /> {formErrors[name]}
+                    </motion.p>
+                  )}
                 </div>
               ))}
 
               {/* Serviço */}
               <div>
-                <label className="block text-white/80 mb-2 font-medium">Serviço de Interesse</label>
+                <label className="block text-sm font-bold text-gray-200 mb-2.5">Serviço de Interesse</label>
                 <select
                   name="service"
                   value={formData.service}
                   onChange={handleChange}
                   required
-                  className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                  className={`w-full bg-gray-800/40 border-2 rounded-xl px-4 py-3 text-white focus:outline-none transition-all font-medium appearance-none cursor-pointer ${
+                    formErrors.service
+                      ? "border-red-500/50 focus:ring-2 focus:ring-red-500/30"
+                      : "border-blue-500/30 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30"
+                  }`}
                 >
                   <option value="" className="bg-gray-900">Selecione um serviço</option>
                   {services.map((service) => (
@@ -211,11 +297,16 @@ const Contact = () => {
                     </option>
                   ))}
                 </select>
+                {formErrors.service && (
+                  <motion.p className="text-red-400 text-xs mt-1.5 flex items-center gap-1" initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }}>
+                    <AlertCircle className="w-3 h-3" /> {formErrors.service}
+                  </motion.p>
+                )}
               </div>
 
               {/* Mensagem */}
               <div>
-                <label className="block text-white/80 mb-2 font-medium">Mensagem</label>
+                <label className="block text-sm font-bold text-gray-200 mb-2.5">Mensagem</label>
                 <div className="relative">
                   <textarea
                     name="message"
@@ -223,22 +314,36 @@ const Contact = () => {
                     onChange={handleChange}
                     required
                     rows={4}
-                    className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 pl-12 text-white placeholder-white/50 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 resize-none"
+                    maxLength={1000}
+                    className={`w-full bg-gray-800/40 border-2 rounded-xl px-4 py-3 pl-12 text-white placeholder-gray-500 focus:outline-none transition-all font-medium resize-none ${
+                      formErrors.message
+                        ? "border-red-500/50 focus:ring-2 focus:ring-red-500/30"
+                        : "border-blue-500/30 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30"
+                    }`}
                     placeholder="Descreva seu projeto ou necessidade..."
                   />
                   <MessageCircle className="absolute left-4 top-4 h-5 w-5 text-white/50" />
+                  <span className="text-xs text-gray-400 absolute right-3 bottom-2">{formData.message.length}/1000</span>
                 </div>
+                {formErrors.message && (
+                  <motion.p className="text-red-400 text-xs mt-1.5 flex items-center gap-1" initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }}>
+                    <AlertCircle className="w-3 h-3" /> {formErrors.message}
+                  </motion.p>
+                )}
               </div>
 
               <motion.button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-gradient-to-r from-blue-600 to-blue-500 text-white py-4 px-6 rounded-xl font-semibold hover:shadow-lg hover:shadow-blue-500/30 flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                whileHover={!isSubmitting ? { scale: 1.02 } : {}}
-                whileTap={!isSubmitting ? { scale: 0.98 } : {}}
+                className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white py-4 px-6 rounded-xl font-bold hover:from-blue-500 hover:to-cyan-500 flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg shadow-blue-500/30 active:shadow-blue-500/10"
+                whileHover={!isSubmitting ? { scale: 1.03, boxShadow: "0 0 20px rgba(59, 130, 246, 0.4)" } : {}}
+                whileTap={!isSubmitting ? { scale: 0.97 } : {}}
               >
                 {isSubmitting ? (
-                  <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  <>
+                    <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity }} className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full" />
+                    <span>Enviando...</span>
+                  </>
                 ) : (
                   <>
                     <Send className="h-5 w-5" />

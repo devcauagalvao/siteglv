@@ -67,12 +67,11 @@ const AIAssistant = () => {
   }, [whatsappControls]);
 
   const quickReplies = [
-    "Quero personalizar",
-    "Solicitar orçamento",
-    "Ver produtos",
-    "Suporte técnico",
-    "Fale no WhatsApp",
-    "Redes sociais",
+    "💻 Quero personalizar",
+    "💰 Solicitar orçamento",
+    "📦 Ver portfólio",
+    "❓ Dúvidas",
+    "📱 WhatsApp",
   ];
 
   const handleQuickReply = (text: string) => {
@@ -119,60 +118,115 @@ const AIAssistant = () => {
 
   const simulateBotResponse = (userInput: string) => {
     setIsTyping(true);
-    const delay = 700 + Math.random() * 800;
+    const delay = 600 + Math.random() * 700;
     setTimeout(() => {
       const input = userInput.toLowerCase();
       let botResponse =
-        "🤖 Não consegui identificar exatamente. Posso abrir o WhatsApp da GLV para conversarmos sobre personalização, orçamento ou suporte.";
+        "👋 Olá! Sou o assistente da GLV Tecnologia. Posso ajudar com informações sobre nossos serviços: softwares com IA, servidores cloud, sites profissionais e muito mais! O que você gostaria de saber?";
       let actionButton;
       const WHATSAPP_BASE = "https://wa.me/5511919167653";
 
-      if (/(orçamento|cotação|preço|valor)/i.test(input)) {
+      if (/(orçamento|cotação|preço|valor|custa|quanto)/i.test(input)) {
         botResponse =
-          "🔍 Podemos montar um orçamento personalizado. Clique para abrir o WhatsApp da GLV.";
+          "💰 Ótimo! Podemos montar um orçamento totalmente personalizado de acordo com suas necessidades. Fale com nosso time no WhatsApp para detalhes!";
         actionButton = {
-          label: "Falar no WhatsApp",
+          label: "📲 Solicitar Orçamento",
           url: `${WHATSAPP_BASE}?text=${encodeURIComponent(
-            "Olá! Gostaria de solicitar um orçamento personalizado."
+            "Olá! Gostaria de solicitar um orçamento para uma solução personalizada."
           )}`,
         };
-      } else if (/(personalizar|personalização|quero personalizar)/i.test(input)) {
+      } else if (/(personalizar|personalização|customiz|customizado|feito sob medida)/i.test(input)) {
         botResponse =
-          "✏️ Perfeito — podemos personalizar totalmente a solução. Vamos detalhar pelo WhatsApp?";
+          "✨ Perfeito! A GLV é especialista em soluções personalizadas. Desenvolvemos: Sites, ERPs, PWAs, e-commerce, plataformas sob medida e softwares com IA. Vamos conversar sobre seu projeto?";
         actionButton = {
-          label: "Personalizar no WhatsApp",
+          label: "💻 Detalhar Projeto",
           url: `${WHATSAPP_BASE}?text=${encodeURIComponent(
-            "Olá! Quero personalizar uma solução com a GLV. Vamos conversar sobre requisitos e orçamento?"
+            "Olá! Quero conhecer mais sobre desenvolvimento personalizado com a GLV."
           )}`,
         };
-      } else if (/(plano|planos|serviço)/i.test(input)) {
+      } else if (/(software|app|aplicativo|sistema|plataforma)/i.test(input)) {
         botResponse =
-          "💡 Oferecemos: Cardápio digital, ERP customizável, PWAs, Sites/Landing Pages e projetos sob medida. Quer ver exemplos ou orçamento?";
-        actionButton = { label: "Ver produtos", url: "/#store" };
-      } else if (/(suporte|ajuda técnica|erro)/i.test(input)) {
-        botResponse =
-          "📞 Para suporte técnico, abra um atendimento pelo WhatsApp ou acesse a página de contato.";
-        actionButton = { label: "Contato", url: "/contato" };
-      } else if (/(produto|produtos|catálogo|ver produtos)/i.test(input)) {
-        botResponse = "🛒 Veja nosso catálogo de soluções abaixo:";
-        actionButton = { label: "Ir ao Catálogo", url: "/#store" };
-      } else if (/(mercado livre|mercadolivre|ml)/i.test(input)) {
-        botResponse = "🛍️ Também temos presença no Mercado Livre:";
+          "🚀 Desenvolvemos softwares inteligentes com IA integrada, ERPs customizáveis, PWAs, e plataformas escaláveis. Qual tipo de solução você precisa?";
         actionButton = {
-          label: "Mercado Livre",
+          label: "🔍 Ver Portfólio",
+          url: "/#portfolio",
+        };
+      } else if (/(nuvem|cloud|servidor|hospedagem|infra)/i.test(input)) {
+        botResponse =
+          "☁️ A GLV oferece soluções de infraestrutura cloud escalável, servidores confiáveis e escalabilidade sob demanda. Ideal para aplicações de alto tráfego!";
+        actionButton = {
+          label: "📞 Falar com Especialista",
+          url: `${WHATSAPP_BASE}?text=${encodeURIComponent(
+            "Olá! Quero saber mais sobre infraestrutura cloud e servidores da GLV."
+          )}`,
+        };
+      } else if (/(ia|inteligência artificial|machine learning|IA aplicada)/i.test(input)) {
+        botResponse =
+          "🤖 Desenvolvemos soluções com IA aplicada para automação, análise de dados, chatbots inteligentes e muito mais. Transforme seu negócio com tecnologia!";
+        actionButton = {
+          label: "💡 Conhecer Soluções com IA",
+          url: `${WHATSAPP_BASE}?text=${encodeURIComponent(
+            "Olá! Tenho interesse em soluções com IA aplicada. Qual é a melhor opção para meu negócio?"
+          )}`,
+        };
+      } else if (/(site|landing page|página|web|website)/i.test(input)) {
+        botResponse =
+          "🌐 Criamos sites profissionais, landing pages de conversão e plataformas web completas. Design moderno + performance = resultados!";
+        actionButton = {
+          label: "🎨 Ver Projetos Web",
+          url: "/#portfolio",
+        };
+      } else if (/(suporte|ajuda|problema|erro|bug|não funciona)/i.test(input)) {
+        botResponse =
+          "🛠️ Para suporte técnico, nossa equipe está pronta para ajudar 24/7. Abra um chamado via WhatsApp ou envie para nosso email de suporte.";
+        actionButton = {
+          label: "📧 Contato de Suporte",
+          url: "/contato",
+        };
+      } else if (/(portfólio|portfolio|cases|projetos|exemplos)/i.test(input)) {
+        botResponse =
+          "📋 Confira nossos cases e projetos realizados! Temos portfólio diverso em múltiplos setores e tecnologias.";
+        actionButton = {
+          label: "👀 Ver Portfólio",
+          url: "/#portfolio",
+        };
+      } else if (/(plano|planos|pacote|serviço|serviços)/i.test(input)) {
+        botResponse =
+          "📦 Oferecemos diversos planos e pacotes personalizados: Desenvolvimento Web, Mobile, Cloud, IA, Suporte Técnico e Consultoria.";
+        actionButton = {
+          label: "💼 Ver Planos",
+          url: "/#plans",
+        };
+      } else if (/(mercado livre|mercadolivre|ml|marketplace)/i.test(input)) {
+        botResponse =
+          "🛍️ Sim! Também estamos no Mercado Livre com várias soluções disponíveis. Confira lá!";
+        actionButton = {
+          label: "🏪 Mercado Livre",
           url: "https://www.mercadolivre.com.br/perfil/GLVINFORMATICA",
         };
-      } else if (/(whats|whatsapp|fale comigo|fale no whatsapp)/i.test(input)) {
-        botResponse = "📲 Abrindo conversa no WhatsApp da GLV...";
+      } else if (/(whats|whatsapp|contato direto|fale comigo)/i.test(input)) {
+        botResponse =
+          "📲 Vou abrir uma conversa com a GLV no WhatsApp! Nossa equipe responde rápido. Bem-vindo! 🎉";
         actionButton = {
-          label: "Conversar no WhatsApp",
+          label: "💬 WhatsApp da GLV",
           url: `${WHATSAPP_BASE}?text=${encodeURIComponent(
-            "Olá! Gostaria de conversar com a GLV sobre personalização de solução."
+            "Olá! Descobri a GLV e gostaria de conhecer os serviços."
           )}`,
         };
-      } else if (/(rede(s)? social(is)?|instagram|facebook|linkedin)/i.test(input)) {
-        botResponse = "🌐 Siga a GLV nas redes sociais:";
-        actionButton = { label: "Redes sociais", url: "/#footer" };
+      } else if (/(rede(s)? social(is)?|instagram|facebook|linkedin|youtube|tiktok)/i.test(input)) {
+        botResponse =
+          "🌟 Siga a GLV nas redes sociais para ficar atualizado com dicas, cases e novidades do mundo tech!";
+        actionButton = {
+          label: "📱 Nossas Redes",
+          url: "/#footer",
+        };
+      } else if (/(quem é a glv|sobre a glv|informações|empresa|quem somos)/i.test(input)) {
+        botResponse =
+          "🏢 A GLV Tecnologia é uma empresa especializada em desenvolvimento de software, infraestrutura cloud e soluções tecnológicas personalizadas para empresas de todos os tamanhos.";
+        actionButton = {
+          label: "📖 Sobre Nós",
+          url: "/#about",
+        };
       }
 
       const botMessage: Message = {
@@ -184,11 +238,7 @@ const AIAssistant = () => {
       };
 
       setIsTyping(false);
-      setMessages((prev) => {
-        const next = [...prev, botMessage];
-        // se houver actionButton e for whatsapp, não abrir automaticamente; a UI deve expor botão.
-        return next;
-      });
+      setMessages((prev) => [...prev, botMessage]);
     }, delay);
   };
 

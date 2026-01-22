@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { Check, Zap } from "lucide-react";
@@ -6,10 +6,14 @@ import { services } from "../data/services";
 import { useNavigate } from "react-router-dom";
 import ServiceDetailsModal from "../components/ServiceDetailsModal";
 import AutoFitText from "../components/AutoFitText";
+import IAQuestionnaire from "../components/IAQuestionnaire";
+import SystemQuestionnaire from "../components/SystemQuestionnaire";
 
 const Plans = () => {
   const [ref, inView] = useInView({ threshold: 0.15 });
   const [hasAnimated, setHasAnimated] = useState(false);
+  const [showIAQuestionnaire, setShowIAQuestionnaire] = useState(false);
+  const [showSystemQuestionnaire, setShowSystemQuestionnaire] = useState(false);
 
   useEffect(() => {
     if (inView && !hasAnimated) setHasAnimated(true);
@@ -94,11 +98,17 @@ const Plans = () => {
               </div>
               <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <motion.button
-                  onClick={() =>
-                    service.slug === "landing-pages-sites"
-                      ? navigate("/personalizar/site-landing")
-                      : navigate(`/personalizar/${service.slug}`)
-                  }
+                  onClick={() => {
+                    if (service.slug === "ia-aplicada") {
+                      setShowIAQuestionnaire(true);
+                    } else if (service.slug === "sistemas-personalizados") {
+                      setShowSystemQuestionnaire(true);
+                    } else if (service.slug === "landing-pages-sites") {
+                      navigate("/personalizar/site-landing");
+                    } else {
+                      navigate(`/personalizar/${service.slug}`);
+                    }
+                  }}
                   className={`w-full py-3 rounded-full font-semibold text-base transition-all ${
                     service.highlighted
                       ? "bg-blue-600 text-white hover:bg-blue-700"
@@ -159,6 +169,18 @@ const Plans = () => {
 
       {/* Modal de detalhes do serviço */}
       <ServiceDetailsModal service={selectedService} onClose={() => setSelectedService(null)} />
+
+      {/* Modal de questionário de IA */}
+      <IAQuestionnaire 
+        isOpen={showIAQuestionnaire} 
+        onClose={() => setShowIAQuestionnaire(false)} 
+      />
+
+      {/* Modal de questionário de Sistemas Personalizados */}
+      <SystemQuestionnaire 
+        isOpen={showSystemQuestionnaire} 
+        onClose={() => setShowSystemQuestionnaire(false)} 
+      />
     </section>
   );
 };

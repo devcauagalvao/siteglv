@@ -65,7 +65,9 @@ const CustomizePage = () => {
     useEffect(() => {
         try {
             emailjs.init("H_rsp6SrkABlqY5RN");
-        } catch { }
+        } catch (e) {
+            console.error("Failed to init EmailJS", e);
+        }
     }, []);
 
     useEffect(() => {
