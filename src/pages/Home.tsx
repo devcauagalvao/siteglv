@@ -1,7 +1,7 @@
 import React from "react";
 import Hero from "../sections/Hero";
 import About from "../sections/About";
-import Plans from "../sections/Services";
+import Services from "../sections/Services";
 import Portfolio from "../sections/Portfolio";
 import Store from "../sections/Store";
 import Testimonials from "../sections/Testimonials";
@@ -11,7 +11,7 @@ const Home = () => {
   return (
     <>
       <Hero />
-      <Plans />
+      <Services />
       <About />
       <Portfolio />
       <Store />

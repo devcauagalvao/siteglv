@@ -3,58 +3,21 @@ import { BrowserRouter as Router, Routes, Route, Link, useParams } from "react-r
 import Navbar from "./layout/Navbar";
 import Footer from "./layout/Footer";
 import CookieConsent from "./layout/CookieConsent";
-const AIAssistant = React.lazy(() => import("./features/assistant/AIAssistant"));
+import { Instagram, Facebook, Phone } from "lucide-react";
 import Home from "./pages/Home";
 import Sobre from "./pages/Sobre";
 import CustomizeService from "./pages/custom/CustomizeSoftware";
 import CustomizePage from "./pages/custom/CustomizePage";
 import CustomizeServer from "./pages/custom/CustomizeServer";
-import { Instagram, Facebook, Phone } from "lucide-react";
+import { USERS } from "./utils/constants";
+import { formatPhone } from "./utils/formatting";
 
-type UserRecord = {
-  id: string;
-  name: string;
-  role?: string;
-  avatar?: string;
-  phone?: string;
-};
-const USERS: Record<string, UserRecord> = {
-  "g3N1LD0X9Z": {
-    id: "g3N1LD0X9Z",
-    name: "Genildo Pereira da Silva",
-    role: "Vendedor Comercial",
-    avatar: "/img/employees/genildo.jpeg",
-    phone: "5511996259972",
-  },
-};
+const AIAssistant = React.lazy(() => import("./features/assistant/AIAssistant"));
 
 // Página dinâmica de usuário baseada no id da URL
 const UserPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const user = id ? USERS[id] : undefined;
-
-  const formatPhone = (p?: string) => {
-    if (!p) return "";
-    const digits = p.replace(/\D/g, "");
-    // Esperado: CC(2) + DDD(2) + número (8 ou 9)
-    if (digits.length < 12) return p; // fallback se não bater
-    const cc = digits.slice(0, 2);
-    const ddd = digits.slice(2, 4);
-    const local = digits.slice(4);
-    let pretty = local;
-
-    if (local.length === 9) {
-      // Celular: 5-4
-      pretty = `${local.slice(0, 5)}-${local.slice(5)}`;
-    } else if (local.length === 8) {
-      // Fixo: 4-4
-      pretty = `${local.slice(0, 4)}-${local.slice(4)}`;
-    } else {
-      // fallback genérico: mantém tudo junto
-      pretty = local;
-    }
-    return `+${cc} (${ddd}) ${pretty}`;
-  };
+  const user = id ? USERS[id as keyof typeof USERS] : undefined;
 
   if (!id || !user) {
     return (
@@ -73,7 +36,6 @@ const UserPage: React.FC = () => {
       </section>
     );
   }
-
 
   return (
     <section className="min-h-screen relative overflow-hidden flex items-center">

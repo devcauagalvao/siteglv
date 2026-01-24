@@ -1,7 +1,6 @@
 import React from "react";
-import ReactDOM from "react-dom";
-import { motion, AnimatePresence } from "framer-motion";
-import { X, FileText, Shield, Mail, Code, ScrollText } from "lucide-react";
+import { FileText, Shield, Mail, Code, ScrollText } from "lucide-react";
+import ModalBase from "./ModalBase";
 
 type ModalType = "privacy" | "terms" | null;
 
@@ -67,64 +66,29 @@ const TermsModal: React.FC<TermsModalProps> = ({ modalContent, onClose }) => {
 
     const content = modalContent === "privacy" ? privacyItems : termsItems;
 
-    return ReactDOM.createPortal(
-        <AnimatePresence>
-            {modalContent && (
-                <>
-                    {/* Fundo com blur */}
-                    <motion.div
-                        className="fixed inset-0 bg-black/40"
-                        style={{ backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", zIndex: 9999 }}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        onClick={onClose}
-                    />
+    return (
+        <ModalBase open={!!modalContent} onClose={onClose} size="4xl" className="p-6">
+            {/* Título */}
+            <h2 className="text-2xl md:text-3xl font-bold text-blue-400 mb-4">
+                {modalContent === "privacy" ? "Política de Privacidade" : "Termos de Uso"}
+            </h2>
 
-                    {/* Modal */}
-                    <motion.div
-                        className="fixed inset-0 flex items-center justify-center p-4"
-                        style={{ zIndex: 10000 }}
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.9 }}
-                        onClick={(e) => e.stopPropagation()}
+            {/* Conteúdo */}
+            <div className="grid grid-cols-1 gap-4 max-h-[65vh] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-blue-400/40">
+                {content.map((item, idx) => (
+                    <div
+                        key={idx}
+                        className="p-4 bg-white/10 backdrop-blur-md rounded-xl border border-white/5 flex items-start gap-3"
                     >
-                        <div className="relative rounded-3xl max-w-4xl w-full flex flex-col overflow-hidden shadow-lg bg-white/10 border border-white/25 p-6">
-                            {/* Botão fechar */}
-                            <button
-                                onClick={onClose}
-                                className="absolute top-4 right-4 text-white bg-black/30 hover:bg-black/60 rounded-full p-1.5 transition cursor-pointer z-50"
-                            >
-                                <X size={24} />
-                            </button>
-
-                            {/* Título */}
-                            <h2 className="text-2xl md:text-3xl font-bold text-blue-400 mb-4">
-                                {modalContent === "privacy" ? "Política de Privacidade" : "Termos de Uso"}
-                            </h2>
-
-                            {/* Conteúdo */}
-                            <div className="grid grid-cols-1 gap-4 max-h-[65vh] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-blue-400/40">
-                                {content.map((item, idx) => (
-                                    <div
-                                        key={idx}
-                                        className="p-4 bg-white/10 backdrop-blur-md rounded-xl border border-white/5 flex items-start gap-3"
-                                    >
-                                        <item.icon className={`h-6 w-6 ${item.color} mt-1`} />
-                                        <div>
-                                            <h3 className="font-semibold text-lg text-white">{item.title}</h3>
-                                            <p className="text-white/70 text-sm mt-1 leading-relaxed">{item.description}</p>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
+                        <item.icon className={`h-6 w-6 ${item.color} mt-1`} />
+                        <div>
+                            <h3 className="font-semibold text-lg text-white">{item.title}</h3>
+                            <p className="text-white/70 text-sm mt-1 leading-relaxed">{item.description}</p>
                         </div>
-                    </motion.div>
-                </>
-            )}
-        </AnimatePresence>,
-        document.body
+                    </div>
+                ))}
+            </div>
+        </ModalBase>
     );
 };
 

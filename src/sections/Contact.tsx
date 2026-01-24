@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import emailjs from 'emailjs-com';
-import DOMPurify from 'dompurify';
 import type { LucideIcon } from 'lucide-react';
 import {
   Send,
@@ -9,160 +8,111 @@ import {
   Mail,
   MapPin,
   Clock,
-  MessageCircle,
   User,
   Building,
   AlertCircle
 } from 'lucide-react';
 import SuccessModal from "../components/SuccessModal";
+import { useForm } from '../hooks/useForm';
+import { sanitizeInput, validateContactForm } from '../utils/validation';
+import { GOOGLE_ANALYTICS_ID, EMAILJS_KEY } from '../utils/constants';
 
 declare global {
   interface Window {
-    dataLayer?: any[];
-    gtag?: (...args: any[]) => void;
+    dataLayer?: unknown[];
+    gtag?: (...args: unknown[]) => void;
   }
 }
 
-// Funções de validação e sanitização
-const sanitizeInput = (input: string): string => {
-  return DOMPurify.sanitize(input, { ALLOWED_TAGS: [] }).trim().substring(0, 1000);
-};
-
-const validateEmail = (email: string): boolean => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email) && email.length <= 100;
-};
-
-const validateInput = (input: string, minLength: number = 2, maxLength: number = 100): boolean => {
-  return input.length >= minLength && input.length <= maxLength;
-};
-
-interface FormErrors {
-  [key: string]: string;
+interface ContactFormData extends Record<string, unknown> {
+  name: string;
+  email: string;
+  company: string;
+  service: string;
+  message: string;
 }
 
 const Contact = () => {
-  const [formData, setFormData] = useState<{ name: string; email: string; company: string; service: string; message: string }>({
-    name: '',
-    email: '',
-    company: '',
-    service: '',
-    message: ''
+  const [successOpen, setSuccessOpen] = React.useState(false);
+
+  const {
+    values: formData,
+    errors: formErrors,
+    isSubmitting,
+    handleChange,
+    handleSubmit: handleSubmitForm,
+    resetForm,
+    setErrors,
+  } = useForm<ContactFormData>({
+    initialValues: {
+      name: '',
+      email: '',
+      company: '',
+      service: '',
+      message: ''
+    },
+    validate: (values) => validateContactForm(values),
+    onSubmit: async (values) => {
+      const templateParams = {
+        from_name: sanitizeInput(values.name),
+        from_email: sanitizeInput(values.email),
+        company: sanitizeInput(values.company),
+        service: values.service,
+        message: sanitizeInput(values.message, 5000)
+      };
+
+      try {
+        await emailjs.send(
+          'service_1wuyals',
+          'template_9xroo21',
+          templateParams,
+          EMAILJS_KEY
+        );
+
+        if (typeof window.gtag === 'function') {
+          window.gtag('event', 'conversion', {
+            send_to: 'AW-17644830612/xRF7CJao5asbEJT_2t1B'
+          });
+        }
+        setSuccessOpen(true);
+        resetForm();
+      } catch (error) {
+        console.error('Erro ao enviar o formulário:', error);
+        setErrors({ submit: 'Ocorreu um erro ao enviar sua solicitação. Tente novamente mais tarde.' });
+      }
+    }
   });
-  const [formErrors, setFormErrors] = useState<FormErrors>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [successOpen, setSuccessOpen] = useState(false);
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   useEffect(() => {
-    const GA_ID = 'AW-17644830612';
-    const scriptSrc = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
+    const initializeGoogleAnalytics = () => {
+      const scriptSrc = `https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_ID}`;
+      
+      if (document.querySelector(`script[src="${scriptSrc}"]`)) {
+        return;
+      }
 
-    if (!document.querySelector(`script[src="${scriptSrc}"]`)) {
       const script = document.createElement('script');
       script.async = true;
       script.src = scriptSrc;
       document.head.appendChild(script);
-    }
 
-    window.dataLayer = window.dataLayer || [];
-    const gtag = (...args: any[]) => window.dataLayer!.push(args);
-    window.gtag = gtag;
-    window.gtag('js', new Date());
-    window.gtag('config', GA_ID);
-
-    try {
-      // @ts-ignore
-      emailjs.init('H_rsp6SrkABlqY5RN');
-    } catch (err) {}
-  }, []);
-
-  const validateForm = (): boolean => {
-    const errors: FormErrors = {};
-
-    if (!validateInput(formData.name, 2, 100)) {
-      errors.name = "Nome deve ter entre 2 e 100 caracteres";
-    }
-
-    if (!validateEmail(formData.email)) {
-      errors.email = "Email inválido";
-    }
-
-    if (!validateInput(formData.company, 2, 100)) {
-      errors.company = "Empresa deve ter entre 2 e 100 caracteres";
-    }
-
-    if (!formData.service) {
-      errors.service = "Selecione um serviço";
-    }
-
-    if (!validateInput(formData.message, 10, 1000)) {
-      errors.message = "Mensagem deve ter entre 10 e 1000 caracteres";
-    }
-
-    setFormErrors(errors);
-    return Object.keys(errors).length === 0;
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (!validateForm()) {
-      setErrorMsg("Por favor, corrija os erros antes de enviar.");
-      return;
-    }
-
-    setIsSubmitting(true);
-    setErrorMsg(null);
-
-    // Sanitizar dados antes de enviar
-    const templateParams = {
-      from_name: sanitizeInput(formData.name),
-      from_email: sanitizeInput(formData.email),
-      company: sanitizeInput(formData.company),
-      service: formData.service,
-      message: sanitizeInput(formData.message)
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = (...args: unknown[]) => window.dataLayer!.push(args);
+      window.gtag('js', new Date());
+      window.gtag('config', GOOGLE_ANALYTICS_ID);
     };
 
-    try {
-      await emailjs.send(
-        'service_1wuyals',
-        'template_9xroo21',
-        templateParams,
-        'H_rsp6SrkABlqY5RN'
-      );
-
-      if (typeof window.gtag === 'function') {
-        window.gtag('event', 'conversion', {
-          send_to: 'AW-17644830612/xRF7CJao5asbEJT_2t1B',
-          value: 1.0,
-          currency: 'BRL'
-        });
+    const initializeEmailJS = () => {
+      try {
+        emailjs.init(EMAILJS_KEY);
+      } catch (error) {
+        console.error('Erro ao inicializar EmailJS:', error);
       }
-      setSuccessOpen(true);
-      setFormData({ name: '', email: '', company: '', service: '', message: '' });
-      setFormErrors({});
-    } catch (error) {
-      console.error('Erro ao enviar o formulário:', error);
-      setErrorMsg('Ocorreu um erro ao enviar sua solicitação. Tente novamente mais tarde.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+    };
 
-  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    
-    // Limpar erro ao editar
-    if (formErrors[name]) {
-      setFormErrors((prev) => {
-        const newErrors = { ...prev };
-        delete newErrors[name];
-        return newErrors;
-      });
-    }
-  }, [formErrors]);
+    initializeGoogleAnalytics();
+    initializeEmailJS();
+  }, []);
 
   const services = [
     'Desenvolvimento Web',
@@ -173,14 +123,21 @@ const Contact = () => {
     'Suporte Técnico',
     'Consultoria em TI',
     'Outro'
-  ];
+  ] as const;
 
   const contactInfo = [
     { icon: Phone, title: 'Telefone', info: '+55 (11) 91916-7653', description: 'Segunda a Sexta, 8h às 18h' },
-    { icon: Mail, title: 'E-mail', info: 'glvinformatica2024@gmail.com', description: 'Resposta em até 2 horas' },
+    { icon: Mail, title: 'E-mail', info: 'contato.glvtecnologia@gmail.com', description: 'Resposta em até 2 horas' },
     { icon: MapPin, title: 'Endereço', info: 'Itu, SP', description: 'Atendimento presencial agendado' },
     { icon: Clock, title: 'Horário', info: 'Seg-Sex: 7h-18h', description: 'Suporte 24/7 disponível' }
-  ];
+  ] as const;
+
+  type FieldName = 'name' | 'email' | 'company';
+  const fields: Array<[FieldName, string, LucideIcon, string]> = [
+    ['name', 'Nome Completo', User, 'Seu nome completo'],
+    ['email', 'E-mail', Mail, 'seu@email.com'],
+    ['company', 'Empresa (Opcional)', Building, 'Nome da sua empresa'],
+  ] as const;
 
   const liquidGlassStyle = {
     background: 'rgba(255, 255, 255, 0.1)',
@@ -188,66 +145,81 @@ const Contact = () => {
     backdropFilter: 'blur(20px)',
     WebkitBackdropFilter: 'blur(20px)',
     borderRadius: '24px',
-    borderImageSlice: 1,
-  };
-
-  type FieldName = 'name' | 'email' | 'company';
-  const fields: Array<[FieldName, string, LucideIcon, string]> = [
-    ['name', 'Nome Completo', User, 'Seu nome completo'],
-    ['email', 'E-mail', Mail, 'seu@email.com'],
-    ['company', 'Empresa (Opcional)', Building, 'Nome da sua empresa'],
-  ];
+  } as const;
 
   return (
-    <section id="contact" className="py-20 relative overflow-hidden z-0">
-      {/* Fundo Gradiente e Blobs */}
-      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-black via-gray-900 to-black" />
-      <div className="absolute inset-0 opacity-10 -z-10">
-        <div className="absolute top-1/4 left-1/4 w-72 h-72 md:w-96 md:h-96 bg-blue-500 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-72 h-72 md:w-96 md:h-96 bg-blue-600 rounded-full blur-3xl" />
-      </div>
-
-      <div className="relative z-0 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Formulário */}
+    <section id="contact" className="relative py-24 bg-gradient-to-b from-black via-gray-900 to-black text-white px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto">
+        {/* Título */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          transition={{ duration: 0.6 }}
         >
-          <h2 className="text-3xl md:text-5xl font-bold mb-6">
-            <span className="text-white">Fale Conosco </span>
-            {errorMsg && (
-              <div className="mb-4 p-3 rounded-xl border border-red-500/30 bg-red-500/10 text-red-300 text-sm">
-                {errorMsg}
-              </div>
-            )}
-            <span className="text-[#3B82F6]">Hoje</span>
+          <h2 className="text-4xl md:text-5xl font-extrabold mb-4">
+            Vamos Trabalhar Juntos?
           </h2>
-          <p className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto">
-            Transforme sua ideia em realidade. Entre em contato e receba um orçamento personalizado
+          <p className="text-gray-400 text-base md:text-lg max-w-2xl mx-auto">
+            Entre em contato conosco para discutir seu projeto e descobrir como podemos ajudar sua empresa a crescer com tecnologia.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Formulário */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Informações de contato */}
           <motion.div
-            style={liquidGlassStyle}
-            className="w-full p-6 md:p-8 rounded-3xl"
-            initial={{ opacity: 0, x: -30 }}
+            className="space-y-6"
+            initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.6 }}
           >
-            <h3 className="text-2xl md:text-3xl font-bold text-white mb-8">Solicitar Orçamento</h3>
-            {errorMsg && (
-              <motion.div className="mb-6 p-4 rounded-xl border border-red-500/30 bg-red-500/10 flex items-start gap-3" initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+            {contactInfo.map(({ icon: IconComp, title, info, description }, idx) => (
+              <motion.div
+                key={title}
+                className="p-5 rounded-2xl"
+                style={liquidGlassStyle}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+              >
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center flex-shrink-0">
+                    <IconComp className="w-6 h-6 text-blue-400" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-white mb-1">{title}</h3>
+                    <p className="text-blue-300 font-semibold text-sm md:text-base">{info}</p>
+                    <p className="text-gray-400 text-xs md:text-sm mt-1">{description}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          {/* Formulário */}
+          <motion.div
+            className="lg:col-span-2 p-8 rounded-3xl"
+            style={liquidGlassStyle}
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            {formErrors.submit && (
+              <motion.div
+                className="mb-6 p-4 rounded-xl border border-red-500/30 bg-red-500/10 flex items-start gap-3"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
                 <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
-                <p className="text-red-300 text-sm">{errorMsg}</p>
+                <p className="text-red-300 text-sm">{formErrors.submit}</p>
               </motion.div>
             )}
-            <form onSubmit={handleSubmit} className="space-y-6">
+
+            <form onSubmit={handleSubmitForm} className="space-y-6">
               {fields.map(([name, label, IconComp, placeholder]) => (
                 <div key={name}>
                   <label className="block text-sm font-bold text-gray-200 mb-2.5">{label}</label>
@@ -269,7 +241,11 @@ const Contact = () => {
                     <IconComp className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-white/50" />
                   </div>
                   {formErrors[name] && (
-                    <motion.p className="text-red-400 text-xs mt-1.5 flex items-center gap-1" initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }}>
+                    <motion.p
+                      className="text-red-400 text-xs mt-1.5 flex items-center gap-1"
+                      initial={{ opacity: 0, y: -5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                    >
                       <AlertCircle className="w-3 h-3" /> {formErrors[name]}
                     </motion.p>
                   )}
@@ -298,7 +274,11 @@ const Contact = () => {
                   ))}
                 </select>
                 {formErrors.service && (
-                  <motion.p className="text-red-400 text-xs mt-1.5 flex items-center gap-1" initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }}>
+                  <motion.p
+                    className="text-red-400 text-xs mt-1.5 flex items-center gap-1"
+                    initial={{ opacity: 0, y: -5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                  >
                     <AlertCircle className="w-3 h-3" /> {formErrors.service}
                   </motion.p>
                 )}
@@ -314,7 +294,7 @@ const Contact = () => {
                     onChange={handleChange}
                     required
                     rows={4}
-                    maxLength={1000}
+                    maxLength={5000}
                     className={`w-full bg-gray-800/40 border-2 rounded-xl px-4 py-3 pl-12 text-white placeholder-gray-500 focus:outline-none transition-all font-medium resize-none ${
                       formErrors.message
                         ? "border-red-500/50 focus:ring-2 focus:ring-red-500/30"
@@ -322,11 +302,14 @@ const Contact = () => {
                     }`}
                     placeholder="Descreva seu projeto ou necessidade..."
                   />
-                  <MessageCircle className="absolute left-4 top-4 h-5 w-5 text-white/50" />
-                  <span className="text-xs text-gray-400 absolute right-3 bottom-2">{formData.message.length}/1000</span>
+                  <span className="text-xs text-gray-400 absolute right-3 bottom-2">{formData.message.length}/5000</span>
                 </div>
                 {formErrors.message && (
-                  <motion.p className="text-red-400 text-xs mt-1.5 flex items-center gap-1" initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }}>
+                  <motion.p
+                    className="text-red-400 text-xs mt-1.5 flex items-center gap-1"
+                    initial={{ opacity: 0, y: -5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                  >
                     <AlertCircle className="w-3 h-3" /> {formErrors.message}
                   </motion.p>
                 )}
@@ -341,79 +324,25 @@ const Contact = () => {
               >
                 {isSubmitting ? (
                   <>
-                    <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity }} className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full" />
+                    <motion.div
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 1, repeat: Infinity }}
+                      className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full"
+                    />
                     <span>Enviando...</span>
                   </>
                 ) : (
                   <>
-                    <Send className="h-5 w-5" />
-                    <span>Enviar Solicitação</span>
+                    <Send className="w-5 h-5" />
+                    <span>Enviar Mensagem</span>
                   </>
                 )}
               </motion.button>
             </form>
           </motion.div>
-
-          {/* Informações de Contato */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="space-y-8"
-          >
-            <div style={liquidGlassStyle} className="p-6 md:p-8">
-              <h3 className="text-xl md:text-2xl font-bold text-white mb-6">Informações de Contato</h3>
-              <div className="space-y-6">
-                {contactInfo.map((item, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    className="flex items-start space-x-4 p-4 rounded-xl hover:bg-white/5"
-                  >
-                    <div className="p-3 rounded-full bg-gradient-to-r from-blue-600 to-blue-500 shadow-lg shadow-blue-500/30">
-                      <item.icon className="h-6 w-6 text-white" />
-                    </div>
-                    <div>
-                      <h4 className="text-base md:text-lg font-semibold text-white mb-1">{item.title}</h4>
-                      <p className="text-blue-400 font-medium text-sm md:text-base">{item.info}</p>
-                      <p className="text-white/60 text-xs md:text-sm">{item.description}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-
-            {/* Atendimento Imediato */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="backdrop-blur-lg bg-gradient-to-r from-green-600/20 to-green-500/20 border border-green-500/30 rounded-3xl p-6"
-            >
-              <h4 className="text-lg md:text-xl font-bold text-white mb-3">Atendimento Imediato</h4>
-              <p className="text-white/80 mb-4 text-sm md:text-base">
-                Precisa de ajuda urgente? Fale direto conosco no WhatsApp
-              </p>
-              <motion.a
-                href="https://wa.me/5511919167653"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center space-x-2 bg-gradient-to-r from-green-600 to-green-500 text-white px-6 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-green-500/30"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <MessageCircle className="h-5 w-5" />
-                <span>Conversar no WhatsApp</span>
-              </motion.a>
-            </motion.div>
-          </motion.div>
         </div>
       </div>
+
       <SuccessModal open={successOpen} onClose={() => setSuccessOpen(false)} title="Enviado com sucesso" message="Recebemos sua solicitação e retornaremos em até 12 horas." />
     </section>
   );

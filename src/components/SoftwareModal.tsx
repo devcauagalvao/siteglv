@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
-import ReactDOM from "react-dom";
-import { motion } from "framer-motion";
-import { X, ShoppingCart, Star } from "lucide-react";
+import { ShoppingCart, Star } from "lucide-react";
+import ModalBase from "./ModalBase";
 
 type Product = {
   id: number;
@@ -45,41 +44,9 @@ const SoftwareModal: React.FC<Props> = ({ product, onClose, whatsapp }) => {
     window.open(url, "_blank", "noopener,noreferrer");
   };
 
-  return ReactDOM.createPortal(
-    <>
-      {/* Overlay com blur e fade */}
-      <motion.div
-        className="fixed inset-0 bg-black/40"
-        style={{
-          backdropFilter: "blur(20px)",
-          WebkitBackdropFilter: "blur(20px)",
-          zIndex: 9999,
-        }}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        onClick={onClose}
-      />
-
-      {/* Container do modal centralizado */}
-      <motion.div
-        className="fixed inset-0 flex items-center justify-center p-4"
-        style={{ zIndex: 10000 }}
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.9 }}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="relative rounded-3xl max-w-4xl w-full flex flex-col md:flex-row md:items-start overflow-hidden shadow-lg bg-white/10 border border-white/25">
-          {/* Botão fechar no canto superior direito */}
-          <button
-            onClick={onClose}
-            className="absolute top-4 right-4 text-white bg-black/30 hover:bg-black/60 rounded-full p-1.5 transition cursor-pointer z-50"
-            aria-label="Fechar modal"
-          >
-            <X size={24} />
-          </button>
-
+  return (
+    <ModalBase open={true} onClose={onClose} size="4xl">
+      <div className="flex flex-col md:flex-row md:items-start overflow-hidden">
           {/* Imagem à esquerda */}
           <div className="md:w-1/2 w-full relative md:self-start md:max-h-[420px] overflow-hidden">
             {product.image ? (
@@ -171,10 +138,8 @@ const SoftwareModal: React.FC<Props> = ({ product, onClose, whatsapp }) => {
             </div>
           </div>
         </div>
-      </motion.div>
-    </>,
-    document.body
-  );
+      </ModalBase>
+    );
 };
 
 export default SoftwareModal;
