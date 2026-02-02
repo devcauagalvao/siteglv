@@ -14,7 +14,20 @@ import useAutoPerformanceMode from "../hooks/useAutoPerformanceMode";
 
 const Plans = () => {
   const [ref, inView] = useInView({ threshold: 0.15 });
-  const [hasAnimated, setHasAnimated] = useState(false);
+  const [hasAnimated, setHasAnimated] = useState(() => {
+    if (typeof window === "undefined") return true;
+
+    // Fail open on mobile / reduced motion / missing IO: don't keep content at opacity 0.
+    try {
+      if (window.matchMedia?.("(max-width: 768px)")?.matches) return true;
+      if (window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches) return true;
+    } catch {
+      // ignore
+    }
+
+    if (!("IntersectionObserver" in window)) return true;
+    return false;
+  });
   const [showIAQuestionnaire, setShowIAQuestionnaire] = useState(false);
   const [showSystemQuestionnaire, setShowSystemQuestionnaire] = useState(false);
 

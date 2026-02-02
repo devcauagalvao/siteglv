@@ -28,6 +28,18 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
   const ref = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useReducedMotion();
 
+  // Mobile browsers can be finicky with IntersectionObserver + nested animated layouts.
+  // If in-view detection fails, the previous behavior could keep entire sections at opacity 0.
+  // We fail open on small screens for reliability and performance.
+  const isSmallScreen = useMemo(() => {
+    if (typeof window === "undefined") return false;
+    return window.matchMedia?.("(max-width: 768px)")?.matches ?? false;
+  }, []);
+
+  if (prefersReducedMotion || isSmallScreen) {
+    return <div className={className}>{children}</div>;
+  }
+
   const isInView = useInView(ref, {
     amount,
     margin,
