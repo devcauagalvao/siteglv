@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import Galaxy from "../components/Galaxy";
 import { Helmet } from "react-helmet";
 import RotatingText from "../components/RotatingText";
+import Magnet from "../components/Magnet";
 
 const Hero = () => {
 
@@ -139,19 +140,21 @@ const Hero = () => {
             transition={{ delay: 1.3, duration: 0.8 }}
             className="flex items-center gap-4 justify-center"
           >
-            <motion.a
-              href="#services"
-              onClick={handleSmoothScroll}
-              className="inline-block bg-gradient-to-r from-blue-600 to-blue-500 text-white px-8 sm:px-12 py-3 sm:py-4 rounded-full text-base sm:text-lg font-semibold shadow-2xl shadow-blue-500/30 border border-blue-400/30 text-center"
-              whileHover={{
-                scale: 1.05,
-                boxShadow: "0 0 40px rgba(59, 130, 246, 0.6)",
-              }}
-              whileTap={{ scale: 0.95 }}
-              aria-label="Descobrir soluções de IA e Cloud"
-            >
-              Encontrar sua solução
-            </motion.a>
+            <Magnet padding={100} disabled={false} magnetStrength={10}>
+              <motion.a
+                href="#services"
+                onClick={handleSmoothScroll}
+                className="inline-block bg-gradient-to-r from-blue-600 to-blue-500 text-white px-8 sm:px-12 py-3 sm:py-4 rounded-full text-base sm:text-lg font-semibold shadow-2xl shadow-blue-500/30 border border-blue-400/30 text-center"
+                whileHover={{
+                  scale: 1.05,
+                  boxShadow: "0 0 40px rgba(59, 130, 246, 0.6)",
+                }}
+                whileTap={{ scale: 0.95 }}
+                aria-label="Descobrir soluções de IA e Cloud"
+              >
+                Encontrar sua solução
+              </motion.a>
+            </Magnet>
           </motion.div>
         </div>
       </header>

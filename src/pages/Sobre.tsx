@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 import { Target, Users, Lightbulb, Award } from "lucide-react";
 import { Helmet } from "react-helmet";
-import ParticleBackground from "../ui/ParticleBackground";
 import FloatingArrow from "../components/FloatingArrow";
+import ThreadsBackground from "../ui/ThreadsBackground";
 
 const Sobre = () => {
     const values = [
@@ -44,7 +44,7 @@ const Sobre = () => {
                 <meta name="robots" content="index, follow" />
             </Helmet>
             <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-900 to-black" />
-            <ParticleBackground />
+            <ThreadsBackground className="opacity-35 mix-blend-screen" />
 
             <FloatingArrow ariaLabel="Voltar para a Home" direction="left" />
 
