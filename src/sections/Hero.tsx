@@ -1,58 +1,10 @@
-import React, { useEffect, useRef, useState, useMemo } from "react";
+import React from "react";
 import { motion } from "framer-motion";
-import ParticleBackground from "../ui/ParticleBackground";
+import Galaxy from "../components/Galaxy";
 import { Helmet } from "react-helmet";
-import TextPressure from '../components/TextPressure';
+import RotatingText from "../components/RotatingText";
 
 const Hero = () => {
-  const words = useMemo(() => [
-    "softwares com IA aplicada.",
-    "servidores em nuvem.",
-    "sites profissionais.",
-    "aplicativos inteligentes.",
-    "automação com inteligência artificial.",
-    "infraestrutura cloud escalável.",
-  ], []);
-
-  const [wordIndex, setWordIndex] = useState(0);
-  const wordRef = useRef<HTMLSpanElement>(null);
-
-  useEffect(() => {
-    let isDeleting = false;
-    let typingIndex = 0;
-    let currentWordIndex = 0;
-    let typingTimeout: ReturnType<typeof setTimeout>;
-
-    const type = () => {
-      const currentWord = words[currentWordIndex];
-      const visibleText = currentWord.substring(0, typingIndex);
-
-      if (wordRef.current) wordRef.current.innerText = visibleText;
-
-      if (!isDeleting) {
-        if (typingIndex < currentWord.length) {
-          typingIndex++;
-          typingTimeout = setTimeout(type, 100);
-        } else {
-          isDeleting = true;
-          typingTimeout = setTimeout(type, 2000);
-        }
-      } else {
-        if (typingIndex > 0) {
-          typingIndex--;
-          typingTimeout = setTimeout(type, 50);
-        } else {
-          isDeleting = false;
-          currentWordIndex = (currentWordIndex + 1) % words.length;
-          setWordIndex(currentWordIndex);
-          typingTimeout = setTimeout(type, 500);
-        }
-      }
-    };
-
-    type();
-    return () => clearTimeout(typingTimeout);
-  }, [words]);
 
   const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
@@ -116,9 +68,23 @@ const Hero = () => {
         role="banner"
         aria-label="Seção principal - GLV Tecnologia"
       >
-        <ParticleBackground />
+        <div className="absolute inset-0 z-0" aria-hidden="true">
+          <Galaxy
+            starSpeed={0.1}
+            density={0.4}
+            hueShift={35}
+            speed={1}
+            glowIntensity={0.25}
+            saturation={0}
+            mouseRepulsion={false}
+            repulsionStrength={2}
+            twinkleIntensity={0.3}
+            rotationSpeed={0.1}
+            transparent
+          />
+        </div>
 
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black/80 pointer-events-none" />
+        <div className="absolute inset-0 z-0 bg-gradient-to-b from-transparent via-black/30 to-black/80 pointer-events-none" />
 
         <div className="relative z-10 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 max-w-5xl w-full">
           <motion.h1
@@ -142,14 +108,20 @@ const Hero = () => {
             className="text-2xl md:text-4xl lg:text-5xl font-light text-white mb-4"
           >
             Soluções inteligentes em{" "}
-            <span
-              className="inline-flex items-center font-semibold text-blue-500 ml-1"
-              ref={wordRef}
-              aria-live="polite"
-              aria-atomic="true"
-              role="text"
-              aria-label={words[wordIndex]}
-            />
+            <span aria-live="polite" aria-atomic="true" role="text">
+              <RotatingText
+                texts={['IA.', 'servidores.', 'sites.', 'aplicativos.', 'automação.', 'infraestrutura.']}
+                mainClassName="px-2 sm:px-2 md:px-3 bg-blue-600 text-white overflow-hidden font-bold py-0.5 sm:py-1 md:py-2 justify-center rounded-lg"
+                staggerFrom={"first"}
+                initial={{ y: "100%" }}
+                animate={{ y: 0 }}
+                exit={{ y: "-120%" }}
+                staggerDuration={0.025}
+                splitLevelClassName="overflow-hidden pb-0.5 sm:pb-1 md:pb-1"
+                transition={{ type: "spring", damping: 30, stiffness: 400 }}
+                rotationInterval={2000}
+              />
+            </span>
           </motion.h2>
 
           <motion.p

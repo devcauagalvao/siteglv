@@ -14,7 +14,6 @@ import { formatPhone } from "./utils/formatting";
 
 const AIAssistant = React.lazy(() => import("./features/assistant/AIAssistant"));
 
-// Página dinâmica de usuário baseada no id da URL
 const UserPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const user = id ? USERS[id as keyof typeof USERS] : undefined;
