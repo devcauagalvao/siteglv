@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import ParticleBackground from "../ui/ParticleBackground";
-import WorldMapBackground from "../ui/WorldMapBackground";
 import { Helmet } from "react-helmet";
+import TextPressure from '../components/TextPressure';
 
 const Hero = () => {
   const words = useMemo(() => [
@@ -117,7 +117,6 @@ const Hero = () => {
         aria-label="Seção principal - GLV Tecnologia"
       >
         <ParticleBackground />
-        <WorldMapBackground />
 
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black/80 pointer-events-none" />
 
@@ -129,7 +128,7 @@ const Hero = () => {
             className="mb-6"
           >
             <img
-              src="/img/branding/logohorizontal.png"
+              src="/img/branding/logo-horizontal.svg"
               alt="GLV Tecnologia - Desenvolvimento de Software e Suporte Técnico em Itu"
               className="h-12 md:h-20 object-contain mx-auto"
               loading="lazy"
