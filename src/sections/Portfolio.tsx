@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ExternalLink, Github, X, Smartphone, Globe, ChevronLeft, ChevronRight } from "lucide-react";
 import ProjectModal from "../components/ProjectModal";
 
-type Project = {
+type PortfolioProject = {
   id: number;
   title: string;
   category: string;
@@ -20,7 +20,7 @@ type Project = {
 };
 
 const Portfolio: React.FC = () => {
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [selectedProject, setSelectedProject] = useState<PortfolioProject | null>(null);
 
   useEffect(() => {
     document.body.style.overflow = selectedProject ? "hidden" : "auto";
@@ -29,7 +29,7 @@ const Portfolio: React.FC = () => {
     };
   }, [selectedProject]);
 
-  const projects: Project[] = [
+  const projects: PortfolioProject[] = [
     {
       id: 1,
       title: "Fit Fusion",
@@ -99,28 +99,6 @@ const Portfolio: React.FC = () => {
     },
     {
       id: 4,
-      title: "TechLearn",
-      category: "Sites",
-      image: "/img/portfolio/techlearn.png",
-      imageModal: "/img/portfolio/logotechlearn.png",
-      description:
-        "Site de apresentação do TechLearn, um aplicativo inovador para ensino de programação, com informações sobre cursos, designs e tecnologias utilizadas.",
-      tech: ["HTML5", "CSS3", "JavaScript", "AOS (Animate On Scroll)"],
-      features: [
-        "Informações detalhadas sobre recursos do aplicativo",
-        "Apresentação dos cursos disponíveis",
-        "Design responsivo",
-        "Animações suaves com AOS",
-        "Vitrine das funcionalidades do TechLearn",
-      ],
-      githubUrl: "https://github.com/devcauagalvao/Site-TCC-TechLearn.git",
-      projectUrl: "https://site-tcc-tech-learn.vercel.app",
-      icon: Globe,
-      hoverBg: "hover:bg-cyan-600",
-      color: "from-cyan-600 to-cyan-600",
-    },
-    {
-      id: 5,
       title: "WowGold",
       category: "Sites",
       image: "/img/portfolio/wowgold.png",
@@ -149,7 +127,7 @@ const Portfolio: React.FC = () => {
       color: "from-yellow-600 to-yellow-600",
     },
     {
-      id: 6,
+      id: 5,
       title: "Easy Haircut",
       category: "Sites",
       image: "/img/portfolio/easyhaircut.png",
@@ -170,7 +148,7 @@ const Portfolio: React.FC = () => {
       color: "from-red-800 to-red-800",
     },
     {
-      id: 7,
+      id: 6,
       title: "Taurus Black Burgers",
       category: "Sistemas",
       image: ["/img/portfolio/taurusburger.png", "/img/portfolio/taurusburger2.png"],
@@ -200,8 +178,28 @@ const Portfolio: React.FC = () => {
       ? projects
       : projects.filter((project) => project.category === activeCategory);
 
+  // Normaliza o projeto para atender ao tipo esperado pelo ProjectModal (evita incompatibilidade
+  // quando `image`/`imageModal` são arrays no card).
+  const selectedProjectForModal = useMemo(() => {
+    if (!selectedProject) return null;
+
+    const normalizedImage = Array.isArray(selectedProject.image)
+      ? selectedProject.image[0]
+      : selectedProject.image;
+
+    const normalizedImageModal = Array.isArray(selectedProject.imageModal)
+      ? selectedProject.imageModal[0]
+      : selectedProject.imageModal;
+
+    return {
+      ...selectedProject,
+      image: normalizedImage,
+      imageModal: normalizedImageModal,
+    };
+  }, [selectedProject]);
+
   // Componente interno para cada card
-  const ProjectCard: React.FC<{ project: Project; index: number; onOpen: () => void }> = ({ project, index, onOpen }) => {
+  const ProjectCard: React.FC<{ project: PortfolioProject; index: number; onOpen: () => void }> = ({ project, index, onOpen }) => {
     const images = Array.isArray(project.image) ? project.image : [project.image];
     const [imgIndex, setImgIndex] = useState(0);
 
@@ -352,7 +350,7 @@ const Portfolio: React.FC = () => {
         <AnimatePresence>
           {selectedProject && (
             <ProjectModal
-              project={selectedProject}
+              project={selectedProjectForModal!}
               onClose={() => setSelectedProject(null)}
             />
           )}

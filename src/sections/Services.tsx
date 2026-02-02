@@ -175,15 +175,6 @@ const Plans = () => {
             Solicitar Orçamento
           </motion.a>
         </motion.div>
-
-        <motion.p
-          className="text-gray-500 text-xs mt-10 max-w-2xl mx-auto"
-          initial={{ opacity: 0 }}
-          animate={hasAnimated ? { opacity: 1 } : undefined}
-          transition={{ delay: 1.2, duration: 0.6 }}
-        >
-          * Todos os planos incluem setup gratuito, suporte especializado e garantia de qualidade GLV.
-        </motion.p>
       </div>
 
       {/* Modal de detalhes do serviço */}
