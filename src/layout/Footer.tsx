@@ -7,7 +7,6 @@ import {
   Instagram,
   Facebook,
   Github,
-  MessageCircle,
   Code,
   Server,
   Smartphone,
@@ -147,9 +146,9 @@ const Footer = () => {
           {/* Logo e contato */}
           <div>
             <img
-              src="/img/branding/logohorizontal.png"
+              src="/img/branding/logo-horizontal.svg"
               alt="GLV Tecnologia"
-              className="w-44 mb-4"
+              className="w-50 mb-4"
             />
             <p className="text-white/70 text-sm mb-6 leading-relaxed">
               Soluções tecnológicas sob medida para transformar o seu negócio.
