@@ -21,7 +21,7 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
   margin = "-15% 0px -15% 0px",
   y = 22,
   scale = 0.985,
-  blurPx = 4,
+  blurPx = 0,
   duration = 0.5,
   ease = "easeOut",
 }) => {
@@ -40,13 +40,13 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
         opacity: 1,
         y: 0,
         scale: 1,
-        filter: prefersReducedMotion ? "none" : "blur(0px)",
+        filter: prefersReducedMotion || blurPx <= 0 ? "none" : "blur(0px)",
       },
       out: {
         opacity: prefersReducedMotion ? 1 : 0,
         y: prefersReducedMotion ? 0 : y,
         scale: prefersReducedMotion ? 1 : scale,
-        filter: prefersReducedMotion ? "none" : `blur(${blurPx}px)`,
+        filter: prefersReducedMotion || blurPx <= 0 ? "none" : `blur(${blurPx}px)`,
       },
     }),
     [blurPx, prefersReducedMotion, scale, y]
@@ -60,6 +60,7 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
       animate={isInView ? "in" : "out"}
       variants={variants}
       transition={{ duration, ease }}
+      style={{ willChange: "transform, opacity" }}
     >
       {children}
     </motion.div>

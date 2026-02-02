@@ -1,5 +1,7 @@
 import { Renderer, Program, Mesh, Color, Triangle } from 'ogl';
+import type { CSSProperties } from 'react';
 import { useEffect, useRef } from 'react';
+import useAutoPerformanceMode from '../hooks/useAutoPerformanceMode';
 
 const vertexShader = `
 attribute vec2 uv;
@@ -186,6 +188,8 @@ interface GalaxyProps {
   repulsionStrength?: number;
   autoCenterRepulsion?: number;
   transparent?: boolean;
+  className?: string;
+  style?: CSSProperties;
 }
 
 export default function Galaxy({
@@ -205,7 +209,8 @@ export default function Galaxy({
   rotationSpeed = 0.1,
   autoCenterRepulsion = 0,
   transparent = true,
-  ...rest
+  className,
+  style
 }: GalaxyProps) {
   const ctnDom = useRef<HTMLDivElement>(null);
   const targetMousePos = useRef({ x: 0.5, y: 0.5 });
@@ -213,14 +218,38 @@ export default function Galaxy({
   const targetMouseActive = useRef(0.0);
   const smoothMouseActive = useRef(0.0);
 
+  const { enabled: performanceMode } = useAutoPerformanceMode();
+
   useEffect(() => {
     if (!ctnDom.current) return;
     const ctn = ctnDom.current;
+
+    // If the container is not positioned, make it relative so the internal canvas
+    // (absolute) can reliably fill it. If the user passes `absolute`/`fixed`, we
+    // must not override it.
+    if (getComputedStyle(ctn).position === 'static') {
+      ctn.style.position = 'relative';
+    }
+
+    const qualityScale = performanceMode ? 0.75 : 1;
+    const effectiveMouseInteraction = mouseInteraction && !performanceMode;
+    const maxFps = performanceMode ? 30 : 0;
+    const frameInterval = maxFps > 0 ? 1000 / maxFps : 0;
+    let lastRenderTime = 0;
+
     const renderer = new Renderer({
       alpha: transparent,
       premultipliedAlpha: false
     });
     const gl = renderer.gl;
+
+    // Ensure the canvas always fills the container. In performance mode we reduce the
+    // render buffer size (qualityScale), but the *display size* must remain 100%.
+    gl.canvas.style.position = 'absolute';
+    gl.canvas.style.inset = '0';
+    gl.canvas.style.width = '100%';
+    gl.canvas.style.height = '100%';
+    gl.canvas.style.display = 'block';
 
     if (transparent) {
       gl.enable(gl.BLEND);
@@ -231,10 +260,24 @@ export default function Galaxy({
     }
 
     let program: Program;
+    let rafId: number | null = null;
+    let running = true;
+    let isInView = true;
+
+    let resizeObserver: ResizeObserver | null = null;
 
     function resize() {
-      const scale = 1;
-      renderer.setSize(ctn.offsetWidth * scale, ctn.offsetHeight * scale);
+      const w = ctn.offsetWidth;
+      const h = ctn.offsetHeight;
+      // Prevent 0x0 canvas when container hasn't been laid out yet.
+      if (w <= 0 || h <= 0) return;
+
+      renderer.setSize(w * qualityScale, h * qualityScale);
+
+      // OGL's setSize updates canvas.style.{width,height} in px; override to fill.
+      gl.canvas.style.width = '100%';
+      gl.canvas.style.height = '100%';
+
       if (program) {
         program.uniforms.uResolution.value = new Color(
           gl.canvas.width,
@@ -277,10 +320,27 @@ export default function Galaxy({
     });
 
     const mesh = new Mesh(gl, { geometry, program });
-    let animateId: number;
+
+    const schedule = () => {
+      if (!running) return;
+      if (!isInView) return;
+      if (document.visibilityState === 'hidden') return;
+      if (rafId != null) return;
+      rafId = requestAnimationFrame(update);
+    };
 
     function update(t: number) {
-      animateId = requestAnimationFrame(update);
+      rafId = null;
+      if (!running) return;
+      if (!isInView) return;
+      if (document.visibilityState === 'hidden') return;
+
+      if (frameInterval > 0 && t - lastRenderTime < frameInterval) {
+        schedule();
+        return;
+      }
+      lastRenderTime = t;
+
       if (!disableAnimation) {
         program.uniforms.uTime.value = t * 0.001;
         program.uniforms.uStarSpeed.value = (t * 0.001 * starSpeed) / 10.0;
@@ -297,9 +357,45 @@ export default function Galaxy({
       program.uniforms.uMouseActiveFactor.value = smoothMouseActive.current;
 
       renderer.render({ scene: mesh });
+
+      schedule();
     }
-    animateId = requestAnimationFrame(update);
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        isInView = entry.isIntersecting;
+        if (!isInView && rafId != null) {
+          cancelAnimationFrame(rafId);
+          rafId = null;
+        }
+        if (isInView) schedule();
+      },
+      { threshold: 0.01 }
+    );
+    io.observe(ctn);
+
+    const onVis = () => {
+      if (document.visibilityState === 'hidden') {
+        if (rafId != null) {
+          cancelAnimationFrame(rafId);
+          rafId = null;
+        }
+      } else {
+        schedule();
+      }
+    };
+    document.addEventListener('visibilitychange', onVis);
+
+    // Track container size changes (hero can change height without window resize).
+    resizeObserver = new ResizeObserver(() => {
+      resize();
+    });
+    resizeObserver.observe(ctn);
+
+    schedule();
     ctn.appendChild(gl.canvas);
+    // One more resize after attaching, to avoid initial 0-height issues.
+    resize();
 
     function handleMouseMove(e: MouseEvent) {
       const rect = ctn.getBoundingClientRect();
@@ -313,19 +409,24 @@ export default function Galaxy({
       targetMouseActive.current = 0.0;
     }
 
-    if (mouseInteraction) {
+    if (effectiveMouseInteraction) {
       ctn.addEventListener('mousemove', handleMouseMove);
       ctn.addEventListener('mouseleave', handleMouseLeave);
     }
 
     return () => {
-      cancelAnimationFrame(animateId);
+      running = false;
+      if (rafId != null) cancelAnimationFrame(rafId);
       window.removeEventListener('resize', resize);
-      if (mouseInteraction) {
+      document.removeEventListener('visibilitychange', onVis);
+      resizeObserver?.disconnect();
+      resizeObserver = null;
+      io.disconnect();
+      if (effectiveMouseInteraction) {
         ctn.removeEventListener('mousemove', handleMouseMove);
         ctn.removeEventListener('mouseleave', handleMouseLeave);
       }
-      ctn.removeChild(gl.canvas);
+      if (ctn.contains(gl.canvas)) ctn.removeChild(gl.canvas);
       gl.getExtension('WEBGL_lose_context')?.loseContext();
     };
   }, [
@@ -344,8 +445,9 @@ export default function Galaxy({
     rotationSpeed,
     repulsionStrength,
     autoCenterRepulsion,
-    transparent
+    transparent,
+    performanceMode
   ]);
 
-  return <div ref={ctnDom} className="w-full h-full relative" {...rest} />;
+  return <div ref={ctnDom} className={`w-full h-full ${className ?? ''}`} style={style} />;
 }

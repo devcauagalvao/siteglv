@@ -4,8 +4,11 @@ import Galaxy from "../components/Galaxy";
 import { Helmet } from "react-helmet";
 import RotatingText from "../components/RotatingText";
 import Magnet from "../components/Magnet";
+import useAutoPerformanceMode from "../hooks/useAutoPerformanceMode";
 
 const Hero = () => {
+
+  const { enabled: performanceMode } = useAutoPerformanceMode();
 
   const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
@@ -69,21 +72,20 @@ const Hero = () => {
         role="banner"
         aria-label="Seção principal - GLV Tecnologia"
       >
-        <div className="absolute inset-0 z-0" aria-hidden="true">
-          <Galaxy
-            starSpeed={0.1}
-            density={0.4}
-            hueShift={35}
-            speed={1}
-            glowIntensity={0.25}
-            saturation={0}
-            mouseRepulsion={false}
-            repulsionStrength={2}
-            twinkleIntensity={0.3}
-            rotationSpeed={0.1}
-            transparent
-          />
-        </div>
+        <Galaxy
+          className="absolute inset-0 z-0"
+          starSpeed={0.1}
+          density={0.4}
+          hueShift={35}
+          speed={1}
+          glowIntensity={0.25}
+          saturation={0}
+          mouseRepulsion={false}
+          repulsionStrength={2}
+          twinkleIntensity={0.3}
+          rotationSpeed={0.1}
+          transparent
+        />
 
         <div className="absolute inset-0 z-0 bg-gradient-to-b from-transparent via-black/30 to-black/80 pointer-events-none" />
 
@@ -140,7 +142,7 @@ const Hero = () => {
             transition={{ delay: 1.3, duration: 0.8 }}
             className="flex items-center gap-4 justify-center"
           >
-            <Magnet padding={100} disabled={false} magnetStrength={10}>
+            <Magnet padding={100} disabled={performanceMode} magnetStrength={10}>
               <motion.a
                 href="#services"
                 onClick={handleSmoothScroll}
@@ -157,26 +159,27 @@ const Hero = () => {
             </Magnet>
           </motion.div>
         </div>
-      </header>
 
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.5, duration: 1 }}
-        className="absolute bottom-10 w-full flex justify-center z-10"
-      >
-        <div className="animate-bounce">
-          <svg
-            className="w-10 h-10 text-blue-600"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            viewBox="0 0 24 24"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-          </svg>
-        </div>
-      </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.5, duration: 1 }}
+          className="absolute bottom-10 w-full flex justify-center z-10 pointer-events-none"
+          aria-hidden="true"
+        >
+          <div className="animate-bounce">
+            <svg
+              className="w-10 h-10 text-blue-600"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+        </motion.div>
+      </header>
     </>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, ReactNode, HTMLAttributes } from 'react';
+import React, { useState, useEffect, useRef, ReactNode, HTMLAttributes, useCallback } from 'react';
 
 interface MagnetProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
@@ -25,6 +25,28 @@ const Magnet: React.FC<MagnetProps> = ({
   const [isActive, setIsActive] = useState<boolean>(false);
   const [position, setPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const magnetRef = useRef<HTMLDivElement>(null);
+  const rafRef = useRef<number | null>(null);
+  const lastPointerRef = useRef<{ x: number; y: number } | null>(null);
+  const isInViewRef = useRef(true);
+
+  const reset = useCallback(() => {
+    setIsActive(false);
+    setPosition({ x: 0, y: 0 });
+  }, []);
+
+  useEffect(() => {
+    const el = magnetRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        isInViewRef.current = entry.isIntersecting;
+        if (!entry.isIntersecting) reset();
+      },
+      { threshold: 0.01 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [reset]);
 
   useEffect(() => {
     if (disabled) {
@@ -32,32 +54,46 @@ const Magnet: React.FC<MagnetProps> = ({
       return;
     }
 
-    const handleMouseMove = (e: MouseEvent) => {
+    const update = () => {
+      rafRef.current = null;
+      if (disabled) return;
+      if (!isInViewRef.current) return;
+      if (document.visibilityState === 'hidden') return;
       if (!magnetRef.current) return;
+      if (!lastPointerRef.current) return;
 
       const { left, top, width, height } = magnetRef.current.getBoundingClientRect();
       const centerX = left + width / 2;
       const centerY = top + height / 2;
 
-      const distX = Math.abs(centerX - e.clientX);
-      const distY = Math.abs(centerY - e.clientY);
+      const distX = Math.abs(centerX - lastPointerRef.current.x);
+      const distY = Math.abs(centerY - lastPointerRef.current.y);
 
       if (distX < width / 2 + padding && distY < height / 2 + padding) {
         setIsActive(true);
-        const offsetX = (e.clientX - centerX) / magnetStrength;
-        const offsetY = (e.clientY - centerY) / magnetStrength;
+        const offsetX = (lastPointerRef.current.x - centerX) / magnetStrength;
+        const offsetY = (lastPointerRef.current.y - centerY) / magnetStrength;
         setPosition({ x: offsetX, y: offsetY });
       } else {
-        setIsActive(false);
-        setPosition({ x: 0, y: 0 });
+        reset();
       }
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
+    const handleMouseMove = (e: MouseEvent) => {
+      lastPointerRef.current = { x: e.clientX, y: e.clientY };
+      if (rafRef.current != null) return;
+      rafRef.current = requestAnimationFrame(update);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
+      if (rafRef.current != null) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
+      }
     };
-  }, [padding, disabled, magnetStrength]);
+  }, [padding, disabled, magnetStrength, reset]);
 
   const transitionStyle = isActive ? activeTransition : inactiveTransition;
 

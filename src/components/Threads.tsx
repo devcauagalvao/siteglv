@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { Renderer, Program, Mesh, Triangle, Color } from 'ogl';
+import useAutoPerformanceMode from '../hooks/useAutoPerformanceMode';
 
 interface ThreadsProps {
   color?: [number, number, number];
@@ -134,10 +135,18 @@ const Threads: React.FC<ThreadsProps> = ({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const animationFrameId = useRef<number>(0);
+  const { enabled: performanceMode } = useAutoPerformanceMode();
 
   useEffect(() => {
     if (!containerRef.current) return;
     const container = containerRef.current;
+
+    const qualityScale = performanceMode ? 0.75 : 1;
+    const maxFps = performanceMode ? 30 : 0;
+    const frameInterval = maxFps > 0 ? 1000 / maxFps : 0;
+    let lastRender = 0;
+    let running = true;
+    let isInView = true;
 
     const renderer = new Renderer({ alpha: true });
     const gl = renderer.gl;
@@ -166,7 +175,7 @@ const Threads: React.FC<ThreadsProps> = ({
 
     function resize() {
       const { clientWidth, clientHeight } = container;
-      renderer.setSize(clientWidth, clientHeight);
+      renderer.setSize(clientWidth * qualityScale, clientHeight * qualityScale);
       program.uniforms.iResolution.value.r = clientWidth;
       program.uniforms.iResolution.value.g = clientHeight;
       program.uniforms.iResolution.value.b = clientWidth / clientHeight;
@@ -192,6 +201,16 @@ const Threads: React.FC<ThreadsProps> = ({
     }
 
     function update(t: number) {
+      if (!running) return;
+      if (!isInView) return;
+      if (document.visibilityState === 'hidden') return;
+
+      if (frameInterval > 0 && t - lastRender < frameInterval) {
+        animationFrameId.current = requestAnimationFrame(update);
+        return;
+      }
+      lastRender = t;
+
       if (enableMouseInteraction) {
         const smoothing = 0.05;
         currentMouse[0] += smoothing * (targetMouse[0] - currentMouse[0]);
@@ -209,9 +228,39 @@ const Threads: React.FC<ThreadsProps> = ({
     }
     animationFrameId.current = requestAnimationFrame(update);
 
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        isInView = entry.isIntersecting;
+        if (!isInView && animationFrameId.current) {
+          cancelAnimationFrame(animationFrameId.current);
+          animationFrameId.current = 0;
+        }
+        if (isInView && !animationFrameId.current && document.visibilityState !== 'hidden') {
+          animationFrameId.current = requestAnimationFrame(update);
+        }
+      },
+      { threshold: 0.01 }
+    );
+    io.observe(container);
+
+    const onVis = () => {
+      if (document.visibilityState === 'hidden') {
+        if (animationFrameId.current) {
+          cancelAnimationFrame(animationFrameId.current);
+          animationFrameId.current = 0;
+        }
+      } else if (isInView && !animationFrameId.current) {
+        animationFrameId.current = requestAnimationFrame(update);
+      }
+    };
+    document.addEventListener('visibilitychange', onVis);
+
     return () => {
+      running = false;
       if (animationFrameId.current) cancelAnimationFrame(animationFrameId.current);
       window.removeEventListener('resize', resize);
+      document.removeEventListener('visibilitychange', onVis);
+      io.disconnect();
 
       if (enableMouseInteraction) {
         container.removeEventListener('mousemove', handleMouseMove);
@@ -220,7 +269,7 @@ const Threads: React.FC<ThreadsProps> = ({
       if (container.contains(gl.canvas)) container.removeChild(gl.canvas);
       gl.getExtension('WEBGL_lose_context')?.loseContext();
     };
-  }, [color, amplitude, distance, enableMouseInteraction]);
+  }, [color, amplitude, distance, enableMouseInteraction, performanceMode]);
 
   return <div ref={containerRef} className="w-full h-full relative" {...rest} />;
 };

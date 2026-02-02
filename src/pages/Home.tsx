@@ -10,7 +10,7 @@ import ScrollReveal from "../components/ScrollReveal";
 const Home = () => {
   return (
     <>
-      <ScrollReveal y={16} blurPx={3} duration={0.55}>
+      <ScrollReveal y={16} duration={0.55}>
         <Hero />
       </ScrollReveal>
       <ScrollReveal>

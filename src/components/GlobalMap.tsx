@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useMemo } from "react";
+import useAutoPerformanceMode from "../hooks/useAutoPerformanceMode";
 
 interface ContinentPath {
   name: string;
@@ -14,6 +15,7 @@ interface DataPoint {
 const GlobalMap: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number>();
+  const { enabled: performanceMode } = useAutoPerformanceMode();
 
   // Dados dos continentes (coordenadas aproximadas para wireframe)
   const continents = useMemo<ContinentPath[]>(() => [
@@ -145,30 +147,51 @@ const GlobalMap: React.FC = () => {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // Configurar DPI
-    const dpr = window.devicePixelRatio || 1;
-    const rect = canvas.getBoundingClientRect();
+    let running = true;
+    let isInView = true;
 
-    canvas.width = rect.width * dpr;
-    canvas.height = rect.height * dpr;
+    const maxDpr = performanceMode ? 1.25 : 2;
+    const dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
+    const maxFps = performanceMode ? 30 : 0;
+    const frameInterval = maxFps > 0 ? 1000 / maxFps : 0;
+    let lastRender = 0;
 
-    ctx.scale(dpr, dpr);
+    const updateCanvasSize = () => {
+      const rect = canvas.getBoundingClientRect();
 
-    const width = rect.width;
-    const height = rect.height;
-    const centerX = width / 2;
-    const centerY = height / 2;
-    
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+
+      // reset transform to avoid accumulating scale
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      return { width: rect.width, height: rect.height };
+    };
+
+    let { width, height } = updateCanvasSize();
+    let centerX = width / 2;
+    let centerY = height / 2;
+
     // Responsividade: escala dinâmica baseada no tamanho da tela
-    const isMobile = width < 768;
-    const isTablet = width < 1024;
+    let isMobile = width < 768;
+    let isTablet = width < 1024;
     let scale = Math.min(width, height) * 0.35;
-    
-    if (isMobile) {
-      scale = Math.min(width, height) * 0.25;
-    } else if (isTablet) {
-      scale = Math.min(width, height) * 0.3;
-    }
+
+    const recomputeLayout = () => {
+      centerX = width / 2;
+      centerY = height / 2;
+
+      isMobile = width < 768;
+      isTablet = width < 1024;
+
+      scale = Math.min(width, height) * 0.35;
+      if (isMobile) {
+        scale = Math.min(width, height) * 0.25;
+      } else if (isTablet) {
+        scale = Math.min(width, height) * 0.3;
+      }
+    };
+
+    recomputeLayout();
 
     // Projeção equirectangular
     const projectPoint = (lat: number, lon: number) => {
@@ -336,8 +359,27 @@ const GlobalMap: React.FC = () => {
       });
     };
 
+    const schedule = () => {
+      if (!running) return;
+      if (!isInView) return;
+      if (document.visibilityState === "hidden") return;
+      if (animationRef.current) return;
+      animationRef.current = requestAnimationFrame(animate);
+    };
+
     // Loop de animação
     const animate = (time: number) => {
+      animationRef.current = undefined;
+      if (!running) return;
+      if (!isInView) return;
+      if (document.visibilityState === "hidden") return;
+
+      if (frameInterval > 0 && time - lastRender < frameInterval) {
+        schedule();
+        return;
+      }
+      lastRender = time;
+
       const w = width;
       const h = height;
 
@@ -352,30 +394,59 @@ const GlobalMap: React.FC = () => {
       drawMapBorder();
       drawDataPoints(time);
 
-      animationRef.current = requestAnimationFrame(animate);
+      schedule();
     };
 
-    animate(0);
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        isInView = entry.isIntersecting;
+        if (!isInView && animationRef.current) {
+          cancelAnimationFrame(animationRef.current);
+          animationRef.current = undefined;
+        }
+        if (isInView) schedule();
+      },
+      { threshold: 0.01 }
+    );
+    io.observe(canvas);
+
+    const onVis = () => {
+      if (document.visibilityState === "hidden") {
+        if (animationRef.current) {
+          cancelAnimationFrame(animationRef.current);
+          animationRef.current = undefined;
+        }
+      } else {
+        schedule();
+      }
+    };
+    document.addEventListener("visibilitychange", onVis);
+
+    schedule();
 
     // Redimensionamento responsivo
     const handleResize = () => {
       if (canvasRef.current) {
-        const newRect = canvasRef.current.getBoundingClientRect();
-        if (newRect.width !== rect.width || newRect.height !== rect.height) {
-          animate(0);
-        }
+        const s = updateCanvasSize();
+        width = s.width;
+        height = s.height;
+        recomputeLayout();
+        schedule();
       }
     };
 
     window.addEventListener("resize", handleResize);
 
     return () => {
+      running = false;
       window.removeEventListener("resize", handleResize);
+      document.removeEventListener("visibilitychange", onVis);
+      io.disconnect();
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [continents, dataPoints]);
+  }, [continents, dataPoints, performanceMode]);
 
   return (
     <div className="w-full h-full bg-slate-950">

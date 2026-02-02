@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef } from 'react';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
+import useAutoPerformanceMode from '../hooks/useAutoPerformanceMode';
 
 type WorldMapProps = {
     className?: string;
@@ -9,6 +10,9 @@ type WorldMapProps = {
 export default function WorldMap({ className }: WorldMapProps) {
     const containerRef = useRef<HTMLDivElement | null>(null);
     const mapRef = useRef<maplibregl.Map | null>(null);
+    const { enabled: performanceMode } = useAutoPerformanceMode();
+    const performanceModeRef = useRef(performanceMode);
+    performanceModeRef.current = performanceMode;
 
     useLayoutEffect(() => {
         const container = containerRef.current;
@@ -17,6 +21,30 @@ export default function WorldMap({ className }: WorldMapProps) {
         let disposed = false;
         let resizeObserver: ResizeObserver | null = null;
         let stopAnimations: null | (() => void) = null;
+        let isInView = true;
+        let tryStartAnimations: null | (() => void) = null;
+
+        const updateAnimationRunningState = () => {
+            const shouldRun = isInView && document.visibilityState !== 'hidden';
+            if (!shouldRun) {
+                try { stopAnimations?.(); } catch { }
+                stopAnimations = null;
+                return;
+            }
+            tryStartAnimations?.();
+        };
+
+        const io = new IntersectionObserver(
+            ([entry]) => {
+                isInView = entry.isIntersecting;
+                updateAnimationRunningState();
+            },
+            { threshold: 0.01 }
+        );
+        io.observe(container);
+
+        const onVis = () => updateAnimationRunningState();
+        document.addEventListener('visibilitychange', onVis);
 
         const initWhenSized = (attempt = 0) => {
             if (disposed) return;
@@ -622,7 +650,8 @@ export default function WorldMap({ className }: WorldMapProps) {
                                     // ignore
                                 }
 
-                                startDots();
+                                // Dots são o loop contínuo mais pesado — desliga em modo performance
+                                if (!performanceModeRef.current) startDots();
                                 return;
                             }
 
@@ -637,11 +666,17 @@ export default function WorldMap({ className }: WorldMapProps) {
                         };
                     };
 
-                    // inicia (sem bloquear o load do mapa)
-                    void (async () => {
-                        const stop = await startRouteAnimation();
-                        if (typeof stop === 'function') stopAnimations = stop;
-                    })();
+                    // inicia/retoma (sem bloquear o load do mapa)
+                    tryStartAnimations = () => {
+                        if (disposed) return;
+                        if (stopAnimations) return;
+                        void (async () => {
+                            const stop = await startRouteAnimation();
+                            if (typeof stop === 'function') stopAnimations = stop;
+                        })();
+                    };
+
+                    updateAnimationRunningState();
                 } catch {
                     // se falhar, ainda tentamos ao menos mostrar o mapa base
                 }
@@ -667,6 +702,8 @@ export default function WorldMap({ className }: WorldMapProps) {
             disposed = true;
             try { stopAnimations?.(); } catch { }
             stopAnimations = null;
+            try { document.removeEventListener('visibilitychange', onVis); } catch { }
+            try { io.disconnect(); } catch { }
             try { resizeObserver?.disconnect(); } catch { }
             resizeObserver = null;
             try { mapRef.current?.remove(); } catch { }
