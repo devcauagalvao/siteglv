@@ -8,6 +8,7 @@ import ServiceDetailsModal from "../components/ServiceDetailsModal";
 import AutoFitText from "../components/AutoFitText";
 import IAQuestionnaire from "../components/IAQuestionnaire";
 import SystemQuestionnaire from "../components/SystemQuestionnaire";
+import ElectricBorder from "../components/ElectricBorder";
 
 const Plans = () => {
   const [ref, inView] = useInView({ threshold: 0.15 });
@@ -52,15 +53,20 @@ const Plans = () => {
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {services.map((service, i) => (
-            <motion.div
-              key={service.slug}
-              className={`relative w-full max-w-full min-w-0 rounded-2xl p-6 sm:p-8 bg-white/5 backdrop-blur-md border border-white/20 shadow-md flex flex-col justify-between transition-transform duration-300 md:hover:scale-[1.03] hover:border-blue-500/40 ${
-                service.highlighted ? "ring-2 ring-blue-500" : ""
-              }`}
-              initial={{ y: 50, opacity: 0 }}
-              animate={hasAnimated ? { y: 0, opacity: 1 } : undefined}
-              transition={{ delay: i * 0.2, duration: 0.7 }}
-            >
+            (() => {
+              const isElectricFeatured = service.slug === "redes-servidores" && service.highlighted;
+              const card = (
+                <motion.div
+                  key={service.slug}
+                  className={`relative w-full max-w-full min-w-0 rounded-2xl p-6 sm:p-8 bg-white/5 backdrop-blur-md shadow-md flex flex-col justify-between transition-transform duration-300 md:hover:scale-[1.03] ${
+                    isElectricFeatured
+                      ? "border border-transparent"
+                      : `border border-white/20 hover:border-blue-500/40 ${service.highlighted ? "ring-2 ring-blue-500" : ""}`
+                  }`}
+                  initial={{ y: 50, opacity: 0 }}
+                  animate={hasAnimated ? { y: 0, opacity: 1 } : undefined}
+                  transition={{ delay: i * 0.2, duration: 0.7 }}
+                >
               <div>
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-blue-600 to-blue-400/70 flex items-center justify-center shadow-lg">
@@ -128,7 +134,24 @@ const Plans = () => {
                   Ver Detalhes
                 </motion.button>
               </div>
-            </motion.div>
+                </motion.div>
+              );
+
+              if (!isElectricFeatured) return card;
+
+              return (
+                <ElectricBorder
+                  key={`${service.slug}-electric`}
+                  color="#3b82f6"
+                  speed={1}
+                  chaos={0.12}
+                  thickness={2}
+                  style={{ borderRadius: 16 }}
+                >
+                  {card}
+                </ElectricBorder>
+              );
+            })()
           ))}
         </div>
 

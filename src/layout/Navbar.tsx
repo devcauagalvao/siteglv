@@ -189,17 +189,20 @@ hover:shadow-[0_6px_20px_rgba(59,130,246,0.6)]
             </a>
           </div>
 
-          <button
-            type="button"
-            className="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-full hover:bg-white/10 transition-colors"
-            aria-label="Abrir menu"
-            aria-expanded={isMobileMenuOpen}
-            onClick={() => setIsMobileMenuOpen((v) => !v)}
-          >
-            <span className="sr-only">Menu</span>
-            <span className="block w-5 h-[2px] bg-white/70 rounded" />
-            <span className="block w-5 h-[2px] bg-white/70 rounded mt-1.5" />
-          </button>
+          <div className="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-full transition-colors">
+            <label className="flex flex-col gap-2 w-8 cursor-pointer" aria-label="Abrir menu">
+              <input
+                className="peer hidden"
+                type="checkbox"
+                title="Menu"
+                checked={isMobileMenuOpen}
+                onChange={(e) => setIsMobileMenuOpen(e.target.checked)}
+              />
+              <div className="rounded-2xl h-[3px] w-1/2 bg-white duration-500 origin-right peer-checked:rotate-[225deg] peer-checked:-translate-x-[12px] peer-checked:-translate-y-[1px]" />
+              <div className="rounded-2xl h-[3px] w-full bg-white duration-500 peer-checked:-rotate-45" />
+              <div className="rounded-2xl h-[3px] w-1/2 bg-white duration-500 place-self-end origin-left peer-checked:rotate-[225deg] peer-checked:translate-x-[12px] peer-checked:translate-y-[1px]" />
+            </label>
+          </div>
         </motion.nav>
       </div>
 
