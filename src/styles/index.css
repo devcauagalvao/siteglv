@@ -2,54 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-  background: transparent;
-}
-
-::-webkit-scrollbar-track {
-  background: #1c1c1c;
-  margin: 6px 0;
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #ff0000;
-  border-radius: 10px;
-  border: 3px solid transparent;
-  background-clip: content-box;
-  box-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 30px #ff4444,
-    0 0 40px #ff6666;
-  transition: box-shadow 0.3s ease, background-color 0.3s ease,
-    opacity 0.3s ease;
-  opacity: 0.8;
-  cursor: pointer;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #555;
-  box-shadow: 0 0 15px #555, 0 0 30px #777, 0 0 40px #999, 0 0 50px #bbb;
-  opacity: 1;
-}
-
-html {
-  scrollbar-width: thin;
-  scrollbar-color: rgb(0, 162, 255) #1c1c1c;
-}
-
-::-webkit-scrollbar-thumb {
-  opacity: 0;
-}
-
-body:hover ::-webkit-scrollbar-thumb,
-body:active ::-webkit-scrollbar-thumb,
-::-webkit-scrollbar-thumb:active {
-  opacity: 0.8;
-}
-
-
-
 @layer base {
   :root {
     --background: 0 0% 100%;

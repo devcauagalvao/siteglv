@@ -1,7 +1,107 @@
 import React, { useState, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { X, ChevronRight, CheckCircle, AlertCircle } from "lucide-react";
+import { motion } from "framer-motion";
+import { Menu, MenuButton, MenuItem, MenuItems, Portal } from "@headlessui/react";
+import {
+  X,
+  ChevronRight,
+  ChevronDown,
+  CheckCircle,
+  AlertCircle,
+  Bot,
+  Building2,
+  Users,
+  Target,
+  FileText,
+  Clock,
+  Wrench,
+  BadgeDollarSign,
+  Calendar,
+  CheckSquare,
+  Phone,
+  Loader2,
+} from "lucide-react";
 import DOMPurify from "dompurify";
+import ModalBase from "./ModalBase";
+
+type DropdownOption = { label: string; value: string };
+
+type GlassDropdownProps = {
+  value: string;
+  onChange: (value: string) => void;
+  options: DropdownOption[];
+  placeholder?: string;
+  disabled?: boolean;
+  hasError?: boolean;
+};
+
+const GlassDropdown: React.FC<GlassDropdownProps> = ({
+  value,
+  onChange,
+  options,
+  placeholder = "Selecione...",
+  disabled,
+  hasError,
+}) => {
+  const selectedLabel = options.find((o) => o.value === value)?.label;
+
+  return (
+    <Menu>
+      <MenuButton
+        disabled={disabled}
+        className={[
+          "inline-flex w-full items-center justify-between gap-2 rounded-xl px-4 py-3 text-sm font-semibold shadow-inner shadow-white/10",
+          "bg-white/5 text-white border border-white/10",
+          "focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-white/20",
+          "data-[hover]:bg-white/10 data-[open]:bg-white/10",
+          disabled ? "cursor-not-allowed opacity-60" : "",
+          hasError ? "border-red-500/40 focus-visible:outline-red-500/40" : "",
+        ].join(" ")}
+      >
+        <span className={value ? "text-white" : "text-white/50"}>
+          {selectedLabel ?? placeholder}
+        </span>
+        <ChevronDown className="w-4 h-4 text-white/60" />
+      </MenuButton>
+
+      <Portal>
+        <MenuItems
+          transition
+          anchor="bottom start"
+          className="z-[2147483647] w-[var(--button-width)] origin-top-left rounded-xl border border-white/10 bg-white/10 backdrop-blur-xl p-1 text-sm text-white shadow-2xl transition duration-100 ease-out [--anchor-gap:8px] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
+          style={{ zIndex: 2147483647 }}
+        >
+          {options.map((opt) => (
+            <MenuItem key={opt.value}>
+              <button
+                type="button"
+                onClick={() => onChange(opt.value)}
+                className="group flex w-full items-center gap-2 rounded-lg px-3 py-2 data-[focus]:bg-white/10"
+              >
+                <span className={value === opt.value ? "text-white" : "text-white/80"}>
+                  {opt.label}
+                </span>
+                {value === opt.value && (
+                  <CheckCircle className="ml-auto w-4 h-4 text-white/70" />
+                )}
+              </button>
+            </MenuItem>
+          ))}
+        </MenuItems>
+      </Portal>
+    </Menu>
+  );
+};
+
+const glassFieldBaseClass =
+  "w-full rounded-xl px-4 py-3 text-sm font-semibold shadow-inner shadow-white/10 bg-white/5 text-white border border-white/10 placeholder-white/50 caret-white/80 focus:outline-none focus-visible:outline-none focus:ring-0 focus:border-white/15 hover:bg-white/10";
+
+const glassFieldErrorClass = "border-red-500/40 focus:border-red-500/50";
+
+const glassChoiceBaseClass =
+  "w-full rounded-xl px-4 py-3 text-left text-sm font-semibold shadow-inner shadow-white/10 bg-white/5 text-white border border-white/10 hover:bg-white/10 focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-white/20 transition-all flex items-center gap-3";
+
+const glassChoiceSelectedClass =
+  "bg-white/10 border-white/20 shadow-2xl shadow-white/10";
 
 interface IAQuestionnaireProps {
   isOpen: boolean;
@@ -278,101 +378,92 @@ _Enviado via GLV Consulta em ${new Date().toLocaleString("pt-BR")}_
   };
 
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <motion.div
-          className="fixed inset-0 bg-black/70 backdrop-blur-md z-[100] flex items-center justify-center p-4"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          onClick={onClose}
-        >
-          <motion.div
-            className="bg-gradient-to-br from-slate-900 via-gray-900 to-black rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-blue-500/30 shadow-2xl shadow-blue-500/20"
-            initial={{ scale: 0.95, y: 20 }}
-            animate={{ scale: 1, y: 0 }}
-            exit={{ scale: 0.95, y: 20 }}
-            transition={{ duration: 0.3, type: "spring", stiffness: 300, damping: 30 }}
-            onClick={(e) => e.stopPropagation()}
+    <ModalBase
+      open={isOpen}
+      onClose={onClose}
+      size="2xl"
+      showCloseButton={false}
+      className="shadow-2xl"
+    >
+      <form onSubmit={handleSubmit} className="flex flex-col w-full max-h-[90vh] min-h-0">
+        {/* Header */}
+        <div className="shrink-0 bg-white/10 backdrop-blur-xl border-b border-white/10 p-5 sm:p-7 flex items-center justify-between">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}>
+            <h2 className="text-2xl sm:text-3xl font-bold text-white flex items-center gap-2">
+              <Bot className="w-7 h-7 text-white/90" /> IA Aplicada
+            </h2>
+            <p className="text-sm text-white/70 mt-1">Personalize sua solução em 5 passos</p>
+          </motion.div>
+          <motion.button
+            type="button"
+            onClick={onClose}
+            className="p-2 rounded-full transition-colors bg-white/5 hover:bg-white/10 border border-white/10"
+            whileHover={{ scale: 1.1, rotate: 90 }}
+            whileTap={{ scale: 0.95 }}
           >
-            {/* Header com Gradiente GLV */}
-            <div className="sticky top-0 bg-gradient-to-r from-blue-600/90 to-cyan-600/90 backdrop-blur-xl border-b border-blue-400/20 p-5 sm:p-7 flex items-center justify-between z-10 shadow-lg shadow-blue-500/10">
-              <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}>
-                <h2 className="text-2xl sm:text-3xl font-bold text-white flex items-center gap-2">
-                  <span className="text-3xl">🤖</span> IA Aplicada
-                </h2>
-                <p className="text-sm text-blue-100 mt-1">Personalize sua solução em 5 passos</p>
-              </motion.div>
-              <motion.button
-                onClick={onClose}
-                className="p-2 hover:bg-white/20 rounded-full transition-colors"
-                whileHover={{ scale: 1.1, rotate: 90 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <X className="w-6 h-6 text-white" />
-              </motion.button>
-            </div>
+            <X className="w-6 h-6 text-white" />
+          </motion.button>
+        </div>
 
-            {/* Indicador de Progresso */}
-            <div className="p-5 sm:p-7 border-b border-blue-500/20 bg-black/20">
-              <div className="flex justify-between items-center gap-2 mb-4">
-                {[1, 2, 3, 4, 5].map((step) => (
-                  <div key={step} className="flex-1 flex items-center gap-2">
-                    <motion.div
-                      className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all shadow-lg ${
-                        step === formData.step
-                          ? "bg-gradient-to-r from-blue-500 to-cyan-500 text-white ring-4 ring-blue-400/50 shadow-blue-500/50"
-                          : step < formData.step
-                          ? "bg-gradient-to-r from-emerald-500 to-cyan-500 text-white shadow-emerald-500/50"
-                          : "bg-gray-700/60 text-gray-400 border border-gray-600/50"
-                      }`}
-                      animate={{
-                        scale: step === formData.step ? 1.15 : 1,
-                        boxShadow:
-                          step === formData.step
-                            ? "0 0 20px rgba(59, 130, 246, 0.5)"
-                            : "none",
-                      }}
-                    >
-                      {step < formData.step ? (
-                        <CheckCircle className="w-5 h-5" />
-                      ) : (
-                        step
-                      )}
-                    </motion.div>
-                    {step < 5 && (
-                      <motion.div
-                        className={`h-1.5 flex-1 rounded-full transition-all ${
-                          step < formData.step
-                            ? "bg-gradient-to-r from-emerald-500 to-cyan-500"
-                            : "bg-gray-700/60"
-                        }`}
-                        animate={{ scaleX: step < formData.step ? 1 : 0.5 }}
-                      />
-                    )}
-                  </div>
-                ))}
+        {/* Indicador de Progresso (fixo) */}
+        <div className="shrink-0 p-5 sm:p-7 border-b border-white/10 bg-white/5">
+          <div className="flex justify-between items-center gap-2 mb-4">
+            {[1, 2, 3, 4, 5].map((step) => (
+              <div key={step} className="flex-1 flex items-center gap-2">
+                <motion.div
+                  className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all shadow-lg ${
+                    step === formData.step
+                      ? "bg-blue-500/20 text-blue-50 ring-4 ring-blue-500/20 border border-blue-400/40"
+                      : step < formData.step
+                      ? "bg-blue-500/15 text-blue-50 border border-blue-400/30"
+                      : "bg-white/5 text-white/50 border border-white/10"
+                  }`}
+                  animate={{
+                    scale: step === formData.step ? 1.15 : 1,
+                    boxShadow:
+                      step === formData.step
+                        ? "0 0 22px rgba(59, 130, 246, 0.45)"
+                        : "none",
+                  }}
+                >
+                  {step < formData.step ? (
+                    <CheckCircle className="w-5 h-5" />
+                  ) : (
+                    step
+                  )}
+                </motion.div>
+                {step < 5 && (
+                  <motion.div
+                    className={`h-1.5 flex-1 rounded-full transition-all ${
+                      step < formData.step
+                        ? "bg-blue-500/40"
+                        : "bg-white/10"
+                    }`}
+                    animate={{ scaleX: step < formData.step ? 1 : 0.5 }}
+                  />
+                )}
               </div>
-              <motion.p className="text-center text-sm text-blue-200 font-medium">
-                Etapa {formData.step} de 5
-              </motion.p>
-            </div>
+            ))}
+          </div>
+          <motion.p className="text-center text-sm text-white/70 font-medium">
+            Etapa <span className="text-blue-500 font-bold">{formData.step}</span> de 5
+          </motion.p>
+        </div>
 
-            {/* Conteúdo */}
-            <motion.form
-              onSubmit={handleSubmit}
-              className="p-5 sm:p-7 space-y-6"
-              key={formData.step}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.2 }}
-            >
+        {/* Área rolável (apenas perguntas) */}
+        <div className="flex-1 min-h-0 overflow-y-auto">
+          <motion.div
+            className="p-5 sm:p-7 space-y-6"
+            key={formData.step}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.2 }}
+          >
               {/* Etapa 1: Informações da Empresa */}
               {formData.step === 1 && (
                 <motion.div className="space-y-5" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}>
                   <h3 className="text-xl font-bold text-white flex items-center gap-3">
-                    <span className="text-2xl bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+                    <span className="text-2xl text-blue-500">
                       1.
                     </span>
                     Informações da Empresa
@@ -380,7 +471,10 @@ _Enviado via GLV Consulta em ${new Date().toLocaleString("pt-BR")}_
 
                   <div>
                     <label className="block text-sm font-semibold text-gray-200 mb-2.5">
-                      📌 Nome da Empresa
+                      <span className="inline-flex items-center gap-2">
+                        <Building2 className="w-4 h-4 text-white/70" />
+                        Nome da Empresa
+                      </span>
                     </label>
                     <input
                       type="text"
@@ -388,11 +482,10 @@ _Enviado via GLV Consulta em ${new Date().toLocaleString("pt-BR")}_
                       onChange={(e) => handleInputChange("company", e.target.value)}
                       placeholder="ex: Tech Solutions Ltda."
                       maxLength={100}
-                      className={`w-full bg-gray-800/40 border-2 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none transition-all font-medium ${
-                        errors.company
-                          ? "border-red-500/50 focus:ring-2 focus:ring-red-500/50"
-                          : "border-blue-500/30 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30"
-                      }`}
+                      className={[
+                        glassFieldBaseClass,
+                        errors.company ? glassFieldErrorClass : "",
+                      ].join(" ")}
                       required
                     />
                     {errors.company && (
@@ -404,25 +497,23 @@ _Enviado via GLV Consulta em ${new Date().toLocaleString("pt-BR")}_
 
                   <div>
                     <label className="block text-sm font-semibold text-gray-200 mb-2.5">
-                      👥 Tamanho da Empresa
+                      <span className="inline-flex items-center gap-2">
+                        <Users className="w-4 h-4 text-white/70" />
+                        Tamanho da Empresa
+                      </span>
                     </label>
-                    <select
+                    <GlassDropdown
                       value={formData.companySize}
-                      onChange={(e) => handleInputChange("companySize", e.target.value)}
-                      className={`w-full bg-gray-800/40 border-2 rounded-xl px-4 py-3 text-white focus:outline-none transition-all font-medium appearance-none cursor-pointer ${
-                        errors.companySize
-                          ? "border-red-500/50 focus:ring-2 focus:ring-red-500/50"
-                          : "border-blue-500/30 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30"
-                      }`}
-                      required
-                    >
-                      <option value="">Selecione...</option>
-                      <option value="1-10">1-10 pessoas</option>
-                      <option value="11-50">11-50 pessoas</option>
-                      <option value="51-100">51-100 pessoas</option>
-                      <option value="101-500">101-500 pessoas</option>
-                      <option value="500+">500+ pessoas</option>
-                    </select>
+                      onChange={(v) => handleInputChange("companySize", v)}
+                      hasError={!!errors.companySize}
+                      options={[
+                        { label: "1-10 pessoas", value: "1-10" },
+                        { label: "11-50 pessoas", value: "11-50" },
+                        { label: "51-100 pessoas", value: "51-100" },
+                        { label: "101-500 pessoas", value: "101-500" },
+                        { label: "500+ pessoas", value: "500+" },
+                      ]}
+                    />
                     {errors.companySize && (
                       <motion.p className="text-red-400 text-sm mt-2 flex items-center gap-1" initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }}>
                         <AlertCircle className="w-4 h-4" /> {errors.companySize}
@@ -436,7 +527,7 @@ _Enviado via GLV Consulta em ${new Date().toLocaleString("pt-BR")}_
               {formData.step === 2 && (
                 <motion.div className="space-y-5" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}>
                   <h3 className="text-xl font-bold text-white flex items-center gap-3">
-                    <span className="text-2xl bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+                    <span className="text-2xl text-blue-500">
                       2.
                     </span>
                     Desafios Principais
@@ -444,26 +535,24 @@ _Enviado via GLV Consulta em ${new Date().toLocaleString("pt-BR")}_
 
                   <div>
                     <label className="block text-sm font-semibold text-gray-200 mb-2.5">
-                      🎯 Qual é seu maior desafio atual?
+                      <span className="inline-flex items-center gap-2">
+                        <Target className="w-4 h-4 text-white/70" />
+                        Qual é seu maior desafio atual?
+                      </span>
                     </label>
-                    <select
+                    <GlassDropdown
                       value={formData.mainChallenge}
-                      onChange={(e) => handleInputChange("mainChallenge", e.target.value)}
-                      className={`w-full bg-gray-800/40 border-2 rounded-xl px-4 py-3 text-white focus:outline-none transition-all font-medium appearance-none cursor-pointer ${
-                        errors.mainChallenge
-                          ? "border-red-500/50 focus:ring-2 focus:ring-red-500/50"
-                          : "border-blue-500/30 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30"
-                      }`}
-                      required
-                    >
-                      <option value="">Selecione...</option>
-                      <option value="tarefas-repetitivas">Tarefas Repetitivas</option>
-                      <option value="atendimento-volume">Atendimento com Alto Volume</option>
-                      <option value="integracao-sistemas">Integração de Sistemas</option>
-                      <option value="analise-dados">Análise e Relatórios de Dados</option>
-                      <option value="automacao-processos">Automação de Processos</option>
-                      <option value="outro">Outro</option>
-                    </select>
+                      onChange={(v) => handleInputChange("mainChallenge", v)}
+                      hasError={!!errors.mainChallenge}
+                      options={[
+                        { label: "Tarefas Repetitivas", value: "tarefas-repetitivas" },
+                        { label: "Atendimento com Alto Volume", value: "atendimento-volume" },
+                        { label: "Integração de Sistemas", value: "integracao-sistemas" },
+                        { label: "Análise e Relatórios de Dados", value: "analise-dados" },
+                        { label: "Automação de Processos", value: "automacao-processos" },
+                        { label: "Outro", value: "outro" },
+                      ]}
+                    />
                     {errors.mainChallenge && (
                       <motion.p className="text-red-400 text-sm mt-2 flex items-center gap-1" initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }}>
                         <AlertCircle className="w-4 h-4" /> {errors.mainChallenge}
@@ -473,18 +562,21 @@ _Enviado via GLV Consulta em ${new Date().toLocaleString("pt-BR")}_
 
                   <div>
                     <label className="block text-sm font-semibold text-gray-200 mb-2.5">
-                      📝 Descreva brevemente o processo que deseja automatizar
+                      <span className="inline-flex items-center gap-2">
+                        <FileText className="w-4 h-4 text-white/70" />
+                        Descreva brevemente o processo que deseja automatizar
+                      </span>
                     </label>
                     <textarea
                       value={formData.processDescription}
                       onChange={(e) => handleInputChange("processDescription", e.target.value)}
                       placeholder="ex: Nossos vendedores recebem e-mails de clientes e precisam inserir dados em 3 sistemas diferentes..."
                       maxLength={500}
-                      className={`w-full bg-gray-800/40 border-2 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none transition-all font-medium resize-none h-32 ${
-                        errors.processDescription
-                          ? "border-red-500/50 focus:ring-2 focus:ring-red-500/50"
-                          : "border-blue-500/30 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30"
-                      }`}
+                      className={[
+                        glassFieldBaseClass,
+                        "resize-none h-32",
+                        errors.processDescription ? glassFieldErrorClass : "",
+                      ].join(" ")}
                       required
                     />
                     <div className="flex items-center justify-between mt-2">
@@ -503,7 +595,7 @@ _Enviado via GLV Consulta em ${new Date().toLocaleString("pt-BR")}_
               {formData.step === 3 && (
                 <motion.div className="space-y-5" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}>
                   <h3 className="text-xl font-bold text-white flex items-center gap-3">
-                    <span className="text-2xl bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+                    <span className="text-2xl text-blue-500">
                       3.
                     </span>
                     Volume & Ferramentas
@@ -511,25 +603,23 @@ _Enviado via GLV Consulta em ${new Date().toLocaleString("pt-BR")}_
 
                   <div>
                     <label className="block text-sm font-semibold text-gray-200 mb-2.5">
-                      ⏱️ Com que frequência este processo ocorre?
+                      <span className="inline-flex items-center gap-2">
+                        <Clock className="w-4 h-4 text-white/70" />
+                        Com que frequência este processo ocorre?
+                      </span>
                     </label>
-                    <select
+                    <GlassDropdown
                       value={formData.frequency}
-                      onChange={(e) => handleInputChange("frequency", e.target.value)}
-                      className={`w-full bg-gray-800/40 border-2 rounded-xl px-4 py-3 text-white focus:outline-none transition-all font-medium appearance-none cursor-pointer ${
-                        errors.frequency
-                          ? "border-red-500/50 focus:ring-2 focus:ring-red-500/50"
-                          : "border-blue-500/30 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30"
-                      }`}
-                      required
-                    >
-                      <option value="">Selecione...</option>
-                      <option value="diaria">Diária</option>
-                      <option value="varias-vezes-dia">Várias vezes ao dia</option>
-                      <option value="semanal">Semanal</option>
-                      <option value="mensal">Mensal</option>
-                      <option value="conforme-demanda">Conforme a demanda</option>
-                    </select>
+                      onChange={(v) => handleInputChange("frequency", v)}
+                      hasError={!!errors.frequency}
+                      options={[
+                        { label: "Diária", value: "diaria" },
+                        { label: "Várias vezes ao dia", value: "varias-vezes-dia" },
+                        { label: "Semanal", value: "semanal" },
+                        { label: "Mensal", value: "mensal" },
+                        { label: "Conforme a demanda", value: "conforme-demanda" },
+                      ]}
+                    />
                     {errors.frequency && (
                       <motion.p className="text-red-400 text-sm mt-2 flex items-center gap-1" initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }}>
                         <AlertCircle className="w-4 h-4" /> {errors.frequency}
@@ -539,7 +629,10 @@ _Enviado via GLV Consulta em ${new Date().toLocaleString("pt-BR")}_
 
                   <div>
                     <label className="block text-sm font-semibold text-gray-200 mb-2.5">
-                      🛠️ Quais ferramentas/sistemas estão envolvidos?
+                      <span className="inline-flex items-center gap-2">
+                        <Wrench className="w-4 h-4 text-white/70" />
+                        Quais ferramentas/sistemas estão envolvidos?
+                      </span>
                     </label>
                     <input
                       type="text"
@@ -547,7 +640,7 @@ _Enviado via GLV Consulta em ${new Date().toLocaleString("pt-BR")}_
                       onChange={(e) => handleInputChange("currentTooling", e.target.value)}
                       placeholder="ex: Gmail, Shopify, Trello, SAP, etc."
                       maxLength={200}
-                      className="w-full bg-gray-800/40 border-2 border-blue-500/30 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all font-medium"
+                      className={glassFieldBaseClass}
                     />
                     <span className="text-xs text-gray-400 mt-2 block">{formData.currentTooling.length}/200</span>
                   </div>
@@ -558,7 +651,7 @@ _Enviado via GLV Consulta em ${new Date().toLocaleString("pt-BR")}_
               {formData.step === 4 && (
                 <motion.div className="space-y-5" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}>
                   <h3 className="text-xl font-bold text-white flex items-center gap-3">
-                    <span className="text-2xl bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+                    <span className="text-2xl text-blue-500">
                       4.
                     </span>
                     Orçamento & Timeline
@@ -566,26 +659,24 @@ _Enviado via GLV Consulta em ${new Date().toLocaleString("pt-BR")}_
 
                   <div>
                     <label className="block text-sm font-semibold text-gray-200 mb-2.5">
-                      💰 Qual é o orçamento estimado?
+                      <span className="inline-flex items-center gap-2">
+                        <BadgeDollarSign className="w-4 h-4 text-white/70" />
+                        Qual é o orçamento estimado?
+                      </span>
                     </label>
-                    <select
+                    <GlassDropdown
                       value={formData.budget}
-                      onChange={(e) => handleInputChange("budget", e.target.value)}
-                      className={`w-full bg-gray-800/40 border-2 rounded-xl px-4 py-3 text-white focus:outline-none transition-all font-medium appearance-none cursor-pointer ${
-                        errors.budget
-                          ? "border-red-500/50 focus:ring-2 focus:ring-red-500/50"
-                          : "border-blue-500/30 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30"
-                      }`}
-                      required
-                    >
-                      <option value="">Selecione...</option>
-                      <option value="ate-5k">Até R$ 5.000</option>
-                      <option value="5k-15k">R$ 5.000 - R$ 15.000</option>
-                      <option value="15k-50k">R$ 15.000 - R$ 50.000</option>
-                      <option value="50k-100k">R$ 50.000 - R$ 100.000</option>
-                      <option value="100k+">Acima de R$ 100.000</option>
-                      <option value="flexivel">Flexível</option>
-                    </select>
+                      onChange={(v) => handleInputChange("budget", v)}
+                      hasError={!!errors.budget}
+                      options={[
+                        { label: "Até R$ 5.000", value: "ate-5k" },
+                        { label: "R$ 5.000 - R$ 15.000", value: "5k-15k" },
+                        { label: "R$ 15.000 - R$ 50.000", value: "15k-50k" },
+                        { label: "R$ 50.000 - R$ 100.000", value: "50k-100k" },
+                        { label: "Acima de R$ 100.000", value: "100k+" },
+                        { label: "Flexível", value: "flexivel" },
+                      ]}
+                    />
                     {errors.budget && (
                       <motion.p className="text-red-400 text-sm mt-2 flex items-center gap-1" initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }}>
                         <AlertCircle className="w-4 h-4" /> {errors.budget}
@@ -595,25 +686,23 @@ _Enviado via GLV Consulta em ${new Date().toLocaleString("pt-BR")}_
 
                   <div>
                     <label className="block text-sm font-semibold text-gray-200 mb-2.5">
-                      📅 Quando você gostaria de começar?
+                      <span className="inline-flex items-center gap-2">
+                        <Calendar className="w-4 h-4 text-white/70" />
+                        Quando você gostaria de começar?
+                      </span>
                     </label>
-                    <select
+                    <GlassDropdown
                       value={formData.timeline}
-                      onChange={(e) => handleInputChange("timeline", e.target.value)}
-                      className={`w-full bg-gray-800/40 border-2 rounded-xl px-4 py-3 text-white focus:outline-none transition-all font-medium appearance-none cursor-pointer ${
-                        errors.timeline
-                          ? "border-red-500/50 focus:ring-2 focus:ring-red-500/50"
-                          : "border-blue-500/30 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30"
-                      }`}
-                      required
-                    >
-                      <option value="">Selecione...</option>
-                      <option value="imediatamente">Imediatamente</option>
-                      <option value="proximo-mes">Próximo mês</option>
-                      <option value="proximo-trimestre">Próximo trimestre</option>
-                      <option value="proximo-semestre">Próximo semestre</option>
-                      <option value="indefinido">Indefinido</option>
-                    </select>
+                      onChange={(v) => handleInputChange("timeline", v)}
+                      hasError={!!errors.timeline}
+                      options={[
+                        { label: "Imediatamente", value: "imediatamente" },
+                        { label: "Próximo mês", value: "proximo-mes" },
+                        { label: "Próximo trimestre", value: "proximo-trimestre" },
+                        { label: "Próximo semestre", value: "proximo-semestre" },
+                        { label: "Indefinido", value: "indefinido" },
+                      ]}
+                    />
                     {errors.timeline && (
                       <motion.p className="text-red-400 text-sm mt-2 flex items-center gap-1" initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }}>
                         <AlertCircle className="w-4 h-4" /> {errors.timeline}
@@ -627,7 +716,7 @@ _Enviado via GLV Consulta em ${new Date().toLocaleString("pt-BR")}_
               {formData.step === 5 && (
                 <motion.div className="space-y-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}>
                   <h3 className="text-xl font-bold text-white flex items-center gap-3">
-                    <span className="text-2xl bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+                    <span className="text-2xl text-blue-500">
                       5.
                     </span>
                     Expectativas & Contato
@@ -635,7 +724,10 @@ _Enviado via GLV Consulta em ${new Date().toLocaleString("pt-BR")}_
 
                   <div>
                     <label className="block text-sm font-semibold text-gray-200 mb-3.5">
-                      ✅ O que você espera alcançar? (selecione todas que se aplicam)
+                      <span className="inline-flex items-center gap-2">
+                        <CheckSquare className="w-4 h-4 text-white/70" />
+                        O que você espera alcançar? (selecione todas que se aplicam)
+                      </span>
                     </label>
                     <div className="space-y-2.5 max-h-48 overflow-y-auto pr-2">
                       {[
@@ -650,19 +742,20 @@ _Enviado via GLV Consulta em ${new Date().toLocaleString("pt-BR")}_
                           key={exp}
                           type="button"
                           onClick={() => toggleExpectation(exp)}
-                          className={`w-full p-3.5 rounded-xl border-2 text-left transition-all flex items-center gap-3 ${
+                          className={[
+                            glassChoiceBaseClass,
                             formData.expectations.includes(exp)
-                              ? "border-blue-500/80 bg-blue-500/20 text-blue-50 shadow-lg shadow-blue-500/20"
-                              : "border-blue-500/20 bg-gray-800/30 text-gray-300 hover:border-blue-500/40 hover:bg-gray-800/50"
-                          }`}
+                              ? glassChoiceSelectedClass
+                              : "text-white/80",
+                          ].join(" ")}
                           whileHover={{ x: 4 }}
                           whileTap={{ scale: 0.98 }}
                         >
                           <CheckCircle
                             className={`w-5 h-5 flex-shrink-0 transition-all ${
                               formData.expectations.includes(exp)
-                                ? "text-blue-400"
-                                : "text-gray-500"
+                                ? "text-white/80"
+                                : "text-white/35"
                             }`}
                             fill={formData.expectations.includes(exp) ? "currentColor" : "none"}
                           />
@@ -674,7 +767,8 @@ _Enviado via GLV Consulta em ${new Date().toLocaleString("pt-BR")}_
 
                   <div className="space-y-3.5 pt-6 border-t border-blue-500/20">
                     <h4 className="text-sm font-bold text-white flex items-center gap-2">
-                      📞 Seus dados de contato
+                      <Phone className="w-4 h-4 text-white/70" />
+                      Seus dados de contato
                     </h4>
 
                     <div>
@@ -684,11 +778,10 @@ _Enviado via GLV Consulta em ${new Date().toLocaleString("pt-BR")}_
                         onChange={(e) => handleInputChange("contactName", e.target.value)}
                         placeholder="Nome completo"
                         maxLength={100}
-                        className={`w-full bg-gray-800/40 border-2 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none transition-all font-medium text-sm ${
-                          errors.contactName
-                            ? "border-red-500/50 focus:ring-2 focus:ring-red-500/50"
-                            : "border-blue-500/30 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30"
-                        }`}
+                        className={[
+                          glassFieldBaseClass,
+                          errors.contactName ? glassFieldErrorClass : "",
+                        ].join(" ")}
                         required
                       />
                       {errors.contactName && (
@@ -705,11 +798,10 @@ _Enviado via GLV Consulta em ${new Date().toLocaleString("pt-BR")}_
                         onChange={(e) => handleInputChange("contactEmail", e.target.value)}
                         placeholder="seu@email.com"
                         maxLength={100}
-                        className={`w-full bg-gray-800/40 border-2 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none transition-all font-medium text-sm ${
-                          errors.contactEmail
-                            ? "border-red-500/50 focus:ring-2 focus:ring-red-500/50"
-                            : "border-blue-500/30 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30"
-                        }`}
+                        className={[
+                          glassFieldBaseClass,
+                          errors.contactEmail ? glassFieldErrorClass : "",
+                        ].join(" ")}
                         required
                       />
                       {errors.contactEmail && (
@@ -726,11 +818,10 @@ _Enviado via GLV Consulta em ${new Date().toLocaleString("pt-BR")}_
                         onChange={(e) => handleInputChange("contactPhone", e.target.value)}
                         placeholder="(11) 99999-9999"
                         maxLength={20}
-                        className={`w-full bg-gray-800/40 border-2 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none transition-all font-medium text-sm ${
-                          errors.contactPhone
-                            ? "border-red-500/50 focus:ring-2 focus:ring-red-500/50"
-                            : "border-blue-500/30 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30"
-                        }`}
+                        className={[
+                          glassFieldBaseClass,
+                          errors.contactPhone ? glassFieldErrorClass : "",
+                        ].join(" ")}
                         required
                       />
                       {errors.contactPhone && (
@@ -763,32 +854,33 @@ _Enviado via GLV Consulta em ${new Date().toLocaleString("pt-BR")}_
                     <CheckCircle className="w-6 h-6 text-emerald-400 flex-shrink-0" />
                   </motion.div>
                   <div>
-                    <p className="text-emerald-100 font-bold">Sucesso! ✨</p>
+                    <p className="text-emerald-100 font-bold">Sucesso!</p>
                     <p className="text-emerald-200 text-sm mt-0.5">Abrindo WhatsApp com seu orçamento personalizado...</p>
                   </div>
                 </motion.div>
               )}
-            </motion.form>
+          </motion.div>
+        </div>
 
-            {/* Footer com Botões */}
-            <div className="sticky bottom-0 bg-gradient-to-t from-black via-black to-transparent border-t border-blue-500/20 p-5 sm:p-7 flex gap-3">
-              {formData.step > 1 && (
-                <motion.button
-                  type="button"
-                  onClick={prevStep}
-                  className="flex-1 px-4 py-3 sm:py-3.5 rounded-xl border-2 border-blue-500/40 text-blue-300 hover:bg-blue-500/10 hover:border-blue-500/60 font-bold transition-all text-sm sm:text-base"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  ← Voltar
-                </motion.button>
-              )}
+        {/* Footer fixo */}
+        <div className="shrink-0 bg-white/5 backdrop-blur-xl border-t border-white/10 p-5 sm:p-7 flex gap-3">
+          {formData.step > 1 && (
+            <motion.button
+              type="button"
+              onClick={prevStep}
+              className="flex-1 px-4 py-3 sm:py-3.5 rounded-xl border border-white/15 text-white/80 hover:bg-white/10 hover:border-white/25 font-bold transition-all text-sm sm:text-base"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              Voltar
+            </motion.button>
+          )}
 
               {formData.step < 5 ? (
                 <motion.button
                   type="button"
                   onClick={nextStep}
-                  className="flex-1 px-4 py-3 sm:py-3.5 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-bold hover:from-blue-500 hover:to-cyan-500 transition-all flex items-center justify-center gap-2 text-sm sm:text-base shadow-lg shadow-blue-500/30 active:shadow-blue-500/10"
+                  className="flex-1 px-4 py-3 sm:py-3.5 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-500 transition-all flex items-center justify-center gap-2 text-sm sm:text-base shadow-lg shadow-blue-500/30 active:shadow-blue-500/10"
                   whileHover={{ scale: 1.03, boxShadow: "0 0 20px rgba(59, 130, 246, 0.4)" }}
                   whileTap={{ scale: 0.97 }}
                 >
@@ -797,33 +889,38 @@ _Enviado via GLV Consulta em ${new Date().toLocaleString("pt-BR")}_
               ) : (
                 <motion.button
                   type="submit"
-                  onClick={handleSubmit}
                   disabled={submitted || isLoading}
-                  className="flex-1 px-4 py-3 sm:py-3.5 rounded-xl bg-gradient-to-r from-emerald-600 to-cyan-600 text-white font-bold hover:from-emerald-500 hover:to-cyan-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm sm:text-base shadow-lg shadow-emerald-500/30 active:shadow-emerald-500/10"
-                  whileHover={!submitted && !isLoading ? { scale: 1.03, boxShadow: "0 0 20px rgba(16, 185, 129, 0.4)" } : {}}
+                  className="flex-1 px-4 py-3 sm:py-3.5 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm sm:text-base shadow-lg shadow-blue-500/30 active:shadow-blue-500/10"
+                  whileHover={!submitted && !isLoading ? { scale: 1.03, boxShadow: "0 0 20px rgba(59, 130, 246, 0.4)" } : {}}
                   whileTap={!submitted && !isLoading ? { scale: 0.97 } : {}}
                 >
                   {isLoading ? (
                     <>
-                      <motion.span animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity }}>
-                        ⟳
+                      <motion.span
+                        aria-hidden="true"
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                      >
+                        <Loader2 className="w-4 h-4" />
                       </motion.span>
                       Processando...
                     </>
                   ) : submitted ? (
-                    <>✓ Redirecionando</>
+                    <>
+                      <CheckCircle className="w-4 h-4" />
+                      Redirecionando
+                    </>
                   ) : (
                     <>
-                      ✓ Enviar Orçamento
+                      <CheckCircle className="w-4 h-4" />
+                      Enviar Orçamento
                     </>
                   )}
                 </motion.button>
               )}
-            </div>
-          </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+        </div>
+      </form>
+    </ModalBase>
   );
 };
 

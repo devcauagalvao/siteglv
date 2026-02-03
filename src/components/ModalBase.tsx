@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
@@ -22,6 +22,11 @@ const sizeClasses = {
   "4xl": "max-w-4xl",
 };
 
+// Keep these very high to always overlay the navbar, but leave headroom for
+// nested portaled popovers/menus inside the modal.
+const Z_INDEX_BACKDROP = 2147483000;
+const Z_INDEX_MODAL = 2147483001;
+
 /**
  * Componente base para modais com estilo Liquid Glass (Glassmorphism)
  * Padroniza backdrop, animações, estilos e comportamentos
@@ -35,6 +40,28 @@ const ModalBase: React.FC<ModalBaseProps> = ({
   size = "md",
   isPortal = true,
 }) => {
+  const previousBodyOverflow = useRef<string | null>(null);
+  const previousBodyPaddingRight = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (!open) return;
+
+    const body = document.body;
+    previousBodyOverflow.current = body.style.overflow;
+    previousBodyPaddingRight.current = body.style.paddingRight;
+
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    body.style.overflow = "hidden";
+    if (scrollbarWidth > 0) {
+      body.style.paddingRight = `${scrollbarWidth}px`;
+    }
+
+    return () => {
+      body.style.overflow = previousBodyOverflow.current ?? "";
+      body.style.paddingRight = previousBodyPaddingRight.current ?? "";
+    };
+  }, [open]);
+
   const modalContent = (
     <AnimatePresence mode="wait">
       {open && (
@@ -45,7 +72,7 @@ const ModalBase: React.FC<ModalBaseProps> = ({
             style={{
               backdropFilter: "blur(20px)",
               WebkitBackdropFilter: "blur(20px)",
-              zIndex: 9999,
+              zIndex: Z_INDEX_BACKDROP,
             }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -57,7 +84,7 @@ const ModalBase: React.FC<ModalBaseProps> = ({
           {/* Container do modal centralizado */}
           <motion.div
             className="fixed inset-0 flex items-center justify-center p-4"
-            style={{ zIndex: 10000 }}
+            style={{ zIndex: Z_INDEX_MODAL }}
             initial={{ opacity: 0, scale: 0.95, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: -10 }}
