@@ -13,6 +13,7 @@ import {
   AlertCircle
 } from 'lucide-react';
 import SuccessModal from "../components/modals/SuccessModal";
+import { GlassDropdown, GlassInput, GlassTextarea } from "../components/forms/glass/GlassControls";
 import { useForm } from '../hooks/useForm';
 import { sanitizeInput, validateContactForm } from '../utils/validation';
 import { GOOGLE_ANALYTICS_ID, EMAILJS_KEY } from '../utils/constants';
@@ -39,6 +40,7 @@ const Contact = () => {
     values: formData,
     errors: formErrors,
     isSubmitting,
+    setFieldValue,
     handleChange,
     handleSubmit: handleSubmitForm,
     resetForm,
@@ -125,6 +127,8 @@ const Contact = () => {
     'Outro'
   ] as const;
 
+  const serviceOptions = services.map((service) => ({ label: service, value: service }));
+
   const contactInfo = [
     { icon: Phone, title: 'Telefone', info: '+55 (11) 91916-7653', description: 'Segunda a Sexta, 8h às 18h' },
     { icon: Mail, title: 'E-mail', info: 'contato.glvtecnologia@gmail.com', description: 'Resposta em até 2 horas' },
@@ -139,14 +143,6 @@ const Contact = () => {
     ['company', 'Empresa (Opcional)', Building, 'Nome da sua empresa'],
   ] as const;
 
-  const liquidGlassStyle = {
-    background: 'rgba(255, 255, 255, 0.1)',
-    border: '1px solid rgba(255, 255, 255, 0.2)',
-    backdropFilter: 'blur(20px)',
-    WebkitBackdropFilter: 'blur(20px)',
-    borderRadius: '24px',
-  } as const;
-
   return (
     <section id="contact" className="relative py-24 bg-gradient-to-b from-black via-gray-900 to-black text-white px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
@@ -159,7 +155,7 @@ const Contact = () => {
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-4xl md:text-5xl font-extrabold mb-4">
-            Vamos Trabalhar Juntos?
+            Vamos Trabalhar <span className="text-blue-500">Juntos?</span>
           </h2>
           <p className="text-gray-400 text-base md:text-lg max-w-2xl mx-auto">
             Entre em contato conosco para discutir seu projeto e descobrir como podemos ajudar sua empresa a crescer com tecnologia.
@@ -178,8 +174,7 @@ const Contact = () => {
             {contactInfo.map(({ icon: IconComp, title, info, description }, idx) => (
               <motion.div
                 key={title}
-                className="p-5 rounded-2xl"
-                style={liquidGlassStyle}
+                className="p-5 rounded-2xl overflow-hidden transform-gpu [backface-visibility:hidden] bg-white/10 border border-white/20 shadow-inner shadow-white/10"
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -187,11 +182,11 @@ const Contact = () => {
               >
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center flex-shrink-0">
-                    <IconComp className="w-6 h-6 text-blue-400" />
+                    <IconComp className="w-6 h-6 text-blue-500" />
                   </div>
                   <div>
                     <h3 className="font-bold text-white mb-1">{title}</h3>
-                    <p className="text-blue-300 font-semibold text-sm md:text-base">{info}</p>
+                    <p className="text-blue-500 font-semibold text-sm md:text-base">{info}</p>
                     <p className="text-gray-400 text-xs md:text-sm mt-1">{description}</p>
                   </div>
                 </div>
@@ -201,8 +196,7 @@ const Contact = () => {
 
           {/* Formulário */}
           <motion.div
-            className="lg:col-span-2 p-8 rounded-3xl"
-            style={liquidGlassStyle}
+            className="lg:col-span-2 p-8 rounded-3xl overflow-hidden transform-gpu [backface-visibility:hidden] bg-white/10 border border-white/20 shadow-inner shadow-white/10"
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -224,17 +218,14 @@ const Contact = () => {
                 <div key={name}>
                   <label className="block text-sm font-bold text-gray-200 mb-2.5">{label}</label>
                   <div className="relative">
-                    <input
+                    <GlassInput
                       type={name === 'email' ? 'email' : 'text'}
                       name={name}
                       value={formData[name]}
                       onChange={handleChange}
                       maxLength={100}
-                      className={`w-full bg-gray-800/40 border-2 rounded-xl px-4 py-3 pl-12 text-white placeholder-gray-500 focus:outline-none transition-all font-medium ${
-                        formErrors[name]
-                          ? "border-red-500/50 focus:ring-2 focus:ring-red-500/30"
-                          : "border-blue-500/30 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30"
-                      }`}
+                      className="pl-12 hover:bg-white/5 focus:bg-white/5 active:bg-white/5 focus:border-white/10"
+                      hasError={!!formErrors[name]}
                       placeholder={placeholder}
                       required={name !== 'company'}
                     />
@@ -255,24 +246,13 @@ const Contact = () => {
               {/* Serviço */}
               <div>
                 <label className="block text-sm font-bold text-gray-200 mb-2.5">Serviço de Interesse</label>
-                <select
-                  name="service"
+                <GlassDropdown
                   value={formData.service}
-                  onChange={handleChange}
-                  required
-                  className={`w-full bg-gray-800/40 border-2 rounded-xl px-4 py-3 text-white focus:outline-none transition-all font-medium appearance-none cursor-pointer ${
-                    formErrors.service
-                      ? "border-red-500/50 focus:ring-2 focus:ring-red-500/30"
-                      : "border-blue-500/30 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30"
-                  }`}
-                >
-                  <option value="" className="bg-gray-900">Selecione um serviço</option>
-                  {services.map((service) => (
-                    <option key={service} value={service} className="bg-gray-900">
-                      {service}
-                    </option>
-                  ))}
-                </select>
+                  onChange={(value) => setFieldValue("service", value)}
+                  options={serviceOptions}
+                  placeholder="Selecione um serviço"
+                  hasError={!!formErrors.service}
+                />
                 {formErrors.service && (
                   <motion.p
                     className="text-red-400 text-xs mt-1.5 flex items-center gap-1"
@@ -288,18 +268,15 @@ const Contact = () => {
               <div>
                 <label className="block text-sm font-bold text-gray-200 mb-2.5">Mensagem</label>
                 <div className="relative">
-                  <textarea
+                  <GlassTextarea
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
                     required
                     rows={4}
                     maxLength={5000}
-                    className={`w-full bg-gray-800/40 border-2 rounded-xl px-4 py-3 pl-12 text-white placeholder-gray-500 focus:outline-none transition-all font-medium resize-none ${
-                      formErrors.message
-                        ? "border-red-500/50 focus:ring-2 focus:ring-red-500/30"
-                        : "border-blue-500/30 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30"
-                    }`}
+                    className="pl-12 resize-none hover:bg-white/5 focus:bg-white/5 active:bg-white/5 focus:border-white/10"
+                    hasError={!!formErrors.message}
                     placeholder="Descreva seu projeto ou necessidade..."
                   />
                   <span className="text-xs text-gray-400 absolute right-3 bottom-2">{formData.message.length}/5000</span>

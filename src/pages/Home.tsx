@@ -22,9 +22,7 @@ const Home = () => {
       <ScrollReveal>
         <Portfolio />
       </ScrollReveal>
-      <ScrollReveal>
-        <Store />
-      </ScrollReveal>
+      
       <ScrollReveal>
         <Testimonials />
       </ScrollReveal>
