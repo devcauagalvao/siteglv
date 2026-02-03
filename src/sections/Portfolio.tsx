@@ -296,8 +296,8 @@ const Portfolio: React.FC = () => {
       id="portfolio"
       className="py-20 relative overflow-hidden px-4 sm:px-6 lg:px-8"
     >
-      <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-900 to-black" />
-      <div className="relative z-0 max-w-7xl mx-auto">
+      <div className="absolute inset-0 z-0 bg-gradient-to-b from-black via-gray-900 to-black pointer-events-none" />
+      <div className="relative z-10 max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { motion } from "framer-motion";
+import React, { useMemo, useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import {
   ExternalLink,
   Star,
@@ -32,6 +32,13 @@ type Product = {
 const Store = () => {
   const [selectedCategory, setSelectedCategory] = useState("Todos");
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+
+  const prefersReducedMotion = useReducedMotion();
+  const isSmallScreen = useMemo(() => {
+    if (typeof window === "undefined") return false;
+    return window.matchMedia?.("(max-width: 768px)")?.matches ?? false;
+  }, []);
+  const disableMotion = prefersReducedMotion || isSmallScreen;
 
   const GLV_WHATSAPP = "5511919167653";
 
@@ -132,17 +139,30 @@ const Store = () => {
       : products.filter((product) => product.category === selectedCategory);
 
   return (
-    <section id="store" className="py-20 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-900 to-black" />
+    <section id="store" className="py-20 relative overflow-hidden isolate">
+      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-black via-gray-900 to-black pointer-events-none" />
 
-      <div className="relative z-0 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-16"
-        >
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {disableMotion ? (
+          <div className="text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
+              <span className="text-white">Soluções em </span>
+              <span className="text-[#3B82F6]">Software</span>
+            </h2>
+
+            <p className="text-base sm:text-xl text-white/80 max-w-3xl mx-auto mb-8">
+              Personalize sua solução com a GLV — fale conosco pelo WhatsApp para
+              criar a plataforma ideal para o seu negócio.
+            </p>
+          </div>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
             <span className="text-white">Soluções em </span>
             <span className="text-[#3B82F6]">Software</span>
@@ -152,59 +172,82 @@ const Store = () => {
             Personalize sua solução com a GLV — fale conosco pelo WhatsApp para
             criar a plataforma ideal para o seu negócio.
           </p>
-        </motion.div>
+          </motion.div>
+        )}
 
         {/* Filtros */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="flex flex-wrap justify-center gap-3 mb-12"
-        >
-          {categories.map((category) => (
-            <motion.button
-              key={category}
-              type="button"
-              onClick={() => setSelectedCategory(category)}
-              className={`px-4 sm:px-6 py-2 sm:py-3 rounded-full text-sm sm:text-base font-medium transition-all duration-300 ${
-                selectedCategory === category
-                  ? "bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-lg shadow-blue-500/30"
-                  : "backdrop-blur-sm bg-white/10 text-white/80 border border-white/20 hover:border-blue-500/50"
-              }`}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              {category}
-            </motion.button>
-          ))}
-        </motion.div>
+        {disableMotion ? (
+          <div className="flex flex-wrap justify-center gap-3 mb-12">
+            {categories.map((category) => (
+              <button
+                key={category}
+                type="button"
+                onClick={() => setSelectedCategory(category)}
+                className={`px-4 sm:px-6 py-2 sm:py-3 rounded-full text-sm sm:text-base font-medium transition-all duration-300 ${
+                  selectedCategory === category
+                    ? "bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-lg shadow-blue-500/30"
+                    : "backdrop-blur-sm bg-white/10 text-white/80 border border-white/20 hover:border-blue-500/50"
+                }`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="flex flex-wrap justify-center gap-3 mb-12"
+          >
+            {categories.map((category) => (
+              <motion.button
+                key={category}
+                type="button"
+                onClick={() => setSelectedCategory(category)}
+                className={`px-4 sm:px-6 py-2 sm:py-3 rounded-full text-sm sm:text-base font-medium transition-all duration-300 ${
+                  selectedCategory === category
+                    ? "bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-lg shadow-blue-500/30"
+                    : "backdrop-blur-sm bg-white/10 text-white/80 border border-white/20 hover:border-blue-500/50"
+                }`}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                {category}
+              </motion.button>
+            ))}
+          </motion.div>
+        )}
 
         {/* Produtos */}
-        <motion.div
-          layout
-          className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
-        >
-          {filteredProducts.map((product, index) => (
-            <motion.div
-              key={product.id}
-              layout
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              whileHover={{ y: -10, scale: 1.02 }}
-              className="group cursor-pointer"
-              onClick={() => setSelectedProduct(product)}
-              role="button"
-              tabIndex={0}
-              aria-label={`Abrir detalhes de ${product.name}`}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault();
-                  setSelectedProduct(product);
-                }
-              }}
-            >
+        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          {filteredProducts.map((product, index) => {
+            const CardWrapper: React.ElementType = disableMotion ? "div" : motion.div;
+
+            return (
+              <CardWrapper
+                key={product.id}
+                {...(!disableMotion
+                  ? {
+                      initial: { opacity: 0, y: 30 },
+                      animate: { opacity: 1, y: 0 },
+                      transition: { duration: 0.5, delay: index * 0.1 },
+                      whileHover: { y: -10, scale: 1.02 },
+                    }
+                  : {})}
+                className="group cursor-pointer"
+                onClick={() => setSelectedProduct(product)}
+                role="button"
+                tabIndex={0}
+                aria-label={`Abrir detalhes de ${product.name}`}
+                onKeyDown={(e: React.KeyboardEvent) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    setSelectedProduct(product);
+                  }
+                }}
+              >
               <div className="relative backdrop-blur-lg bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-blue-500/50 hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-500">
                 {product.badge && (
                   <span
@@ -315,9 +358,10 @@ const Store = () => {
 
                 <div className="absolute inset-0 bg-gradient-to-t from-blue-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
               </div>
-            </motion.div>
-          ))}
-        </motion.div>
+              </CardWrapper>
+            );
+          })}
+        </div>
       </div>
 
       {selectedProduct && (

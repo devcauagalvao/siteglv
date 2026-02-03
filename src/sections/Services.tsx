@@ -9,7 +9,6 @@ import ServiceDetailsModal from "../components/ServiceDetailsModal";
 import AutoFitText from "../components/AutoFitText";
 import IAQuestionnaire from "../components/IAQuestionnaire";
 import SystemQuestionnaire from "../components/SystemQuestionnaire";
-import ElectricBorder from "../components/ElectricBorder";
 import useAutoPerformanceMode from "../hooks/useAutoPerformanceMode";
 
 const Plans = () => {
@@ -93,7 +92,7 @@ const Plans = () => {
                   className={`relative w-full max-w-full min-w-0 rounded-2xl p-6 sm:p-8 bg-white/5 ${
                     performanceMode ? "" : "backdrop-blur-md"
                   } border border-white/20 shadow-md flex flex-col justify-between transition-transform duration-300 md:hover:scale-[1.03] hover:border-blue-500/40 ${
-                    service.highlighted ? (performanceMode ? "ring-2 ring-blue-500" : "") : ""
+                    service.highlighted ? `border-blue-500/60 ${performanceMode ? "ring-2 ring-blue-500" : ""}` : ""
                   }`}
                   initial={{ y: 50, opacity: 0 }}
                   animate={hasAnimated ? { y: 0, opacity: 1 } : undefined}
@@ -168,15 +167,6 @@ const Plans = () => {
                   </div>
                 </motion.div>
               );
-
-              if (service.highlighted && !performanceMode) {
-                return (
-                  <ElectricBorder key={service.slug} color="#2563eb" thickness={3} borderRadius={24}>
-                    {card}
-                  </ElectricBorder>
-                );
-              }
-
               return <div key={service.slug}>{card}</div>;
             })()
           ))}
