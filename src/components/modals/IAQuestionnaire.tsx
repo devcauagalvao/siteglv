@@ -400,13 +400,13 @@ _Enviado via GLV Consulta em ${new Date().toLocaleString("pt-BR")}_
                         Nome da Empresa
                       </span>
                     </label>
-                    <input
+                    <GlassInput
                       type="text"
                       value={formData.company}
                       onChange={(e) => handleInputChange("company", e.target.value)}
                       placeholder="ex: Tech Solutions Ltda."
                       maxLength={100}
-                      className=""
+                      hasError={!!errors.company}
                       required
                     />
                     {errors.company && (
@@ -488,12 +488,13 @@ _Enviado via GLV Consulta em ${new Date().toLocaleString("pt-BR")}_
                         Descreva brevemente o processo que deseja automatizar
                       </span>
                     </label>
-                    <textarea
+                    <GlassTextarea
                       value={formData.processDescription}
                       onChange={(e) => handleInputChange("processDescription", e.target.value)}
                       placeholder="ex: Nossos vendedores recebem e-mails de clientes e precisam inserir dados em 3 sistemas diferentes..."
                       maxLength={500}
                       className="resize-none h-32"
+                      hasError={!!errors.processDescription}
                       required
                     />
                     <div className="flex items-center justify-between mt-2">
@@ -551,13 +552,12 @@ _Enviado via GLV Consulta em ${new Date().toLocaleString("pt-BR")}_
                         Quais ferramentas/sistemas estão envolvidos?
                       </span>
                     </label>
-                    <input
+                    <GlassInput
                       type="text"
                       value={formData.currentTooling}
                       onChange={(e) => handleInputChange("currentTooling", e.target.value)}
                       placeholder="ex: Gmail, Shopify, Trello, SAP, etc."
                       maxLength={200}
-                      className=""
                     />
                     <span className="text-xs text-gray-400 mt-2 block">{formData.currentTooling.length}/200</span>
                   </div>
@@ -655,18 +655,13 @@ _Enviado via GLV Consulta em ${new Date().toLocaleString("pt-BR")}_
                         "Dados em tempo real",
                         "Escalabilidade",
                       ].map((exp) => (
-                        <motion.button
+                        <GlassChoiceButton
                           key={exp}
-                          type="button"
+                          selected={formData.expectations.includes(exp)}
                           onClick={() => toggleExpectation(exp)}
                         >
-                          <GlassChoiceButton
-                            selected={formData.expectations.includes(exp)}
-                            onClick={() => toggleExpectation(exp)}
-                          >
-                            {exp}
-                          </GlassChoiceButton>
-                        </motion.button>
+                          {exp}
+                        </GlassChoiceButton>
                       ))}
                     </div>
                   </div>
