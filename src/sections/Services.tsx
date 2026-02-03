@@ -173,14 +173,14 @@ const Plans = () => {
         </div>
 
         <motion.div
-          className={`mt-16 max-w-3xl mx-auto bg-white/5 ${performanceMode ? "" : "backdrop-blur-md"} border border-white/20 rounded-2xl p-6`}
+          className={`mt-16 max-w-2xl mx-auto bg-white/5 ${performanceMode ? "" : "backdrop-blur-md"} border border-white/20 rounded-2xl px-6 py-5 sm:px-8 sm:py-6 text-center`}
           initial={{ y: 40, opacity: 0 }}
           animate={hasAnimated ? { y: 0, opacity: 1 } : undefined}
           transition={{ delay: 0.9, duration: 0.8 }}
         >
-          <div className="flex flex-col md:flex-row items-center justify-center gap-4">
+          <div className="flex flex-col items-center justify-center gap-4">
             <Zap className="w-8 h-8 text-blue-500" />
-            <div className="text-center md:text-left">
+            <div className="text-center">
               <h3 className="text-xl font-bold mb-1">Quer algo mais personalizado?</h3>
               <p className="text-gray-400 text-sm">
                 Desenvolvemos soluções sob medida para sua necessidade específica. Fale conosco.
@@ -189,7 +189,7 @@ const Plans = () => {
           </div>
           <motion.a
             href="#contact"
-            className="mt-6 inline-block w-full md:w-auto px-6 py-2 rounded-full bg-blue-600 text-white font-semibold hover:bg-blue-700 transition text-center"
+            className="mt-6 inline-block w-full md:w-auto px-6 py-2 rounded-full bg-blue-600 text-white font-semibold hover:bg-blue-700 transition text-center mx-auto"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
