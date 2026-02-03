@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { motion, AnimationControls } from "framer-motion";
 import { Sparkles, Instagram } from "lucide-react";
-import InstagramModal from "./InstagramModal";
+import InstagramModal from "../modals/InstagramModal";
 import { useLocation } from "react-router-dom";
 
 interface FloatingDotsProps {

@@ -1,8 +1,8 @@
 import React, { Suspense, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Link, useParams } from "react-router-dom";
-import Navbar from "./layout/Navbar";
-import Footer from "./layout/Footer";
-import CookieConsent from "./layout/CookieConsent";
+import Navbar from "./components/layout/Navbar";
+import Footer from "./components/layout/Footer";
+import CookieConsent from "./components/layout/CookieConsent";
 import { Instagram, Facebook, Phone } from "lucide-react";
 import Home from "./pages/Home";
 import Sobre from "./pages/Sobre";

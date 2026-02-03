@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet";
 import { services } from "../../data/services";
-import FloatingArrow from "../../components/FloatingArrow";
+import FloatingArrow from "../../components/effects/FloatingArrow";
 import emailjs from "emailjs-com";
-import SuccessModal from "../../components/SuccessModal";
+import SuccessModal from "../../components/modals/SuccessModal";
 import { Select, Checkbox } from "../../components";
 
 const CustomizeService = () => {

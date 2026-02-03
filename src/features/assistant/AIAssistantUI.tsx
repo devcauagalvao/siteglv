@@ -3,7 +3,7 @@ import { motion, AnimatePresence, AnimationControls } from "framer-motion";
 import {
   Sparkles, X, Send, Instagram, Facebook, Youtube, Github,
 } from "lucide-react";
-import { FloatingDots } from "../../components/FloatingDots";
+import { FloatingDots } from "../../components/effects/FloatingDots";
 
 interface Message {
   id: number;

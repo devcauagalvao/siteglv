@@ -1,7 +1,8 @@
 import React from "react";
 import { CheckCircle } from "lucide-react";
-import { ServiceItem } from "../data/services";
+import { ServiceItem } from "../../data/services";
 import ModalBase from "./ModalBase";
+import { GlassItemRow } from "../forms/glass/GlassControls";
 
 interface ServiceDetailsModalProps {
   service: ServiceItem | null;
@@ -31,10 +32,10 @@ const ServiceDetailsModal: React.FC<ServiceDetailsModalProps> = ({ service, onCl
             <h3 className="text-lg font-semibold text-white mb-2">O que está incluso</h3>
             <div className="grid gap-2">
               {service.offerings.map((item, idx) => (
-                <div key={idx} className="p-3 bg-white/10 backdrop-blur-md rounded-xl border border-white/5 flex items-start gap-3">
+                <GlassItemRow key={idx} className="flex items-start gap-3">
                   <CheckCircle className="h-5 w-5 text-blue-400 mt-0.5" />
                   <span className="text-white/80 text-sm leading-relaxed">{item}</span>
-                </div>
+                </GlassItemRow>
               ))}
             </div>
           </section>
@@ -82,10 +83,10 @@ const ServiceDetailsModal: React.FC<ServiceDetailsModalProps> = ({ service, onCl
             <h3 className="text-lg font-semibold text-white mb-2">Casos de uso</h3>
             <div className="grid gap-2">
               {service.examples.map((ex, idx) => (
-                <div key={idx} className="p-3 bg-white/10 backdrop-blur-md rounded-xl border border-white/5">
+                <GlassItemRow key={idx}>
                   <p className="text-white font-medium text-sm">{ex.name}</p>
                   <p className="text-white/70 text-xs">{ex.description}</p>
-                </div>
+                </GlassItemRow>
               ))}
             </div>
           </section>
@@ -97,10 +98,10 @@ const ServiceDetailsModal: React.FC<ServiceDetailsModalProps> = ({ service, onCl
             <h3 className="text-lg font-semibold text-white mb-2">Perguntas frequentes</h3>
             <div className="grid gap-2">
               {service.faqs.map((f, idx) => (
-                <div key={idx} className="p-3 bg-white/10 backdrop-blur-md rounded-xl border border-white/5">
+                <GlassItemRow key={idx}>
                   <p className="text-white font-medium text-sm">{f.q}</p>
                   <p className="text-white/70 text-xs">{f.a}</p>
-                </div>
+                </GlassItemRow>
               ))}
             </div>
           </section>

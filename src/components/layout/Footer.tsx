@@ -15,7 +15,7 @@ import {
   FileText,
   ScrollText,
 } from "lucide-react";
-import TermsModal from "../components/TermsModal";
+import TermsModal from "../modals/TermsModal";
 import { useNavigate } from "react-router-dom";
 import ParticleBackground from "../ui/ParticleBackground";
 

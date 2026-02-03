@@ -5,7 +5,7 @@ import Portfolio from "../sections/Portfolio";
 import Store from "../sections/Store";
 import Testimonials from "../sections/Testimonials";
 import Contact from "../sections/Contact";
-import ScrollReveal from "../components/ScrollReveal";
+import ScrollReveal from "../components/effects/ScrollReveal";
 
 const Home = () => {
   return (

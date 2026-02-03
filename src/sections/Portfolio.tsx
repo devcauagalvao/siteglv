@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ExternalLink, Github, X, Smartphone, Globe, ChevronLeft, ChevronRight } from "lucide-react";
-import ProjectModal from "../components/ProjectModal";
+import ProjectModal from "../components/modals/ProjectModal";
 
 type PortfolioProject = {
   id: number;

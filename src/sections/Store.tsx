@@ -10,7 +10,7 @@ import {
   Cloud,
   ShieldCheck,
 } from "lucide-react";
-import SoftwareModal from "../components/SoftwareModal";
+import SoftwareModal from "../components/modals/SoftwareModal";
 
 type Product = {
   id: number;

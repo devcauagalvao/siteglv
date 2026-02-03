@@ -1,0 +1,20 @@
+﻿{
+  "entryPoints": [
+    "src/main.tsx"
+  ],
+  "reachableCount": 49,
+  "totalCount": 58,
+  "unusedCount": 10,
+  "unused": [
+    "src/components/effects/GlassSurface.tsx",
+    "src/components/effects/Threads.tsx",
+    "src/components/feedback/Loader.tsx",
+    "src/components/maps/WorldMap.tsx",
+    "src/components/navigation/PillNav.tsx",
+    "src/components/ui/ServerMapWidget.tsx",
+    "src/components/ui/WorldMapBackground.tsx",
+    "src/lib/utils.ts",
+    "src/pages/MapPage.tsx",
+    "src/sections/Plans.tsx"
+  ]
+}

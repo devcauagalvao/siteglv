@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useMemo } from "react";
-import useAutoPerformanceMode from "../hooks/useAutoPerformanceMode";
+import useAutoPerformanceMode from "../../hooks/useAutoPerformanceMode";
 
 interface ContinentPath {
   name: string;

@@ -5,10 +5,10 @@ import { useInView } from "react-intersection-observer";
 import { Check, Zap } from "lucide-react";
 import { services } from "../data/services";
 import { useNavigate } from "react-router-dom";
-import ServiceDetailsModal from "../components/ServiceDetailsModal";
-import AutoFitText from "../components/AutoFitText";
-import IAQuestionnaire from "../components/IAQuestionnaire";
-import SystemQuestionnaire from "../components/SystemQuestionnaire";
+import ServiceDetailsModal from "../components/modals/ServiceDetailsModal";
+import AutoFitText from "../components/typography/AutoFitText";
+import IAQuestionnaire from "../components/modals/IAQuestionnaire";
+import SystemQuestionnaire from "../components/modals/SystemQuestionnaire";
 import useAutoPerformanceMode from "../hooks/useAutoPerformanceMode";
 
 const Plans = () => {

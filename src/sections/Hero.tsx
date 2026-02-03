@@ -1,9 +1,9 @@
 import React from "react";
 import { motion } from "framer-motion";
-import Galaxy from "../components/Galaxy";
+import Galaxy from "../components/effects/Galaxy";
 import { Helmet } from "react-helmet";
-import RotatingText from "../components/RotatingText";
-import Magnet from "../components/Magnet";
+import RotatingText from "../components/typography/RotatingText";
+import Magnet from "../components/effects/Magnet";
 import useAutoPerformanceMode from "../hooks/useAutoPerformanceMode";
 
 const Hero = () => {

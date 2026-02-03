@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { Renderer, Program, Mesh, Triangle, Color } from 'ogl';
-import useAutoPerformanceMode from '../hooks/useAutoPerformanceMode';
+import useAutoPerformanceMode from '../../hooks/useAutoPerformanceMode';
 
 interface ThreadsProps {
   color?: [number, number, number];

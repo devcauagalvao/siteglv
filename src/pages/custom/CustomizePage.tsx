@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet";
 import { services } from "../../data/services";
-import FloatingArrow from "../../components/FloatingArrow";
-import SuccessModal from "../../components/SuccessModal";
+import FloatingArrow from "../../components/effects/FloatingArrow";
+import SuccessModal from "../../components/modals/SuccessModal";
 import emailjs from "emailjs-com";
 import { Select, Checkbox } from "../../components";
 

@@ -1,7 +1,7 @@
 import { Renderer, Program, Mesh, Color, Triangle } from 'ogl';
 import type { CSSProperties } from 'react';
 import { useEffect, useRef } from 'react';
-import useAutoPerformanceMode from '../hooks/useAutoPerformanceMode';
+import useAutoPerformanceMode from '../../hooks/useAutoPerformanceMode';
 
 const vertexShader = `
 attribute vec2 uv;

@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 import { Target, Users, Lightbulb, Award } from "lucide-react";
 import { Helmet } from "react-helmet";
-import FloatingArrow from "../components/FloatingArrow";
-import ParticleBackground from "@/ui/ParticleBackground";
+import FloatingArrow from "../components/effects/FloatingArrow";
+import ParticleBackground from "@/components/ui/ParticleBackground";
 
 const Sobre = () => {
     const values = [

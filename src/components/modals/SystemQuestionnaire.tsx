@@ -1,10 +1,8 @@
 import React, { useState, useCallback } from "react";
 import { motion } from "framer-motion";
-import { Menu, MenuButton, MenuItem, MenuItems, Portal } from "@headlessui/react";
 import {
   X,
   ChevronRight,
-  ChevronDown,
   CheckCircle,
   AlertCircle,
   Building2,
@@ -25,85 +23,12 @@ import {
 } from "lucide-react";
 import DOMPurify from "dompurify";
 import ModalBase from "./ModalBase";
-
-type DropdownOption = { label: string; value: string };
-
-type GlassDropdownProps = {
-  value: string;
-  onChange: (value: string) => void;
-  options: DropdownOption[];
-  placeholder?: string;
-  disabled?: boolean;
-  hasError?: boolean;
-};
-
-const GlassDropdown: React.FC<GlassDropdownProps> = ({
-  value,
-  onChange,
-  options,
-  placeholder = "Selecione...",
-  disabled,
-  hasError,
-}) => {
-  const selectedLabel = options.find((o) => o.value === value)?.label;
-
-  return (
-    <Menu>
-      <MenuButton
-        disabled={disabled}
-        className={[
-          "inline-flex w-full items-center justify-between gap-2 rounded-xl px-4 py-3 text-sm font-semibold shadow-inner shadow-white/10",
-          "bg-white/5 text-white border border-white/10",
-          "focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-white/20",
-          "data-[hover]:bg-white/10 data-[open]:bg-white/10",
-          disabled ? "cursor-not-allowed opacity-60" : "",
-          hasError ? "border-red-500/40" : "",
-        ].join(" ")}
-      >
-        <span className={value ? "text-white" : "text-white/50"}>
-          {selectedLabel ?? placeholder}
-        </span>
-        <ChevronDown className="w-4 h-4 text-white/60" />
-      </MenuButton>
-
-      <Portal>
-        <MenuItems
-          transition
-          anchor="bottom start"
-          className="z-[2147483647] w-[var(--button-width)] origin-top-left rounded-xl border border-white/10 bg-white/10 backdrop-blur-xl p-1 text-sm text-white shadow-2xl transition duration-100 ease-out [--anchor-gap:8px] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
-          style={{ zIndex: 2147483647 }}
-        >
-          {options.map((opt) => (
-            <MenuItem key={opt.value}>
-              <button
-                type="button"
-                onClick={() => onChange(opt.value)}
-                className="group flex w-full items-center gap-2 rounded-lg px-3 py-2 data-[focus]:bg-white/10"
-              >
-                <span className={value === opt.value ? "text-white" : "text-white/80"}>
-                  {opt.label}
-                </span>
-                {value === opt.value && (
-                  <CheckCircle className="ml-auto w-4 h-4 text-white/70" />
-                )}
-              </button>
-            </MenuItem>
-          ))}
-        </MenuItems>
-      </Portal>
-    </Menu>
-  );
-};
-
-const glassFieldBaseClass =
-  "w-full rounded-xl px-4 py-3 text-sm font-semibold shadow-inner shadow-white/10 bg-white/5 text-white border border-white/10 placeholder-white/50 caret-white/80 focus:outline-none focus-visible:outline-none focus:ring-0 focus:border-white/15 hover:bg-white/10";
-
-const glassFieldErrorClass = "border-red-500/40 focus:border-red-500/50";
-
-const glassChoiceBaseClass =
-  "w-full rounded-xl px-4 py-3 text-left text-sm font-semibold shadow-inner shadow-white/10 bg-white/5 text-white border border-white/10 hover:bg-white/10 focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-white/20 transition-all flex items-center gap-3";
-
-const glassChoiceSelectedClass = "bg-white/10 border-white/20 shadow-2xl shadow-white/10";
+import {
+  GlassChoiceButton,
+  GlassDropdown,
+  GlassInput,
+  GlassTextarea,
+} from "../forms/glass/GlassControls";
 
 interface SystemQuestionnaireProps {
   isOpen: boolean;
@@ -522,13 +447,13 @@ _Enviado via GLV Consulta em ${new Date().toLocaleString("pt-BR")}_
                         Nome da Sua Empresa
                       </span>
                     </label>
-                    <input
+                    <GlassInput
                       type="text"
                       value={formData.company}
                       onChange={(e) => handleInputChange("company", e.target.value)}
                       placeholder="ex: Tech Solutions Ltda."
                       maxLength={100}
-                      className={[glassFieldBaseClass, errors.company ? glassFieldErrorClass : ""].join(" ")}
+                      hasError={!!errors.company}
                       required
                     />
                     {errors.company && (
@@ -585,16 +510,13 @@ _Enviado via GLV Consulta em ${new Date().toLocaleString("pt-BR")}_
                         Qual é o objetivo principal do projeto?
                       </span>
                     </label>
-                    <textarea
+                    <GlassTextarea
                       value={formData.mainObjective}
                       onChange={(e) => handleInputChange("mainObjective", e.target.value)}
                       placeholder="ex: Aumentar vendas online, melhorar eficiência operacional, automatizar processos..."
                       maxLength={500}
-                      className={[
-                        glassFieldBaseClass,
-                        "resize-none h-28",
-                        errors.mainObjective ? glassFieldErrorClass : "",
-                      ].join(" ")}
+                      className="resize-none h-28"
+                      hasError={!!errors.mainObjective}
                       required
                     />
                     <div className="flex items-center justify-between mt-2">
@@ -614,16 +536,13 @@ _Enviado via GLV Consulta em ${new Date().toLocaleString("pt-BR")}_
                         Como é a situação atual?
                       </span>
                     </label>
-                    <textarea
+                    <GlassTextarea
                       value={formData.currentSituation}
                       onChange={(e) => handleInputChange("currentSituation", e.target.value)}
                       placeholder="ex: Processamos tudo manualmente, usamos planilhas, não temos presença online..."
                       maxLength={500}
-                      className={[
-                        glassFieldBaseClass,
-                        "resize-none h-28",
-                        errors.currentSituation ? glassFieldErrorClass : "",
-                      ].join(" ")}
+                      className="resize-none h-28"
+                      hasError={!!errors.currentSituation}
                       required
                     />
                     <div className="flex items-center justify-between mt-2">
@@ -643,13 +562,13 @@ _Enviado via GLV Consulta em ${new Date().toLocaleString("pt-BR")}_
                         Qual é seu público-alvo?
                       </span>
                     </label>
-                    <input
+                    <GlassInput
                       type="text"
                       value={formData.targetAudience}
                       onChange={(e) => handleInputChange("targetAudience", e.target.value)}
                       placeholder="ex: Pequenas empresas, freelancers, e-commerce, B2B..."
                       maxLength={300}
-                      className={[glassFieldBaseClass, errors.targetAudience ? glassFieldErrorClass : ""].join(" ")}
+                      hasError={!!errors.targetAudience}
                       required
                     />
                     {errors.targetAudience && (
@@ -689,27 +608,13 @@ _Enviado via GLV Consulta em ${new Date().toLocaleString("pt-BR")}_
                         "Exportação de dados",
                         "Controle de permissões",
                       ].map((feature) => (
-                        <motion.button
+                        <GlassChoiceButton
                           key={feature}
-                          type="button"
+                          selected={formData.requiredFeatures.includes(feature)}
                           onClick={() => toggleFeature(feature)}
-                          className={[
-                            glassChoiceBaseClass,
-                            formData.requiredFeatures.includes(feature) ? glassChoiceSelectedClass : "text-white/80",
-                          ].join(" ")}
-                          whileHover={{ x: 4 }}
-                          whileTap={{ scale: 0.98 }}
                         >
-                          <CheckCircle
-                            className={`w-5 h-5 flex-shrink-0 transition-all ${
-                              formData.requiredFeatures.includes(feature)
-                                ? "text-white/80"
-                                : "text-white/35"
-                            }`}
-                            fill={formData.requiredFeatures.includes(feature) ? "currentColor" : "none"}
-                          />
-                          <span className="font-medium">{feature}</span>
-                        </motion.button>
+                          {feature}
+                        </GlassChoiceButton>
                       ))}
                     </div>
                     {errors.requiredFeatures && (
@@ -755,13 +660,12 @@ _Enviado via GLV Consulta em ${new Date().toLocaleString("pt-BR")}_
                         Integrações necessárias (se houver)
                       </span>
                     </label>
-                    <input
+                    <GlassInput
                       type="text"
                       value={formData.integrations}
                       onChange={(e) => handleInputChange("integrations", e.target.value)}
                       placeholder="ex: Stripe, Shopify, SAP, Google Analytics, Whatsapp API..."
                       maxLength={200}
-                      className={glassFieldBaseClass}
                     />
                     <span className="text-xs text-gray-400 mt-2 block">{formData.integrations.length}/200</span>
                   </div>
@@ -906,27 +810,14 @@ _Enviado via GLV Consulta em ${new Date().toLocaleString("pt-BR")}_
                         "Consultoria de arquitetura",
                         "Treinamento para sua equipe",
                       ].map((support) => (
-                        <motion.button
+                        <GlassChoiceButton
                           key={support}
-                          type="button"
                           onClick={() => toggleSupport(support)}
-                          className={[
-                            glassChoiceBaseClass,
-                            formData.supportNeeded.includes(support) ? glassChoiceSelectedClass : "text-white/80",
-                          ].join(" ")}
-                          whileHover={{ x: 4 }}
-                          whileTap={{ scale: 0.98 }}
+                          selected={formData.supportNeeded.includes(support)}
+                          labelClassName="font-medium text-sm"
                         >
-                          <CheckCircle
-                            className={`w-5 h-5 flex-shrink-0 transition-all ${
-                              formData.supportNeeded.includes(support)
-                                ? "text-white/80"
-                                : "text-white/35"
-                            }`}
-                            fill={formData.supportNeeded.includes(support) ? "currentColor" : "none"}
-                          />
-                          <span className="font-medium text-sm">{support}</span>
-                        </motion.button>
+                          {support}
+                        </GlassChoiceButton>
                       ))}
                     </div>
                   </div>
@@ -937,13 +828,13 @@ _Enviado via GLV Consulta em ${new Date().toLocaleString("pt-BR")}_
                     </h4>
 
                     <div>
-                      <input
+                      <GlassInput
                         type="text"
                         value={formData.contactName}
                         onChange={(e) => handleInputChange("contactName", e.target.value)}
                         placeholder="Nome completo"
                         maxLength={100}
-                        className={[glassFieldBaseClass, errors.contactName ? glassFieldErrorClass : ""].join(" ")}
+                        hasError={!!errors.contactName}
                         required
                       />
                       {errors.contactName && (
@@ -954,13 +845,13 @@ _Enviado via GLV Consulta em ${new Date().toLocaleString("pt-BR")}_
                     </div>
 
                     <div>
-                      <input
+                      <GlassInput
                         type="email"
                         value={formData.contactEmail}
                         onChange={(e) => handleInputChange("contactEmail", e.target.value)}
                         placeholder="seu@email.com"
                         maxLength={100}
-                        className={[glassFieldBaseClass, errors.contactEmail ? glassFieldErrorClass : ""].join(" ")}
+                        hasError={!!errors.contactEmail}
                         required
                       />
                       {errors.contactEmail && (
@@ -971,13 +862,13 @@ _Enviado via GLV Consulta em ${new Date().toLocaleString("pt-BR")}_
                     </div>
 
                     <div>
-                      <input
+                      <GlassInput
                         type="tel"
                         value={formData.contactPhone}
                         onChange={(e) => handleInputChange("contactPhone", e.target.value)}
                         placeholder="(11) 99999-9999"
                         maxLength={20}
-                        className={[glassFieldBaseClass, errors.contactPhone ? glassFieldErrorClass : ""].join(" ")}
+                        hasError={!!errors.contactPhone}
                         required
                       />
                       {errors.contactPhone && (

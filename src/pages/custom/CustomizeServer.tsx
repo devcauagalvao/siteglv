@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import toast from "react-hot-toast";
-import FloatingArrow from "../../components/FloatingArrow";
-import { SuccessModal } from "../../components/ServerSuccessModal";
+import FloatingArrow from "../../components/effects/FloatingArrow";
+import SuccessModal from "../../components/modals/SuccessModal";
 import { services } from "../../data/services";
 import { GLV_CLOUD_INSTANCE_TYPES, STORAGE_TYPES, BACKUP_OPTIONS, ADDON_OPTIONS, GLV_DATA_CENTERS } from "../../data/awsConfigs";
 import { sendConfigurationEmail, saveConfigurationLocally, calculateEstimatedCost, type ServerConfiguration } from "../../services/serverService";
@@ -137,11 +137,12 @@ const CustomizeServer = () => {
 
       {/* Success Modal */}
       <SuccessModal
-        isOpen={showSuccess}
+        open={showSuccess}
         onClose={() => {
           setShowSuccess(false);
           navigate("/");
         }}
+        variant="server"
         company={company}
         email={contact}
       />

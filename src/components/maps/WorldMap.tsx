@@ -1,7 +1,7 @@
 import { useLayoutEffect, useRef } from 'react';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import useAutoPerformanceMode from '../hooks/useAutoPerformanceMode';
+import useAutoPerformanceMode from '../../hooks/useAutoPerformanceMode';
 
 type WorldMapProps = {
     className?: string;

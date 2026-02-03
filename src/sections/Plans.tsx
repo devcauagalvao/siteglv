@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { Check, Zap } from "lucide-react";
 import { services } from "../data/services";
 import { useNavigate } from "react-router-dom";
-import ServiceDetailsModal from "../components/ServiceDetailsModal";
-import AutoFitText from "../components/AutoFitText";
+import ServiceDetailsModal from "../components/modals/ServiceDetailsModal";
+import AutoFitText from "../components/typography/AutoFitText";
 
 const Plans = () => {
   const [ref, inView] = useInView({ threshold: 0.15 });

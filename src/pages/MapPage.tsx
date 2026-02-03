@@ -1,5 +1,5 @@
 import React from "react";
-import GlobalMap from "../components/GlobalMap";
+import GlobalMap from "../components/maps/GlobalMap";
 
 const MapPage: React.FC = () => {
   return (

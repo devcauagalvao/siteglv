@@ -12,7 +12,7 @@ import {
   Building,
   AlertCircle
 } from 'lucide-react';
-import SuccessModal from "../components/SuccessModal";
+import SuccessModal from "../components/modals/SuccessModal";
 import { useForm } from '../hooks/useForm';
 import { sanitizeInput, validateContactForm } from '../utils/validation';
 import { GOOGLE_ANALYTICS_ID, EMAILJS_KEY } from '../utils/constants';
