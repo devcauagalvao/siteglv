@@ -8,7 +8,7 @@ import useAutoPerformanceMode from "../hooks/useAutoPerformanceMode";
 
 const Hero = () => {
 
-  const { enabled: performanceMode } = useAutoPerformanceMode();
+  const { enabled: performanceMode, hardDisable } = useAutoPerformanceMode();
 
   const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
@@ -74,16 +74,18 @@ const Hero = () => {
       >
         <Galaxy
           className="absolute inset-0 z-0"
-          starSpeed={0.1}
-          density={0.4}
+          starSpeed={performanceMode ? 0.08 : 0.1}
+          density={performanceMode ? 0.32 : 0.4}
           hueShift={35}
           speed={1}
-          glowIntensity={0.25}
+          glowIntensity={performanceMode ? 0.18 : 0.25}
           saturation={0}
+          mouseInteraction={!performanceMode && !hardDisable}
           mouseRepulsion={false}
           repulsionStrength={2}
-          twinkleIntensity={0.3}
-          rotationSpeed={0.1}
+          twinkleIntensity={performanceMode ? 0.18 : 0.3}
+          rotationSpeed={performanceMode ? 0.08 : 0.1}
+          disableAnimation={hardDisable}
           transparent
         />
 

@@ -264,6 +264,9 @@ export default function Galaxy({
     let running = true;
     let isInView = true;
 
+    let mesh: Mesh | null = null;
+    let renderedOnce = false;
+
     let resizeObserver: ResizeObserver | null = null;
 
     function resize() {
@@ -284,6 +287,11 @@ export default function Galaxy({
           gl.canvas.height,
           gl.canvas.width / gl.canvas.height
         );
+      }
+
+      // If the scene is static, draw a fresh frame after resizing.
+      if (disableAnimation && mesh && renderedOnce) {
+        renderer.render({ scene: mesh });
       }
     }
     window.addEventListener('resize', resize, false);
@@ -319,12 +327,13 @@ export default function Galaxy({
       }
     });
 
-    const mesh = new Mesh(gl, { geometry, program });
+    mesh = new Mesh(gl, { geometry, program });
 
     const schedule = () => {
       if (!running) return;
       if (!isInView) return;
       if (document.visibilityState === 'hidden') return;
+      if (disableAnimation && renderedOnce) return;
       if (rafId != null) return;
       rafId = requestAnimationFrame(update);
     };
@@ -356,7 +365,13 @@ export default function Galaxy({
       program.uniforms.uMouse.value[1] = smoothMousePos.current.y;
       program.uniforms.uMouseActiveFactor.value = smoothMouseActive.current;
 
+      if (!mesh) return;
       renderer.render({ scene: mesh });
+
+      if (disableAnimation) {
+        renderedOnce = true;
+        return;
+      }
 
       schedule();
     }
